@@ -1,0 +1,9 @@
+[flake8]
+max-line-length=88
+exclude =
+    migrations,
+    __pycache__,
+    venv,
+    .PurBeurreWeb,
+    .mypy_cache,
+    doc
