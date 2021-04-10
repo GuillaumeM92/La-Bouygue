@@ -2,6 +2,15 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% block content %}
+<!-- Agenda Specific Imports -->
+<link href="{% static 'agenda/fullcalendar/lib/main.css' %}" rel="stylesheet" />
+<script src="{% static 'agenda/fullcalendar/lib/main.js' %}"></script>
+<script src="{% static 'agenda/fullcalendar/lib/calendar-custom.js' %}"></script>
+
+<!-- Date Picker Widget Imports -->
+<link rel="stylesheet" type="text/css" href="{% static 'admin/css/widgets.css' %}"/>
+<script type="text/javascript" src="/jsi18n/"></script>
+<script type="text/javascript" src="{% static 'admin/js/core.js' %}"></script>
 
 <section class="bg-light py-10" id="responsive-calendar">
     <div class="container-fluid animated--fade-in">
@@ -84,14 +93,4 @@
 {% if user.is_superuser or perms.agenda.delete_reservation %}
 <div id="is_admin" value="yes"></div>
 {% endif %}
-
-<!-- Agenda Specific Imports -->
-<link href="{% static 'agenda/fullcalendar/lib/main.css' %}" rel="stylesheet" />
-<script src="{% static 'agenda/fullcalendar/lib/main.js' %}"></script>
-<script src="{% static 'agenda/fullcalendar/lib/calendar-custom.js' %}"></script>
-
-<!-- Date Picker Widget Imports -->
-<link rel="stylesheet" type="text/css" href="{% static 'admin/css/widgets.css' %}"/>
-<script type="text/javascript" src="/jsi18n/"></script>
-<script type="text/javascript" src="{% static 'admin/js/core.js' %}"></script>
 {% endblock content %}
