@@ -25,7 +25,7 @@ class Activity(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("post-detail", kwargs={"pk": self.pk})
+        return reverse("activity-detail", kwargs={"pk": self.pk})
 
     def save(self, *args, **kwargs):
         super(Activity, self).save(*args, **kwargs)

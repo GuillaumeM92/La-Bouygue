@@ -58,7 +58,7 @@
                             </ul>
                             {% if user.is_authenticated %}
                             {% if user.is_superuser %}
-                            <a class="btn btn-outline-white font-weight-500"  style="padding: 0.75rem;" href="http://localhost:8000/admin/">Admin</a>
+                            <a class="btn btn-outline-white font-weight-500"  style="padding: 0.75rem;" href="{% url 'admin:index' %}">Admin</a>
                             {% endif %}
                             <a class="btn btn-outline-white font-weight-500 ml-lg-2"  style="padding: 0.75rem;" href="{% url 'users-profile' %}">Profil</a>
                             <a class="btn btn-outline-white font-weight-500 ml-lg-2"  style="padding: 0.75rem;" href="{% url 'users-logout' %}">Déconnexion<i class="ml-2" data-feather="arrow-right"></i></a>
@@ -92,6 +92,10 @@
         <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
         <script src="{% static 'bouygue/js/scripts.js' %}"></script>
+        <script src="{% static 'agenda/fullcalendar/lib/main.js' %}"></script>
+        <script src="{% static 'agenda/fullcalendar/lib/calendar-custom.js' %}"></script>
+        <script type="text/javascript" src="/jsi18n/"></script>
+        <script type="text/javascript" src="{% static 'admin/js/core.js' %}"></script>
         <script>
             AOS.init({
                 disable: 'mobile',
