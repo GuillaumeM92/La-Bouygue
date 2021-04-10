@@ -11,14 +11,11 @@ def landing(request):
     else:
         return render(request, 'bouygue/landing.html')
 
-
 def home(request):
     user = request.user
     posts_length = len(Post.objects.all()) - user.discussions_read
     infoposts_length = len(InfoPost.objects.all()) - user.informations_read
     return render(request, 'bouygue/home.html', {'title': 'Home', 'posts_length': posts_length, 'infoposts_length': infoposts_length})
-
-from django.urls import path
 
 def trigger_error(request):
     division_by_zero = 1 / 0
