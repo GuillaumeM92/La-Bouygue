@@ -4,22 +4,18 @@ Repository for a family website project named La Bouygue.
 Website address : 
 
 ## Project Description
-This project is a web application built with **Django** to help users find healthier products to their favorite food.
-The application is deployed on **Heroku**.
+Website for our family's vacation house. The site handles reservations, as well as discussions, and other functionnalities.
 
 ## Features
 * Register
 * Login
-* Search a product
-* Browse substitutes
-* Add them to your favorites
-* View your favorite products
-* Access your Profile page
+* 
+* 
+* 
+* 
+* Access Profile page
 * Logout
-
-## APIs
-The following API was used in this project :
-* [Open Food Facts](https://developers.google.com/maps/get-started/)
+* Reset Password
 
 ## Getting Started
 
