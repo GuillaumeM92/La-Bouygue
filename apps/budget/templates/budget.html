@@ -1,0 +1,170 @@
+{% extends "bouygue/base.html" %}
+{% load static %}
+{% block content %}
+<!-- Header-->
+<header class="page-header page-header-dark bg-gradient-primary-to-secondary pb-10 overlay" style="background-image: url({% static 'bouygue/assets/img/backgrounds/montagne/ossau.jpg' %}); height: 22rem;">
+    <div class="container">
+        <div class="page-header-content pt-1">
+            <div class="row align-items-center justify-content-between">
+                <div class="col-auto mt-4">
+                    <h1 class="page-header-title">
+                        Budget
+                    </h1>
+                    <div class="page-header-subtitle mb-2">Représentations graphiques du budget de la Bouygue</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- Main page content-->
+<div class="container mt-n10">
+    <!-- Area chart example-->
+    <div class="card mb-4 mt-2">
+        <div class="card-header">Evolution du budget</div>
+        <div class="card-body">
+            <div class="chart-area"><canvas id="myAreaChart" width="100%" height="30"></canvas></div>
+        </div>
+        <div class="card-footer small text-muted">Mise à jour hier à 23h59</div>
+    </div>
+    <div class="row">
+    <div class="col-xxl-4 col-xl-6 mb-4">
+                                <div class="card card-header-actions h-100">
+                                    <div class="card-header">
+                                        Progressions
+                                        <div class="dropdown no-caret">
+                                            <button class="btn btn-transparent-dark btn-icon dropdown-toggle" id="dropdownMenuButton" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="text-gray-500" data-feather="more-vertical"></i></button>
+                                            <div class="dropdown-menu dropdown-menu-right animated--fade-in-up" aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item" href="#!">
+                                                    <div class="dropdown-item-icon"><i class="text-gray-500" data-feather="list"></i></div>
+                                                    Manage Tasks
+                                                </a>
+                                                <a class="dropdown-item" href="#!">
+                                                    <div class="dropdown-item-icon"><i class="text-gray-500" data-feather="plus-circle"></i></div>
+                                                    Add New Task
+                                                </a>
+                                                <a class="dropdown-item" href="#!">
+                                                    <div class="dropdown-item-icon"><i class="text-gray-500" data-feather="minus-circle"></i></div>
+                                                    Delete Tasks
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <h4 class="small">
+                                            Server Migration
+                                            <span class="float-right font-weight-bold">20%</span>
+                                        </h4>
+                                        <div class="progress mb-4"><div class="progress-bar bg-danger" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div></div>
+                                        <h4 class="small">
+                                            Sales Tracking
+                                            <span class="float-right font-weight-bold">40%</span>
+                                        </h4>
+                                        <div class="progress mb-4"><div class="progress-bar bg-warning" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div></div>
+                                        <h4 class="small">
+                                            Customer Database
+                                            <span class="float-right font-weight-bold">60%</span>
+                                        </h4>
+                                        <div class="progress mb-4"><div class="progress-bar" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div></div>
+                                        <h4 class="small">
+                                            Payout Details
+                                            <span class="float-right font-weight-bold">80%</span>
+                                        </h4>
+                                        <div class="progress mb-4"><div class="progress-bar bg-info" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div></div>
+                                        <h4 class="small">
+                                            Account Setup
+                                            <span class="float-right font-weight-bold">Complete!</span>
+                                        </h4>
+                                        <div class="progress"><div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div></div>
+                                    </div>
+                                    <a class="card-footer" href="#!">
+                                        <div class="d-flex align-items-center justify-content-between small text-body">
+                                            Visit Task Center
+                                            <i data-feather="arrow-right"></i>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="col-xxl-3 col-lg-6">
+                                <div class="card bg-primary text-white mb-4">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="mr-3">
+                                                <div class="text-white-75 small">Compte principal</div>
+                                                <div class="text-lg font-weight-bold">€40,000</div>
+                                            </div>
+                                            <i class="feather-xl text-white-50" data-feather="calendar"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small text-white stretched-link" href="#">View Report</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="card bg-warning text-white mb-4">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="mr-3">
+                                                <div class="text-white-75 small">Compte secondaire</div>
+                                                <div class="text-lg font-weight-bold">€215,000</div>
+                                            </div>
+                                            <i class="feather-xl text-white-50" data-feather="dollar-sign"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small text-white stretched-link" href="#">View Report</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+        <div class="col-lg-6">
+            <!-- Bar chart example-->
+            <div class="card mb-4">
+                <div class="card-header">Graphique à barres</div>
+                <div class="card-body">
+                    <div class="chart-bar"><canvas id="myBarChart" width="100%" height="50"></canvas></div>
+                </div>
+                <div class="card-footer small text-muted">Mise à jour hier à 23h59</div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <!-- Pie chart example-->
+            <div class="card mb-4">
+                <div class="card-header">Graphique circulaire</div>
+                <div class="card-body">
+                    <div class="chart-pie"><canvas id="myPieChart" width="100%" height="50"></canvas></div>
+                </div>
+                <div class="card-footer small text-muted">Mise à jour hier à 23h59</div>
+            </div>
+        </div>
+    </div>
+    <!-- Third party docs message-->
+    <div class="card card-icon mb-5">
+        <div class="row no-gutters">
+            <div class="col-auto card-icon-aside bg-primary"><i class="text-white-50" data-feather="alert-triangle"></i></div>
+            <div class="col">
+                <div class="card-body py-5">
+                    <h5 class="card-title">Third-Party Documentation Available</h5>
+                    <p class="card-text">Chart.js is a third party plugin that is used to generate the charts in this template. The charts above have been customized to fit the style of the SB Admin Pro theme. For further customization options, please visit the official Chart.js documentation.</p>
+                    <a class="btn btn-primary btn-sm" href="https://www.chartjs.org/docs/latest/" target="_blank">
+                        <i class="mr-1" data-feather="external-link"></i>
+                        Visit Chart.js Docs
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Budget specific imports -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" crossorigin="anonymous"></script>
+<script src="{% static 'budget/js/demo/chart-area-demo.js' %}"></script>
+<script src="{% static 'budget/js/demo/chart-bar-demo.js' %}"></script>
+<script src="{% static 'budget/js/demo/chart-pie-demo.js' %}"></script>
+{% endblock content %}

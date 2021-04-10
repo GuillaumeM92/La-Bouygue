@@ -1,0 +1,83 @@
+{% extends "bouygue/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div id="layoutDefault">
+    <div id="layoutDefault_content">
+        <main>
+            <!-- Page Header-->
+            <header class="page-header page-header-dark bg-img-cover overlay overlay-60" style="background-image: url({% static 'bouygue/assets/img/backgrounds/montagne/lac_gavarnie.jpg' %}); height: 19rem;">
+                <div class="page-header-content">
+                    <div class="container text-center">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                <h1 class="page-header-title mt-0 mb-3">Discussions</h1>
+                                <p class="page-header-text mb-0">Cliquez sur une discussion pour lire son contenu</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="svg-border-rounded text-light">
+                    <!-- Rounded SVG Border--><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144.54 17.34" preserveAspectRatio="none" fill="currentColor"><path d="M144.54,17.34H0V0H144.54ZM0,0S32.36,17.34,72.27,17.34,144.54,0,144.54,0"></path></svg>
+                </div>
+            </header>
+            <section class="bg-light py-7">
+                <div class="container" style="padding-left: 1.5rem; padding-right: 1.5rem;">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-10">
+                            <div class="post-archive-tag">
+                                <a class="btn btn-primary font-weight-bolder mt-1" href="{% url 'bouygue-home' %}" title="retour" ><i class="fas fa-chevron-left dropdown-arrow"></i></a>
+                                <a class="btn btn-primary font-weight-700 mt-1" href="{% url 'post-create' %}">Nouvelle Discussion</a>
+                            </div>
+                            {% for post in posts %}
+                                <a class="post-archive-item" href="{% url 'post-detail' post.id %}">
+                                    <h5>{{ post.title }}</h5>
+                                    <p>{{ post.content }}</p>
+                                </a>
+                                <div class="post-archive-meta">
+                                    <a href="{% url 'user-posts' post.author.surname post.author.name %}"><img class="post-archive-meta-img" src="{{ post.author.profile.image.url }}" />
+                                    <div class="post-archive-meta-details">
+                                        <div class="post-archive-meta-details-name">{{ post.author.surname }} {{ post.author.name }}</div></a>
+                                        <div class="post-archive-meta-details-date">{{ post.date_posted }}</div>
+                                    </div>
+                                    <div class="col-md-4 col-lg-3 ml-auto">
+                                        <a class="btn btn-outline-primary btn-block font-weight-700 ml-auto" href="{% url 'post-detail' post.id %}">Voir la discussion</a>
+                                    </div>
+                                </div>
+                                <hr class="my-5" />
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% if is_paginated %}
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination pagination-blog justify-content-center">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item active"><a class="page-link" href="?page=1">Début</a></li>
+                            <li class="page-item active"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Préc.</a></li>
+                        {% endif %}
+
+                        {% for num in page_obj.paginator.page_range %}
+                            {% if page_obj.number == num %}
+                                <li class="page-item disabled"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if page_obj.has_next %}
+                            <li class="page-item active"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Suiv.</a></li>
+                            <li class="page-item active"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Fin</a></li>
+                        {% endif %}
+                        </ul>
+                    </nav>
+                    {% endif %}
+                </div>
+                <div class="svg-border-rounded text-dark">
+                    <!-- Rounded SVG Border--><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144.54 17.34" preserveAspectRatio="none" fill="#1e2c41"><path d="M144.54,17.34H0V0H144.54ZM0,0S32.36,17.34,72.27,17.34,144.54,0,144.54,0"></path></svg>
+                </div>
+            </section>
+        </main>
+    </div>
+</div>
+{% endblock content %}

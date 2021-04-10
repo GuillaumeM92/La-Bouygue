@@ -1,0 +1,36 @@
+{% extends "bouygue/base.html" %}
+{% load static %}
+{% block content %}
+<div id="layoutAuthentication_content" class="bg-gray-900" style="padding-right: 0.5rem; padding-left: 0.5rem; background-image: url({% static 'bouygue/assets/img/backgrounds/montagne/piejau.jpg' %}); height: 44rem;">
+    <div class="container" style="padding-right: 1rem; padding-left: 1rem;">
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+                <!-- Basic registration form-->
+                <div class="card shadow-lg border-0 rounded-lg mt-20 mb-20 animated--fade-in" style="opacity: 92%;">
+                    <div class="card-header" style="background-color: #19273c; opacity: 96%">
+                        <a onClick="javascript:history.go(-1);" class="col-xs btn btn-outline-white font-weight-bolder" title="retour"><i class="fas fa-chevron-left dropdown-arrow"></i></a>
+                        <div class="col-11 font-weight-700 h4 my-4 mr-2" align="center" style="color: white;">
+                            Supprimer la discussion
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!-- Delete post form-->
+                        <form method="POST">
+                            {% csrf_token %}
+                            <!-- Form Row-->
+                            <fieldset class="form-group">
+                                <h2>Etes vous sûr de vouloir supprimer cette discussion ?</h2>
+                            </fieldset>
+                            <!-- Form Group (create account submit)-->
+                            <div class="form-group mt-3 mb-1">
+                                <button class="btn btn-outline-danger mt-1 font-weight-bolder" type="submit">Oui, supprimer</button>
+                                <a class="btn btn-outline-primary mt-1 font-weight-bolder" onClick="javascript:history.go(-1);">Non, annuler</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,169 @@
+{% extends "bouygue/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<!-- Page Header-->
+<header class="page-header page-header-dark bg-img-cover overlay overlay-60" style="background-image: url({% static 'bouygue/assets/img/backgrounds/montagne/pic_har.jpg' %}); height: 19rem;">
+    <div class="page-header-content">
+        <div class="container text-center">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <h1 class="page-header-title mt-0 mb-3">Travaux</h1>
+                    <p class="page-header-text mb-0">Retouvez la liste des travaux, classés par catégorie</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="svg-border-rounded text-light">
+        <!-- Rounded SVG Border--><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144.54 17.34" preserveAspectRatio="none" fill="currentColor"><path d="M144.54,17.34H0V0H144.54ZM0,0S32.36,17.34,72.27,17.34,144.54,0,144.54,0"></path></svg>
+    </div>
+</header>
+
+<section class="bg-light py-10">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+
+                <div class="d-flex align-items-center justify-content-between">
+                    <h2 class="mb-0">Plomberie</h2>
+                    <div class="badge badge-primary-soft text-primary badge-marketing">3 Travaux</div>
+                </div>
+                <hr class="mb-0" />
+                <ul class="list-group list-group-flush list-group-careers">
+                    <li class="list-group-item">
+                        <a href="{% url 'work' %}"">Tuyau bouché</a>
+                        <div class="small">Remote - US (San Francisco, CA)</div>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'work' %}"">Operations Manager</a>
+                        <div class="small">San Francisco, CA (HQ)</div>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'work' %}"">Administrative Assistant</a>
+                        <div class="small">Dallas, TX</div>
+                    </li>
+                </ul>
+
+                <div class="d-flex align-items-center justify-content-between">
+                    <h2 class="mb-0">Maçonnerie</h2>
+                    <div class="badge badge-primary-soft text-primary badge-marketing">5 Travaux</div>
+                </div>
+                <hr class="mb-0" />
+                <ul class="list-group list-group-flush list-group-careers">
+                    <li class="list-group-item">
+                        <a href="{% url 'work' %}"">Senior Software Engineer</a>
+                        <div class="small">Remote - US / Canada</div>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'work' %}"">Software Engineer</a>
+                        <div class="small">Remote - Global</div>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'work' %}"">Data Scientist</a>
+                        <div class="small">Remote - Global</div>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'work' %}"">Front End Engineer</a>
+                        <div class="small">San Francisco, CA (HQ)</div>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'work' %}"">Technical Director</a>
+                        <div class="small">San Francisco, CA (HQ)</div>
+                    </li>
+                </ul>
+
+                <div class="d-flex align-items-center justify-content-between">
+                    <h2 class="mb-0">Bricolage</h2>
+                    <div class="badge badge-primary-soft text-primary badge-marketing">3 Travaux</div>
+                </div>
+                <hr class="mb-0" />
+                <ul class="list-group list-group-flush list-group-careers">
+                    <li class="list-group-item">
+                        <a href="{% url 'work' %}"">Tuyau bouché</a>
+                        <div class="small">Remote - US (San Francisco, CA)</div>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'work' %}"">Operations Manager</a>
+                        <div class="small">San Francisco, CA (HQ)</div>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'work' %}"">Administrative Assistant</a>
+                        <div class="small">Dallas, TX</div>
+                    </li>
+                </ul>
+
+                <div class="d-flex align-items-center justify-content-between">
+                    <h2 class="mb-0">Jardinage</h2>
+                    <div class="badge badge-primary-soft text-primary badge-marketing">4 Travaux</div>
+                </div>
+                <hr class="mb-0" />
+                <ul class="list-group list-group-flush list-group-careers">
+                    <li class="list-group-item">
+                        <a href="{% url 'work' %}"">Sales Support Coordinator</a>
+                        <div class="small">Remote - US (San Francisco, CA)</div>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'work' %}"">Senior Sales Representative</a>
+                        <div class="small">Remove - US Northeast</div>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'work' %}"">Paid Search Specialist</a>
+                        <div class="small">Remote - Global</div>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'work' %}"">Junior Sales Representative</a>
+                        <div class="small">San Francisco, CA (HQ)</div>
+                    </li>
+                </ul>
+
+                <div class="d-flex align-items-center justify-content-between">
+                    <h2 class="mb-0">Autre</h2>
+                    <div class="badge badge-primary-soft text-primary badge-marketing">4 Travaux</div>
+                </div>
+                <hr class="mb-0" />
+                <ul class="list-group list-group-flush list-group-careers">
+                    <li class="list-group-item">
+                        <a href="{% url 'work' %}"">Sales Support Coordinator</a>
+                        <div class="small">Remote - US (San Francisco, CA)</div>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'work' %}"">Senior Sales Representative</a>
+                        <div class="small">Remove - US Northeast</div>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'work' %}"">Paid Search Specialist</a>
+                        <div class="small">Remote - Global</div>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'work' %}"">Junior Sales Representative</a>
+                        <div class="small">San Francisco, CA (HQ)</div>
+                    </li>
+                </ul>
+
+                <h4 class="mb-4">
+                    <div class="icon-stack bg-primary text-white mr-2"><i data-feather="smile"></i></div>
+                    Work happier
+                </h4>
+                <p class="mb-5">Build amazing things with autonomy, self-direction, and a healthy work-life balance. We offer flexible work schedules for all of our employees and unlimited PTO. We also believe that if a job allows for it, you should work wherever you’re happiest.</p>
+                <h4 class="mb-4">
+                    <div class="icon-stack bg-primary text-white mr-2"><i data-feather="trending-up"></i></div>
+                    Keep growing
+                </h4>
+                <p>Learn how you learn best. From books to conferences, you’ll get a yearly budget for your individual learning and development goals. If ebooks are more your style, you’ll get a brand new Kindle on your first day.</p>
+                <hr class="my-5" />
+                <div class="card bg-light shadow-none">
+                    <div class="card-body text-center p-5">
+                        <h2>Internships</h2>
+                        <p class="lead mb-4">Are you currently enrolled at a college or university and looking for hands-on experience while earning class credit? Take a look at our internship opportunities!</p>
+                        <a class="btn btn-primary font-weight-500" href="{% url 'work' %}"">Explore Internships</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="svg-border-rounded text-dark">
+        <!-- Rounded SVG Border--><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144.54 17.34" preserveAspectRatio="none" fill="currentColor"><path d="M144.54,17.34H0V0H144.54ZM0,0S32.36,17.34,72.27,17.34,144.54,0,144.54,0"></path></svg>
+    </div>
+</section>
+{% endblock content %}

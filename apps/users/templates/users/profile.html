@@ -1,0 +1,42 @@
+{% extends "bouygue/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div id="layoutAuthentication_content" class="bg-gray-900" style="padding-right: 0.5rem; padding-left: 0.5rem; background-image: url({% static 'bouygue/assets/img/backgrounds/montagne/lac_lourdenvie.jpg' %}); height: 60rem;">
+    <div class="container" style="padding-right: 1rem; padding-left: 1rem">
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+
+                <!-- Profile -->
+                <div class="card shadow-lg border-0 rounded-lg mt-10 mb-5 animated--fade-in">
+                    <div class="card-header justify-content-center" style="background-color: #19273c; opacity: 96%">
+                        <h4 class="font-weight-50 my-4" style="color: white">{{ user.surname }} {{ user.name }} - {{ user }}</h4>
+                    </div>
+                    <div class="card-body text-center font-weight-500">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="font-weight-600 text-center alert alert-{{ message.tags }}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        <img class="rounded-circle account-img" id="profile-img" src="{{ user.profile.image.url }}">
+                        <form class="text-left" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <!-- Form Row-->
+                            <fieldset class="form-group">
+                                {{ p_form|crispy }}
+                            </fieldset>
+                            <a class="font-weight-700 color-red" href="{% url 'password_reset' %}">Changer mon mot de passe</a>
+                            <!-- Form Group (create account submit)-->
+                            <div class="form-group mt-4 mb-0">
+                                <button class="btn btn-primary btn-block font-weight-bolder" type="submit">Enregistrer les modifications</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

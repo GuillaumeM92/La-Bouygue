@@ -1,0 +1,103 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        {% if title %}
+            <title>La Bouygue - {{ title }}</title>
+        {% else %}
+            <title>La Bouygue</title>
+        {% endif %}
+        <link href="{% static 'bouygue/css/styles.css' %}" rel="stylesheet" />
+        <link rel="icon" type="image/x-icon" href="{% static 'bouygue/assets/img/favicon.png' %}" />
+        <script data-search-pseudo-elements defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.24.1/feather.min.js" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <div id="layoutDefault">
+            <div id="layoutDefault_content">
+                <!-- Navbar-->
+                <nav class="navbar navbar-expand-lg bg-dark navbar-dark fixed-top" style="padding: 0.85rem; opacity: 95%">
+                    <div class="container">
+                        {% if user.is_authenticated %}
+                            <a class="navbar-brand" href="{% url 'bouygue-home' %}">La Bouygue</a><button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i data-feather="menu"></i></button>
+                        {% else %}
+                            <a class="navbar-brand" href="{% url 'bouygue-landing' %}">La Bouygue</a><button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i data-feather="menu"></i></button>
+                        {% endif %}
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav ml-auto mr-auto">
+                                <li class="nav-item dropdown dropdown-xl no-caret" style="font-size: 107%">
+                                {% if user.is_authenticated %}
+                                    <a class="nav-link dropdown-toggle font-weight-bold" id="navbarDropdownDemos" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white">Rubriques<i class="fas fa-chevron-right dropdown-arrow"></i></a>
+                                    {% endif %}
+                                    <div class="dropdown-menu dropdown-menu-right animated--fade-in-up mr-lg-n25 mr-xl-n15 mb-3 font-weight-bold" aria-labelledby="navbarDropdownDemos">
+                                        <div class="row no-gutters">
+                                            <div class="col-lg-5 p-lg-3 bg-gray-800 d-none d-lg-block">
+                                                <div class="d-flex h-100 w-100 align-items-center justify-content-center">
+                                                    <div class="text-white text-center z-1">
+                                                        <div class="mb-3 font-weight-bold">Menu des <br> rubriques</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-7 p-lg-5">
+                                                <div class="row">
+                                                    <div class="col-lg-6 ">
+                                                        <a class="dropdown-item font-weight-bold" href="{% url 'agenda' %}">Calendrier</a><a class="dropdown-item font-weight-bold" href="{% url 'blog' %}">Discussions</a>
+                                                        <a class="dropdown-item font-weight-bold" href="{% url 'activities' %}">Activités</a><a class="dropdown-item font-weight-bold" href="{% url 'info' %}">Informations</a>
+                                                        <a class="dropdown-item font-weight-bold" href="{% url 'works' %}">Travaux</a><a class="dropdown-item font-weight-bold" href="{% url 'budget' %}">Budget</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                            {% if user.is_authenticated %}
+                            {% if user.is_superuser %}
+                            <a class="btn btn-outline-white font-weight-500"  style="padding: 0.75rem;" href="http://localhost:8000/admin/">Admin</a>
+                            {% endif %}
+                            <a class="btn btn-outline-white font-weight-500 ml-lg-2"  style="padding: 0.75rem;" href="{% url 'users-profile' %}">Profil</a>
+                            <a class="btn btn-outline-white font-weight-500 ml-lg-2"  style="padding: 0.75rem;" href="{% url 'users-logout' %}">Déconnexion<i class="ml-2" data-feather="arrow-right"></i></a>
+                            {% else %}
+                            <a class="btn btn-outline-white font-weight-500 ml-lg-4"  style="padding: 0.75rem;" href="{% url 'users-login' %}">Connexion<i class="ml-2" data-feather="arrow-right"></i></a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            <!-- Extended Content-->
+            <div role="main" class="bg-light">
+                {% block content %}{% endblock %}
+            </div>
+            <!-- Footer-->
+            <div id="layoutDefault_footer">
+                <footer class="footer pt-10 pb-5 mt-auto bg-dark footer-dark" style="padding: 0.85rem; background-color: #1e2c41">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-md-6" style="color: white; font-size: 150%">La Bouygue</div>
+                            <div class="col-md-6 text-md-right small">
+                                <a href="#!">Comment sont traitées mes données sur ce site ?</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+        <script src="{% static 'bouygue/js/scripts.js' %}"></script>
+        <script>
+            AOS.init({
+                disable: 'mobile',
+                duration: 600,
+                once: true,
+            });
+        </script>
+    </body>
+</html>
