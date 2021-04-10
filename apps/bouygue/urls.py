@@ -7,6 +7,3 @@ urlpatterns = [
     path('', views.landing, name='bouygue-landing'),
     path('home/', views.home, name='bouygue-home'),
 ]
-
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
