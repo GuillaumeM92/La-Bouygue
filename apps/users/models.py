@@ -72,10 +72,13 @@ class Profile(models.Model):
 
         img = Image.open(self.image.path)
 
-        if img.height > 300 or img.width > 300:
-            output_size = (300, 300)
-            img.thumbnail(output_size)
-            img.save(self.image.path)
+        while img.height > 300 or img.width > 300:
+            img.height = img.height * 0.9
+            img.width = img.width * 0.9
+
+        output_size = (img.width, img.height)
+        img.thumbnail(output_size)
+        img.save(self.image.path)
 
 
 @receiver(post_save, sender=MyUser)
