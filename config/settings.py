@@ -130,7 +130,7 @@ LOGIN_REDIRECT_URL = 'bouygue-home'
 
 LOGIN_URL = 'users-login'
 
-if os.getenv("prod"):
+if os.getenv("ENV") == "prod":
     # Sentry
     sentry_sdk.init(
     dsn="https://0b74ff2d74614c48946109cc17e75d66@o523221.ingest.sentry.io/5635710",
