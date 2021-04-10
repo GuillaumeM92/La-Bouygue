@@ -1,6 +1,8 @@
 import os
+import sentry_sdk
 from dotenv import load_dotenv
 from django.contrib.messages import constants as messages
+from sentry_sdk.integrations.django import DjangoIntegration
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -123,6 +125,14 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = 'bouygue-home'
 
 LOGIN_URL = 'users-login'
+
+# Sentry
+sentry_sdk.init(
+    dsn="https://0b74ff2d74614c48946109cc17e75d66@o523221.ingest.sentry.io/5635710",
+    integrations=[DjangoIntegration()],
+    traces_sample_rate=1.0,
+    send_default_pii=True,
+)
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
