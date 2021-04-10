@@ -4,6 +4,9 @@ from dotenv import load_dotenv
 from django.contrib.messages import constants as messages
 from sentry_sdk.integrations.django import DjangoIntegration
 
+# Environment variables
+load_dotenv()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -14,7 +17,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = False
 # DEBUG_PROPAGATE_EXCEPTIONS = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['45.77.62.93']
 
 # Application definition
 INSTALLED_APPS = [
@@ -64,9 +67,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
-
-# Environment variables
-load_dotenv()
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
