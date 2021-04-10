@@ -9,10 +9,6 @@ Website for our family's vacation house. The site handles reservations, as well 
 ## Features
 * Register
 * Login
-* 
-* 
-* 
-* 
 * Access Profile page
 * Logout
 * Reset Password
