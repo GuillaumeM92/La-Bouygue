@@ -131,7 +131,7 @@ sentry_sdk.init(
     dsn="https://0b74ff2d74614c48946109cc17e75d66@o523221.ingest.sentry.io/5635710",
     integrations=[DjangoIntegration()],
     traces_sample_rate=1.0,
-    send_default_pii=True,
+    send_default_pii=False,
 )
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
