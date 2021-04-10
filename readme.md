@@ -1,7 +1,7 @@
-# PurBeurreWeb
-Repository for Project 8 from Openclassrooms cursus in Software Development
+# La-Bouygue
+Repository for a family website project named La Bouygue.
 
-Website address : https://purbeurreweb.herokuapp.com/
+Website address : 
 
 ## Project Description
 This project is a web application built with **Django** to help users find healthier products to their favorite food.
