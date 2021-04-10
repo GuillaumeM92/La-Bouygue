@@ -14,10 +14,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG")
-# DEBUG_PROPAGATE_EXCEPTIONS = True
+if os.getenv("DEBUG") == 'dev':
+    DEBUG = True
+    DEBUG_PROPAGATE_EXCEPTIONS = False
+else:
+    DEBUG = False
+    DEBUG_PROPAGATE_EXCEPTIONS = False
 
-ALLOWED_HOSTS = ['45.77.62.93']
+ALLOWED_HOSTS = [os.getenv("HOST")]
 
 # Application definition
 INSTALLED_APPS = [
