@@ -6,6 +6,7 @@ from . import views
 urlpatterns = [
     path('', views.landing, name='bouygue-landing'),
     path('home/', views.home, name='bouygue-home'),
+    path('sentry-debug/', views.trigger_error, name='sentry-debug')
 ]
 
 if settings.DEBUG:
