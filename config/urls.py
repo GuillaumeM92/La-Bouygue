@@ -14,3 +14,6 @@ urlpatterns = [
     path('', include('apps.work.urls')),
     path('', include('apps.budget.urls')),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
