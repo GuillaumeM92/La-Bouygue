@@ -48,7 +48,7 @@
                         <a class="btn btn-primary font-weight-bolder mt-1" href="{% url 'bouygue-home' %}" title="retour" ><i class="fas fa-chevron-left dropdown-arrow"></i></a>
                         <a class="btn btn-primary font-weight-700 mt-1" href="{% url 'activity-create' %}">Nouvelle Activité</a>
                     </div>
-                    {% if activities.first.exists %}
+                    {% if activities %}
                     <a class="card post-preview post-preview-featured lift mb-5" href="{% url 'activity-detail' activities.first.id %}">
                         <div class="row no-gutters">
                             <div class="col-lg-5"><div class="post-preview-featured-img" style="background-image: url('{{ activities.first.image.url }}')"></div></div>
