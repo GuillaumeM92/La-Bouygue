@@ -49,11 +49,11 @@
                 <p class="mb-4">{{ work.content }}</p>
 
                 <div class="d-flex align-items-center justify-content-between mb-5">
-                    <div class="single-post-meta mr-4 ml-auto p-2">
-                        <a href="{% url 'user-work' work.author.surname work.author.name %}"><img class="single-post-meta-img" src="{{ work.author.profile.image.url }}"/>
-                        <div class="single-post-meta-details">
-                            <div class="single-post-meta-details-name">{{ work.author.surname }} {{ work.author.name }}</div></a>
-                            <div class="single-post-meta-details-date">{{ work.date_posted }}</div>
+                    <div class="post-archive-meta mr-4 ml-auto p-2">
+                        <a href="{% url 'user-work' work.author.surname work.author.name %}"><img class="post-archive-meta-img" src="{{ work.author.profile.image.url }}"/>
+                        <div class="post-archive-meta-details">
+                            <div class="post-archive-meta-details-name">{{ work.author.surname }} {{ work.author.name }}</div></a>
+                            <div class="post-archive-meta-details-date">{{ work.date_posted }}</div>
                         </div>
                     </div>
                 </div>
