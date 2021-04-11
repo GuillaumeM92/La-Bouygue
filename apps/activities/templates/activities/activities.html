@@ -44,6 +44,10 @@
             </header>
             <section class="bg-light py-7">
                 <div class="container">
+                    <div class="post-archive-tag">
+                        <a class="btn btn-primary font-weight-bolder mt-1" href="{% url 'bouygue-home' %}" title="retour" ><i class="fas fa-chevron-left dropdown-arrow"></i></a>
+                        <a class="btn btn-primary font-weight-700 mt-1" href="{% url 'activity-create' %}">Nouvelle Activité</a>
+                    </div>
                     <a class="card post-preview post-preview-featured lift mb-5" href="{% url 'activity-detail' activities.first.id %}">
                         <div class="row no-gutters">
                             <div class="col-lg-5"><div class="post-preview-featured-img" style="background-image: url('{{ activities.first.image.url }}')"></div></div>
@@ -52,8 +56,8 @@
                                     <div class="py-4 card-body-activities">
                                         <h5 class="card-title">{{ activities.first.title }}</h5>
                                         <p class="card-text-2 mt-4">Difficulté : {{ activities.first.get_difficulty_display }}</p>
-                                        <p class="card-text-2">Durée : {{ activity.duration }} h</p>
-                                        <p class="card-text-2">Distance : {{ activity.content }} km</p>
+                                        <p class="card-text-2">Durée : {{ activities.first.duration }} h</p>
+                                        <p class="card-text-2">Distance : {{ activities.first.distance }} km</p>
                                     </div>
                                     <hr />
                                     <div class="post-preview-meta">

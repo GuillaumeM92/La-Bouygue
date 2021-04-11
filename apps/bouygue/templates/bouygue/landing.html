@@ -2,14 +2,15 @@
 {% load static %}
 {% block content %}
 <!-- Page Header-->
-<header class="page-header page-header-dark bg-img-cover overlay-20 overlay" style="background-image: url({% static 'bouygue/assets/img/backgrounds/montagne/bergerie.jpg' %}); height: 52rem;">
+<header class="page-header page-header-dark bg-img-cover overlay-20 overlay" style="background-image: url({% static 'bouygue/assets/img/backgrounds/montagne/bergerie.jpg' %}); height: 53rem;">
     <div class="page-header-content mt-5 lift">
         <div class="container">
             <div class="row justify-content-center rounded-xl animated--fade-in" style="background-color: rgba(30, 44, 65, 0.52);">
                 <div class="col-xl-8 col-lg-10 text-center mt-5">
-                    <h1 class="page-header-title">Bienvenue sur le site internet de La Bouygue !</h1>
-                    <h3 class="mt-5 mb-5" style="color: white;" >Créez-vous un compte pour pouvoir accéder aux fonctionnalités du site</h3>
-                    <a class="btn btn-outline-dark bg-white lift font-weight-500 mb-5" href="{% url 'users-register' %}">Créer un compte</a>
+                    <h1 class="page-header-title" style="font-size: 180%">Bienvenue sur le site internet de La Bouygue !</h1>
+                    <h3 class="mt-5 mb-5" style="color: white; font-size: 120%" >Créez-vous un compte pour pouvoir accéder aux fonctionnalités du site.</h3>
+                    <a class="btn btn-outline-dark bg-white lift font-weight-500 mb-4" href="{% url 'users-register' %}">Créer un compte</a>
+                    <a class="btn btn-outline-dark bg-white lift font-weight-500 mb-4 ml-1" href="{% url 'users-login' %}">Se connecter</a>
                 </div>
             </div>
         </div>
