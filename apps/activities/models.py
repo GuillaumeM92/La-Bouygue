@@ -7,19 +7,24 @@ from apps.users.models import MyUser
 from PIL import Image
 import datetime
 
+
 class Activity(models.Model):
-    title = models.CharField(max_length=100, verbose_name= _('Titre'))
-    content = models.TextField(verbose_name= _('Contenu'))
+    title = models.CharField(max_length=100, verbose_name=_("Titre"))
+    content = models.TextField(verbose_name=_("Description"))
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(MyUser, on_delete=models.CASCADE)
-    difficulty = models.SmallIntegerField(default=0, choices=[(0, 'Très facile'), (1, 'Facile'), (2, 'Moyen'), (3, 'Difficile'), (4, 'Très difficile')])
-    duration = models.TimeField(default=datetime.time(00, 00))
+    difficulty = models.SmallIntegerField(
+        default=0,
+        choices=[(0, "Très facile"), (1, "Facile"), (2, "Moyen"), (3, "Difficile"), (4, "Très difficile")],
+        verbose_name=_("Difficulté"),
+    )
+    duration = models.TimeField(default=datetime.time(00, 00), verbose_name=_("Durée"))
     distance = models.SmallIntegerField(default=0)
     image = models.ImageField(default="activity_default.jpg", upload_to="activities")
 
     class Meta:
         verbose_name_plural = "Activities"
-        ordering = ['-date_posted']
+        ordering = ["-date_posted"]
 
     def __str__(self):
         return self.title

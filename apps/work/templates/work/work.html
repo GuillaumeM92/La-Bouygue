@@ -10,7 +10,7 @@
             <div class="row justify-content-center">
                 <div class="col-lg-8">
                     <h1 class="page-header-title mt-0 mb-3">Travaux</h1>
-                    <p class="page-header-text mb-0">Consultez le détail d'une tâche</p>
+                    <p class="page-header-text mb-0">Consultez la liste des travaux, classés par catégorie</p>
                 </div>
             </div>
         </div>
@@ -22,68 +22,87 @@
 
 <section class="bg-light py-10">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-3">
-                <ul class="list-group list-group-flush list-group-careers">
-                    <li class="list-group-item pt-0">
-                        <a class="small" onClick="javascript:history.go(-1);" style="cursor: pointer"><i class="fas fa-arrow-left mr-1"></i>Retour</a>
-                    </li>
-                    <li class="list-group-item">Statut : A faire<i class="fas fa-globe fa-fw text-gray-400"></i></li>
-                    <li class="list-group-item">Coût estimé : 50€<i class="fas fa-clock fa-fw text-gray-400"></i></li>
-                    <li class="list-group-item">Urgent : Oui<i class="fas fa-code fa-fw text-gray-400"></i></li>
-                </ul>
-            </div>
-            <div class="col-lg-9">
-                <h1 class="mb-4">Tuyau bouché</h1>
-                <p class="lead mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore laboriosam beatae perspiciatis voluptatem quis facere perferendis quae accusantium nisi tempora, eligendi, repellendus cupiditate numquam ullam tempore cum, unde quibusdam ipsum.</p>
-                <h5 class="mb-4">Matériel nécessaire</h5>
-                <ul class="fa-ul mb-5">
-                    <li class="mb-3">
-                        <span class="fa-li"><i class="far fa-dot-circle text-primary-soft"></i></span>API integrations with new software products
-                    </li>
-                    <li class="mb-3">
-                        <span class="fa-li"><i class="far fa-dot-circle text-primary-soft"></i></span>Rapid prototyping of new product ideas
-                    </li>
-                    <li class="mb-3">
-                        <span class="fa-li"><i class="far fa-dot-circle text-primary-soft"></i></span>Open source development
-                    </li>
-                    <li>
-                        <span class="fa-li"><i class="far fa-dot-circle text-primary-soft"></i></span>Expanding and creating new features in existing products
-                    </li>
-                </ul>
-                <h5 class="mb-4">Description</h5>
-                <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt, saepe quo libero ab perferendis iure impedit inventore quibusdam cumque, aliquid ea tenetur eum velit quidem est tempore! Dignissimos, tenetur saepe.</p>
-                <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt, saepe quo libero ab perferendis iure impedit inventore quibusdam cumque, aliquid ea tenetur eum velit quidem est tempore! Dignissimos, tenetur saepe.</p>
-                <p class="mb-5">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum qui deleniti impedit, sapiente consequuntur accusamus ut quibusdam aliquam repudiandae! Sunt animi obcaecati, nisi cumque placeat earum maiores et minima impedit.</p>
-                <h5 class="mb-4">Précisions</h5>
-                <ul class="fa-ul mb-5">
-                    <li class="mb-3">
-                        <span class="fa-li"><i class="far fa-dot-circle text-primary-soft"></i></span>Familiarity with JS based front-end frameworks (Angular, React, Vue, etc.)
-                    </li>
-                    <li class="mb-3">
-                        <span class="fa-li"><i class="far fa-dot-circle text-primary-soft"></i></span>Proficient in programming languages commonly used in web development
-                    </li>
-                    <li class="mb-3">
-                        <span class="fa-li"><i class="far fa-dot-circle text-primary-soft"></i></span>Problem solving skills
-                    </li>
-                    <li class="mb-3">
-                        <span class="fa-li"><i class="far fa-dot-circle text-primary-soft"></i></span>Ability to prioritize features based on impact
-                    </li>
-                    <li>
-                        <span class="fa-li"><i class="far fa-dot-circle text-primary-soft"></i></span>Bachelor's degree in computer science or a related field
-                    </li>
-                </ul>
-                <div class="card bg-light shadow-none">
-                    <div class="card-body d-flex align-items-center justify-content-between p-4">
-                        <p class="lead mb-0">Signaler que cette tâche est terminée ?</p>
-                        <a class="btn btn-primary font-weight-500 ml-2" href="#!">Valider</a>
-                    </div>
+        <div class="post-archive-tag">
+            <a class="btn btn-primary font-weight-bolder mt-1" href="{% url 'bouygue-home' %}" title="retour" ><i class="fas fa-chevron-left dropdown-arrow"></i></a>
+            <a class="btn btn-primary font-weight-700 mt-1" href="{% url 'work-create' %}">Nouvau Travail</a>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+
+                <div class="d-flex align-items-center justify-content-between">
+                    <h2 class="mb-0">Bricolage</h2>
+                    <div class="badge badge-primary-soft text-primary badge-marketing">{{ handiwork|length }} tâche(s)</div>
                 </div>
+                <hr class="mb-0" />
+                <ul class="list-group list-group-flush list-group-careers">
+                    {% for work in handiwork %}
+                    <li class="list-group-item">
+                        <a href="{% url 'work-detail' work.id %}">{{ work.title }}</a>
+                        <div class="small">Le {{ work.date_posted }}</div>
+                    </li>
+                    {% endfor %}
+                </ul>
+
+                <div class="d-flex align-items-center justify-content-between">
+                    <h2 class="mb-0">Jardinage</h2>
+                    <div class="badge badge-primary-soft text-primary badge-marketing">{{ gardening|length }} tâche(s)</div>
+                </div>
+                <hr class="mb-0" />
+                <ul class="list-group list-group-flush list-group-careers">
+                    {% for work in gardening %}
+                    <li class="list-group-item">
+                        <a href="{% url 'work-detail' work.id %}">{{ work.title }}</a>
+                        <div class="small">Le {{ work.date_posted }}</div>
+                    </li>
+                    {% endfor %}
+                </ul>
+
+                <div class="d-flex align-items-center justify-content-between">
+                    <h2 class="mb-0">Plomberie</h2>
+                    <div class="badge badge-primary-soft text-primary badge-marketing">{{ plumbing|length }} tâche(s)</div>
+                </div>
+                <hr class="mb-0" />
+                <ul class="list-group list-group-flush list-group-careers">
+                    {% for work in plumbing %}
+                    <li class="list-group-item">
+                        <a href="{% url 'work-detail' work.id %}">{{ work.title }}</a>
+                        <div class="small">Le {{ work.date_posted }}</div>
+                    </li>
+                    {% endfor %}
+                </ul>
+
+                <div class="d-flex align-items-center justify-content-between">
+                    <h2 class="mb-0">Maçonnerie</h2>
+                    <div class="badge badge-primary-soft text-primary badge-marketing">{{ masonry|length }} tâche(s)</div>
+                </div>
+                <hr class="mb-0" />
+                <ul class="list-group list-group-flush list-group-careers">
+                    {% for work in masonry %}
+                    <li class="list-group-item">
+                        <a href="{% url 'work-detail' work.id %}">{{ work.title }}</a>
+                        <div class="small">Le {{ work.date_posted }}</div>
+                    </li>
+                    {% endfor %}
+                </ul>
+
+                <div class="d-flex align-items-center justify-content-between">
+                    <h2 class="mb-0">Autre</h2>
+                    <div class="badge badge-primary-soft text-primary badge-marketing">{{ other|length }} tâche(s)</div>
+                </div>
+                <hr class="mb-0" />
+                <ul class="list-group list-group-flush list-group-careers">
+                    {% for work in other %}
+                    <li class="list-group-item">
+                        <a href="{% url 'work-detail' work.id %}">{{ work.title }}</a>
+                        <div class="small">Le {{ work.date }}</div>
+                    </li>
+                    {% endfor %}
+                </ul>
             </div>
         </div>
     </div>
     <div class="svg-border-rounded text-dark">
-        <!-- Rounded SVG Border--><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144.54 17.34" preserveAspectRatio="none" fill="currentColor"><path d="M144.54,17.34H0V0H144.54ZM0,0S32.36,17.34,72.27,17.34,144.54,0,144.54,0"></path></svg>
+        <!-- Rounded SVG Border--><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144.54 17.34" preserveAspectRatio="none" fill="#1e2c41"><path d="M144.54,17.34H0V0H144.54ZM0,0S32.36,17.34,72.27,17.34,144.54,0,144.54,0"></path></svg>
     </div>
 </section>
 {% endblock content %}

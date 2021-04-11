@@ -1,14 +1,12 @@
-from . import views
 from django.urls import path
-# from .views import WorkListView
-# InfoPostCreateView, InfoPostUpdateView, InfoPostDeleteView, UserInfoPostListView
+from . import views
+from .views import WorkListView, WorkCreateView, WorkUpdateView, WorkDeleteView, UserWorkListView
 
 urlpatterns = [
-    path('work/', views.work, name='work'),
-    path('works/', views.works, name='works'),
-    # path('info/user/<str:surname>/<str:name>', UserInfoPostListView.as_view(), name='user-infoposts'),
-    # path('info/<int:pk>/', views.infopost_detail, name='infopost-detail'),
-    # path('info/new/', InfoPostCreateView.as_view(), name='infopost-create'),
-    # path('info/<int:pk>/update/', InfoPostUpdateView.as_view(), name='infopost-update'),
-    # path('info/<int:pk>/delete/', InfoPostDeleteView.as_view(), name='infopost-delete'),
+    path("work/", WorkListView.as_view(), name="work"),
+    path("work/user/<str:surname>/<str:name>", UserWorkListView.as_view(), name="user-work"),
+    path("work/new/", WorkCreateView.as_view(), name="work-create"),
+    path("work/<int:pk>/", views.work_detail, name="work-detail"),
+    path("work/<int:pk>/update/", WorkUpdateView.as_view(), name="work-update"),
+    path("work/<int:pk>/delete/", WorkDeleteView.as_view(), name="work-delete"),
 ]

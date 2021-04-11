@@ -1,4 +1,4 @@
 from django.contrib import admin
-# from .models import InfoPost
+from .models import Work
 
-# admin.site.register(InfoPost)
+admin.site.register(Work)
