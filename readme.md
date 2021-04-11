@@ -1,7 +1,7 @@
 # La-Bouygue
 Repository for a family website project named after the vacation house : La Bouygue.
 
-Website address : coming soon
+Website address : http://45.77.62.93/ (temporary)
 
 ## Project Description
 Website for our family's vacation house.
