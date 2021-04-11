@@ -22,10 +22,10 @@
                                     </div>
                                     <div class="single-post-meta">
                                     {% if user == activity.author %}
-                                    <a class="btn btn-outline-primary font-weight-700 ml-1" href="{% url 'activity-update' %}">Modifier</a>
+                                    <a class="btn btn-outline-primary font-weight-700 ml-1" href="{% url 'activity-update' activity.id %}">Modifier</a>
                                     {% endif %}
                                     {% if user == activity.author or perms.blog.delete_activity %}
-                                    <a class="btn btn-outline-danger font-weight-700 ml-1" href="{% url 'activity-delete' %}">Supprimer</a>
+                                    <a class="btn btn-outline-danger font-weight-700 ml-1" href="{% url 'activity-delete' activity.id %}">Supprimer</a>
                                     {% endif %}
                                     </div>
                                 </div>
