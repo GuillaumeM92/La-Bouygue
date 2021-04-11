@@ -13,9 +13,9 @@
                                 <h1>{{ activity.title }}</h1>
                                 <div class="d-flex align-items-center justify-content-between mb-5">
                                     <div class="single-post-meta mr-4">
-                                        <img class="single-post-meta-img" src="{{ activity.author.profile.image.url }}" />
+                                        <a href="{% url 'user-activities' activity.author.surname activity.author.name %}"><img class="single-post-meta-img" src="{{ activity.author.profile.image.url }}" />
                                         <div class="single-post-meta-details">
-                                            <div class="single-post-meta-details-name">{{ activity.author.surname }} {{ activity.author.name }}</div>
+                                            <div class="single-post-meta-details-name">{{ activity.author.surname }} {{ activity.author.name }}</div></a>
                                             <div class="single-post-meta-details-date">{{ activity.date_posted }}</div>
                                         </div>
                                     </div>

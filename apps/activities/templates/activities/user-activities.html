@@ -12,7 +12,7 @@
                     <div class="container text-center">
                         <div class="row justify-content-center">
                             <div class="col-lg-8">
-                                <h1 class="page-header-title mt-0 mb-3" style="font-size: 185%">{{ view.kwargs.surname }} {{ view.kwargs.name }} a créé {{ page_obj.paginator.count }} discussion(s)</h1>
+                                <h1 class="page-header-title mt-0 mb-3" style="font-size: 185%">{{ view.kwargs.surname }} {{ view.kwargs.name }} a créé {{ page_obj.paginator.count }} activité(s)</h1>
                             </div>
                         </div>
                     </div>
@@ -49,18 +49,18 @@
                             <div class="post-archive-tag">
                                 <a class="btn btn-primary font-weight-bolder" onClick="javascript:history.go(-1);" title="retour" ><i class="fas fa-chevron-left dropdown-arrow"></i></a>
                             </div>
-                            {% for post in posts %}
-                                <a class="post-archive-item" href="{% url 'post-detail' post.id %}">
-                                    <h5>{{ post.title }}</h5>
-                                    <p>{{ post.content }}</p>
+                            {% for activity in activities %}
+                                <a class="post-archive-item" href="{% url 'activity-detail' activity.id %}">
+                                    <h5>{{ activity.title }}</h5>
+                                    <p>{{ activity.content }}</p>
                                 </a>
                                 <div class="post-archive-meta">
-                                    <img class="post-archive-meta-img" src="{{ post.author.profile.image.url }}" />
+                                    <img class="post-archive-meta-img" src="{{ activity.author.profile.image.url }}" />
                                     <div class="post-archive-meta-details">
-                                        <div class="post-archive-meta-details-name">{{ post.author.surname }} {{ post.author.name }}</div>
-                                        <div class="post-archive-meta-details-date">{{ post.date_posted }}</div>
+                                        <div class="post-archive-meta-details-name">{{ activity.author.surname }} {{ activity.author.name }}</div>
+                                        <div class="post-archive-meta-details-date">{{ activity.date_posted }}</div>
                                     </div>
-                                    <a class="btn btn-outline-primary font-weight-700 ml-auto" href="{% url 'post-detail' post.id %}">Voir la discussion</a>
+                                    <a class="btn btn-outline-primary font-weight-700 ml-auto" href="{% url 'activity-detail' activity.id %}">Voir l'activité</a>
                                 </div>
                                 <hr class="my-5" />
                             {% endfor %}
