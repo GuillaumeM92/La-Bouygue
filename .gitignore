@@ -143,3 +143,4 @@ doc/
 media/profile_pics/
 staticfiles/
 apps/food/chromedriver_win32/
+config/chromdriver.exe

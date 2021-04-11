@@ -24,7 +24,7 @@
                 <nav class="navbar navbar-expand-lg bg-dark navbar-dark fixed-top" style="padding: 0.85rem; opacity: 95%">
                     <div class="container">
                         {% if user.is_authenticated %}
-                            <a class="navbar-brand" href="{% url 'bouygue-home' %}">La Bouygue</a><button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i data-feather="menu"></i></button>
+                            <a class="navbar-brand" href="{% url 'bouygue-home' %}">La Bouygue</a><button class="navbar-toggler" id="navbar-button" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i data-feather="menu"></i></button>
                         {% else %}
                             <a class="navbar-brand" href="{% url 'bouygue-landing' %}">La Bouygue</a><button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i data-feather="menu"></i></button>
                         {% endif %}
@@ -60,10 +60,10 @@
                             {% if user.is_superuser %}
                             <a class="btn btn-outline-white font-weight-500"  style="padding: 0.75rem;" href="{% url 'admin:index' %}">Admin</a>
                             {% endif %}
-                            <a class="btn btn-outline-white font-weight-500 ml-lg-2"  style="padding: 0.75rem;" href="{% url 'users-profile' %}">Profil</a>
-                            <a class="btn btn-outline-white font-weight-500 ml-lg-2"  style="padding: 0.75rem;" href="{% url 'users-logout' %}">Déconnexion<i class="ml-2" data-feather="arrow-right"></i></a>
+                            <a class="btn btn-outline-white font-weight-500 ml-lg-2" style="padding: 0.75rem;" href="{% url 'users-profile' %}">Profil</a>
+                            <a class="btn btn-outline-white font-weight-500 ml-lg-2" id="logout-icon" style="padding: 0.75rem;" href="{% url 'users-logout' %}">Déconnexion<i class="ml-2" data-feather="arrow-right"></i></a>
                             {% else %}
-                            <a class="btn btn-outline-white font-weight-500 ml-lg-4"  style="padding: 0.75rem;" href="{% url 'users-login' %}">Connexion<i class="ml-2" data-feather="arrow-right"></i></a>
+                            <a class="btn btn-outline-white font-weight-500 ml-lg-4" style="padding: 0.75rem;" href="{% url 'users-login' %}">Connexion<i class="ml-2" data-feather="arrow-right"></i></a>
                             {% endif %}
                         </div>
                     </div>
