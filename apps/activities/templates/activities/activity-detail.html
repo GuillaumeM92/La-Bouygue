@@ -12,9 +12,9 @@
                             <div class="single-post">
                                 <h1>{{ activity.title }}</h1>
                                 <div class="d-flex align-items-center justify-content-between mb-5">
-                                    <div class="post-archive-meta">
+                                    <div class="post-archive-meta d-flex mt-2">
                                         <a href="{% url 'user-activities' activity.author.surname activity.author.name %}"><img class="post-archive-meta-img" src="{{ activity.author.profile.image.url }}" />
-                                        <div class="post-archive-meta-details">
+                                        <div class="post-archive-meta-details mr-auto p-2">
                                             <div class="post-archive-meta-details-name">{{ activity.author.surname }} {{ activity.author.name }}</div></a>
                                             <div class="post-archive-meta-details-date">{{ activity.date_posted }}</div>
                                         </div>
