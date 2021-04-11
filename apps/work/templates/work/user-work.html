@@ -54,11 +54,11 @@
                                     <h5>{{ work.title }}</h5>
                                     <p>{{ work.content }}</p>
                                 </a>
-                                <div class="work-archive-meta">
-                                    <img class="work-archive-meta-img" src="{{ work.author.profile.image.url }}" />
-                                    <div class="work-archive-meta-details">
-                                        <div class="work-archive-meta-details-name">{{ work.author.surname }} {{ work.author.name }}</div>
-                                        <div class="work-archive-meta-details-date">{{ work.date_worked }}</div>
+                                <div class="post-archive-meta">
+                                    <img class="post-archive-meta-img" src="{{ work.author.profile.image.url }}" />
+                                    <div class="post-archive-meta-details">
+                                        <div class="post-archive-meta-details-name">{{ work.author.surname }} {{ work.author.name }}</div></a>
+                                        <div class="post-archive-meta-details-date">{{ work.date_posted }}</div>
                                     </div>
                                     <a class="btn btn-outline-primary font-weight-700 ml-auto mt-3" href="{% url 'work-detail' work.id %}">Voir le travail</a>
                                 </div>
