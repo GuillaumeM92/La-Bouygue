@@ -35,4 +35,3 @@ The site handles reservations, as well as discussions, and other functionnalitie
 
 ## Special thanks
 To my Openclassrooms mentor Mikael Briolet for helping me build this project!
-
