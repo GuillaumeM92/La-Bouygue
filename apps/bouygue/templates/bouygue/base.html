@@ -77,12 +77,11 @@
             <div id="layoutDefault_footer">
                 <footer class="footer pt-10 pb-5 mt-auto bg-dark footer-dark" style="padding: 0.85rem; background-color: #1e2c41">
                     <div class="container">
-                        <div class="row align-items-center">
-                            <a href="{% url 'bouygue-home' %}"><div class="col-md-6" style="color: white; font-size: 150%">La Bouygue</div></a>
+                        <div class="row">
+                            <div class="col-md-6" style="color: white; font-size: 150%"><a href="{% url 'bouygue-home' %}">La Bouygue<a/></div>
                             <div class="col-md-6 text-md-right small">
-                                <a href="#!">Comment sont traitées mes données sur ce site ?</a>
-                                <br>
-                                <a href="#!">Signaler un problème avec le site</a>
+                                <div class="mt-2"><a href="#!" class="mb-2">Comment sont traitées mes données sur ce site ?</a></div>
+                                <div class="mt-2"><a href="#!">Signaler un problème</a></div>
                             </div>
                         </div>
                     </div>
