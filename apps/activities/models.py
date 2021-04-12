@@ -58,3 +58,18 @@ class ActivityImage(models.Model):
             output_size = (800, 600)
             img.thumbnail(output_size)
             img.save(self.image.path)
+
+class ActivityComment(models.Model):
+    content = models.TextField(verbose_name= _(''), default="Mon commentaire")
+    date_posted = models.DateTimeField(default=timezone.now)
+    author = models.ForeignKey(MyUser, on_delete=models.CASCADE)
+    activity = models.ForeignKey(Activity, on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ['-date_posted']
+
+    def __str__(self):
+        return str(self.author)
+
+    def get_absolute_url(self):
+        return reverse("activity-detail", kwargs={"pk": self.activity.pk})
