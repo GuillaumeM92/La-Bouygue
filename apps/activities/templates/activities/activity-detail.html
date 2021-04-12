@@ -9,23 +9,24 @@
                 <div class="container">
                     <div class="row justify-content-center">
                         <div class="col-lg-10 col-xl-8">
+                            <div class="post-archive-tag d-flex" style="margin-bottom: 2rem;">
+                                <a class="btn btn-outline-primary font-weight-bolder" href="{% url 'activities' %}" title="retour"><i class="fas fa-chevron-left dropdown-arrow"></i></a>
+                                {% if user == activity.author %}
+                                <a class="btn btn-outline-primary font-weight-700 ml-1" href="{% url 'activity-update' activity.id %}">Modifier</a>
+                                {% endif %}
+                                {% if user == activity.author or perms.activities.delete_activity %}
+                                <a class="btn btn-outline-danger font-weight-700 ml-1" href="{% url 'activity-delete' activity.id %}">Supprimer</a>
+                                {% endif %}
+                            </div>
                             <div class="single-post">
                                 <h1>{{ activity.title }}</h1>
-                                <div class="d-flex align-items-center justify-content-between mb-5">
-                                    <div class="post-archive-meta d-flex mt-2">
+                                <div class="align-items-center justify-content-between mb-5">
+                                    <div class="post-archive-meta mt-2">
                                         <a href="{% url 'user-activities' activity.author.surname activity.author.name %}"><img class="post-archive-meta-img" src="{{ activity.author.profile.image.url }}" />
                                         <div class="post-archive-meta-details mr-auto p-2">
                                             <div class="post-archive-meta-details-name">{{ activity.author.surname }} {{ activity.author.name }}</div></a>
                                             <div class="post-archive-meta-details-date">{{ activity.date_posted }}</div>
                                         </div>
-                                    </div>
-                                    <div class="single-post-meta">
-                                    {% if user == activity.author %}
-                                    <a class="btn btn-outline-primary font-weight-700 ml-1" href="{% url 'activity-update' activity.id %}">Modifier</a>
-                                    {% endif %}
-                                    {% if user == activity.author or perms.blog.delete_activity %}
-                                    <a class="btn btn-outline-danger font-weight-700 ml-1" href="{% url 'activity-delete' activity.id %}">Supprimer</a>
-                                    {% endif %}
                                     </div>
                                 </div>
                                 <img class="img-fluid mb-2" src="{{ activity.image.url }}" />
