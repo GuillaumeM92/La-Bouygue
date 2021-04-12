@@ -20,7 +20,7 @@
                             </div>
                             <div class="single-post">
                                 <h1>{{ activity.title }}</h1>
-                                <div class="align-items-center justify-content-between mb-5">
+                                <div class="align-items-center justify-content-between mb-4">
                                     <div class="post-archive-meta mt-2">
                                         <a href="{% url 'user-activities' activity.author.surname activity.author.name %}"><img class="post-archive-meta-img" src="{{ activity.author.profile.image.url }}" />
                                         <div class="post-archive-meta-details mr-auto p-2">
@@ -29,8 +29,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <img class="img-fluid mb-2" src="{{ activity.image.url }}" />
-                                <div class="small text-gray-500 text-center">Légende Photo</div>
+                                <img class="img-fluid rounded mx-auto d-block mb-2" src="{{ activity.image.url }}" />
                                 <div class="single-post-text my-5">
                                     <p>{{ activity.content }}</p>
                                     <hr class="my-5" />
