@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import WorkListView, WorkCreateView, WorkUpdateView, WorkDeleteView, UserWorkListView
+from .views import WorkListView, WorkCreateView, WorkUpdateView, WorkDeleteView, UserWorkListView, WorkCommentUpdateView, WorkCommentDeleteView
 
 urlpatterns = [
     path("work/", WorkListView.as_view(), name="work"),
@@ -9,4 +9,6 @@ urlpatterns = [
     path("work/<int:pk>/", views.work_detail, name="work-detail"),
     path("work/<int:pk>/update/", WorkUpdateView.as_view(), name="work-update"),
     path("work/<int:pk>/delete/", WorkDeleteView.as_view(), name="work-delete"),
+    path('work/comment/<int:pk>/update/', WorkCommentUpdateView.as_view(), name='workcomment-update'),
+    path('work/comment/<int:pk>/delete/', WorkCommentDeleteView.as_view(), name='workcomment-delete'),
 ]

@@ -3,6 +3,8 @@ from .models import Work
 from apps.users.models import MyUser
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from .models import Work, WorkComment
+from .forms import WorkCommentForm
 
 
 class WorkListView(ListView):
@@ -22,8 +24,24 @@ class WorkListView(ListView):
 def work_detail(request, pk):
     template_name = "work/work-detail.html"
     work = get_object_or_404(Work, pk=pk)
+    author = request.user
+    new_comment = None
 
-    return render(request, template_name, {"work": work})
+    if request.method == 'POST':
+        form = WorkCommentForm(data=request.POST)
+        if form.is_valid():
+
+            # Create Comment object but don't save to database yet
+            new_comment = form.save(commit=False)
+            # Assign the current post and author to the comment
+            new_comment.work = work
+            new_comment.author = author
+            # Save the comment to the database
+            new_comment.save()
+    else:
+        form = WorkCommentForm()
+
+    return render(request, template_name, {'work': work, 'form': form})
 
 
 class UserWorkListView(ListView):
@@ -77,5 +95,35 @@ class WorkDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             or self.request.user.has_perm("work.delete_work")
         ):
             # messages.success(self.request, str("La discussion a bien été supprimée."))
+            return True
+        return False
+
+
+class WorkCommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = WorkComment
+    template_name = 'work/workcomment-update.html'
+    fields = ['content']
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def test_func(self):
+        work = self.get_object()
+        if self.request.user == work.author:
+            return True
+        return False
+
+
+class WorkCommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = WorkComment
+    template_name = 'work/workcomment-delete.html'
+    context_object_name = 'comment'
+    success_url = '/work/'
+
+    def test_func(self):
+        work = self.get_object()
+        if self.request.user == work.author or self.request.user.has_perm('work.delete_comment'):
+            # messages.success(self.request, str("Le commentaire a bien été supprimé."))
             return True
         return False

@@ -16,3 +16,18 @@ class InfoPost(models.Model):
 
     def get_absolute_url(self):
         return reverse("infopost-detail", kwargs={"pk": self.pk})
+
+class InfoComment(models.Model):
+    content = models.TextField(verbose_name= _(''), default="Mon commentaire")
+    date_posted = models.DateTimeField(default=timezone.now)
+    author = models.ForeignKey(MyUser, on_delete=models.CASCADE)
+    infopost = models.ForeignKey(InfoPost, on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ['-date_posted']
+
+    def __str__(self):
+        return str(self.author)
+
+    def get_absolute_url(self):
+        return reverse("infopost-detail", kwargs={"pk": self.infopost.pk})

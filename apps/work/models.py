@@ -39,29 +39,18 @@ class Work(models.Model):
     def get_absolute_url(self):
         return reverse("work-detail", kwargs={"pk": self.pk})
 
-    # def save(self, *args, **kwargs):
-    #     super(Work, self).save(*args, **kwargs)
 
-    #     img = Image.open(self.image.path)
+class WorkComment(models.Model):
+    content = models.TextField(verbose_name= _(''), default="Mon commentaire")
+    date_posted = models.DateTimeField(default=timezone.now)
+    author = models.ForeignKey(MyUser, on_delete=models.CASCADE)
+    work = models.ForeignKey(Work, on_delete=models.CASCADE)
 
-    #     if img.height > 600 or img.width > 800:
-    #         output_size = (800, 600)
-    #         img.thumbnail(output_size)
-    #         img.save(self.image.path)
+    class Meta:
+        ordering = ['-date_posted']
 
+    def __str__(self):
+        return str(self.author)
 
-# class WorkImage(models.Model):
-#     image = models.ImageField(default="default.jpg", upload_to="activities")
-
-#     def __str__(self):
-#         return f"{self.activity.title} image"
-
-#     def save(self, *args, **kwargs):
-#         super(Work, self).save(*args, **kwargs)
-
-#         img = Image.open(self.image.path)
-
-#         if img.height > 600 or img.width > 800:
-#             output_size = (800, 600)
-#             img.thumbnail(output_size)
-#             img.save(self.image.path)
+    def get_absolute_url(self):
+        return reverse("work-detail", kwargs={"pk": self.work.pk})

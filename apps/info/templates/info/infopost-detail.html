@@ -67,6 +67,40 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="col-lg-10 bg-gray-200 rounded">
+                            <h1 class="mt-3">Commentaires</h1>
+                            <hr class="my-2" />
+                            <!-- Post Comment form-->
+                            <form method="POST">
+                                {% csrf_token %}
+                                <!-- Form Row-->
+                                <fieldset class="form-group mb-5">
+                                    {{ form|crispy }}
+                                    <button class="btn btn-primary font-weight-bolder" type="submit">PUBLIER</button>
+                                </fieldset>
+                            </form>
+                            {% for comment in infopost.infocomment_set.all %}
+                                <div class="post-archive-meta d-flex">
+                                    <a href="{% url 'user-posts' comment.author.surname comment.author.name %}"><img class="post-archive-meta-img" src="{{ comment.author.profile.image.url }}" />
+                                    <div class="post-archive-meta-details mr-auto p-2">
+                                        <div class="post-archive-meta-details-name">{{ comment.author.surname }} {{ comment.author.name }}</div></a>
+                                        <div class="post-archive-meta-details-date">{{ comment.date_posted }}</div>
+                                    </div>
+                                    {% if user == comment.author %}
+                                        <a class="btn btn-outline-primary font-weight-500" style="padding: 0.6rem;" href="{% url 'infocomment-update' comment.id %}">modifier</a>
+                                    {% endif %}
+                                    {% if user == comment.author or perms.info.delete_comment %}
+                                        <a class="btn btn-outline-danger font-weight-500 ml-1" style="padding: 0.6rem;" href="{% url 'infocomment-delete' comment.id %}">supprimer</a>
+                                    {% endif %}
+                                    </div>
+                                <div class="post-archive-item mt-3">
+                                    <p>{{ comment.content }}</p>
+                                </div>
+                                <hr class="my-5" />
+                            {% endfor %}
+                        </div>
+
                     </div>
                 </div>
             </section>
