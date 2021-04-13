@@ -17,7 +17,7 @@ class InfoPostListView(ListView):
 
     def dispatch(self, request, *args, **kwargs):
         user = request.user
-        user.informations_read = len(InfoPost.objects.all())
+        user.informations_viewed = len(InfoPost.objects.all())
         user.save()
         return super().dispatch(request,*args, **kwargs)
 

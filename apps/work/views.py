@@ -21,6 +21,12 @@ class WorkListView(ListView):
         context["other"] = Work.objects.filter(categories=4)
         return context
 
+    def dispatch(self, request, *args, **kwargs):
+        user = request.user
+        user.works_viewed = len(Work.objects.all())
+        user.save()
+        return super().dispatch(request,*args, **kwargs)
+
 def work_detail(request, pk):
     template_name = "work/work-detail.html"
     work = get_object_or_404(Work, pk=pk)

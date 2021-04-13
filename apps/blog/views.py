@@ -17,7 +17,7 @@ class PostListView(ListView):
 
     def dispatch(self, request, *args, **kwargs):
         user = request.user
-        user.discussions_read = len(Post.objects.all())
+        user.discussions_viewed = len(Post.objects.all())
         user.save()
         return super().dispatch(request,*args, **kwargs)
 

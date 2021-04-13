@@ -11,6 +11,12 @@ class ActivityListView(ListView):
     template_name = 'activities/activities.html'
     context_object_name = 'activities'
 
+    def dispatch(self, request, *args, **kwargs):
+        user = request.user
+        user.activities_viewed = len(Activity.objects.all())
+        user.save()
+        return super().dispatch(request,*args, **kwargs)
+
 def activity_detail(request, pk):
     template_name = 'activities/activity-detail.html'
     activity = get_object_or_404(Activity, pk=pk)

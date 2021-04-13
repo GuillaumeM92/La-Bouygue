@@ -10,8 +10,8 @@ from .models import Reservation
 from .forms import ReservationForm
 
 def show_agenda(request):
+    user = request.user
     if request.method == "POST":
-        user = request.user
         form = ReservationForm(request.POST)
         # get the reservation id, if it does not exist, set it to 0
         id = request.POST.get('id', 0)
@@ -31,8 +31,9 @@ def show_agenda(request):
             form = ReservationForm(request.POST)
 
     else:
-        user = request.user
         form = ReservationForm()
+    user.reservations_viewed = len(Reservation.objects.all())
+    user.save()
     return render(request, 'agenda/agenda.html', {'title': 'Calendrier', "form": form})
 
 def get_reservation_details(request):
