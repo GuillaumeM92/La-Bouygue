@@ -13,7 +13,11 @@
         </div>
         <div class="row text-center">
             <div class="col-lg-4 mb-5">
-                <h6 class="mb-3">Calendrier</h6>
+                <h6 class="mb-3">Calendrier
+                {% if reservations_length > 0 %}
+                    ({{ reservations_length }})
+                {% endif %}
+                </h6>
                 <a class="d-block rounded-lg lift lift-lg" href="{% url 'agenda' %}"><img class="img-fluid rounded-lg" src="{% static 'bouygue/assets/img/preview/calendar_preview.png' %}" /></a>
             </div>
             <div class="col-lg-4 mb-5">
@@ -25,7 +29,11 @@
                 <a class="d-block rounded-lg lift lift-lg" href="{% url 'blog' %}"><img class="img-fluid rounded-lg" src="{% static 'bouygue/assets/img/preview/blog_preview.png' %}" /></a>
             </div>
             <div class="col-lg-4 mb-5">
-                <h6 class="mb-3">Activités</h6>
+                <h6 class="mb-3">Activités
+                {% if activities_length > 0 %}
+                    ({{ activities_length }})
+                {% endif %}
+                </h6>
                 <a class="d-block rounded-lg lift lift-lg" href="{% url 'activities' %}"><img class="img-fluid rounded-lg" src="{% static 'bouygue/assets/img/preview/activities_preview.png' %}" /></a>
             </div>
             <div class="col-lg-4 mb-5">
@@ -37,7 +45,11 @@
                 <a class="d-block rounded-lg lift lift-lg" href="{% url 'info' %}"><img class="img-fluid rounded-lg" src="{% static 'bouygue/assets/img/preview/info_preview.png' %}" /></a>
             </div>
             <div class="col-lg-4 mb-5">
-                <h6 class="mb-3">Travaux</h6>
+                <h6 class="mb-3">Travaux
+                {% if works_length > 0 %}
+                    ({{ works_length }})
+                {% endif %}
+                </h6>
                 <a class="d-block rounded-lg lift lift-lg" href="{% url 'work' %}"><img class="img-fluid rounded-lg" src="{% static 'bouygue/assets/img/preview/work_preview.png' %}" /></a>
             </div>
             <div class="col-lg-4 mb-5">

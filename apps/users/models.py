@@ -48,8 +48,11 @@ class MyUser(AbstractUser):
     surname = models.CharField(_("prénom"), max_length=30, unique=False)
 
     # Notifications
-    discussions_read = models.SmallIntegerField(default=0)
-    informations_read = models.SmallIntegerField(default=0)
+    reservations_viewed = models.SmallIntegerField(default=0)
+    discussions_viewed = models.SmallIntegerField(default=0)
+    activities_viewed = models.SmallIntegerField(default=0)
+    informations_viewed = models.SmallIntegerField(default=0)
+    works_viewed = models.SmallIntegerField(default=0)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
