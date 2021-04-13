@@ -33,7 +33,7 @@ def show_agenda(request):
     else:
         user = request.user
         form = ReservationForm()
-    return render(request, 'agenda/agenda.html', {"form": form})
+    return render(request, 'agenda/agenda.html', {'title': 'Calendrier', "form": form})
 
 def get_reservation_details(request):
     """This view is used when the user clicks on an existing reservation"""

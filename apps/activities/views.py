@@ -31,7 +31,7 @@ def activity_detail(request, pk):
     else:
         form = ActivityCommentForm()
 
-    return render(request, template_name, {'activity': activity, 'form': form})
+    return render(request, template_name, {'title': 'Activité', 'activity': activity, 'form': form})
 
 class UserActivityListView(ListView):
     model = Activity

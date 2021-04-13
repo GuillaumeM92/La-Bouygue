@@ -52,7 +52,7 @@ def infopost_detail(request, pk):
     else:
         form = InfoCommentForm()
 
-    return render(request, template_name, {'infopost': infopost, 'form': form})
+    return render(request, template_name, {'title': 'Information', 'infopost': infopost, 'form': form})
 
 class InfoPostCreateView(LoginRequiredMixin, CreateView):
     model = InfoPost

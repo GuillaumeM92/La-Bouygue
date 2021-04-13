@@ -41,7 +41,7 @@ def work_detail(request, pk):
     else:
         form = WorkCommentForm()
 
-    return render(request, template_name, {'work': work, 'form': form})
+    return render(request, template_name, {'title': 'Tâche', 'work': work, 'form': form})
 
 
 class UserWorkListView(ListView):

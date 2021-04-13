@@ -52,7 +52,7 @@ def post_detail(request, pk):
     else:
         form = PostCommentForm()
 
-    return render(request, template_name, {'post': post, 'form': form})
+    return render(request, template_name, {'title': 'Discussion', 'post': post, 'form': form})
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
