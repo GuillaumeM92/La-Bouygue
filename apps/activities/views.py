@@ -3,10 +3,12 @@ from .models import Activity
 from apps.users.models import MyUser
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.decorators import login_required
 from .models import Activity, ActivityComment
 from .forms import ActivityCommentForm
 
-class ActivityListView(ListView):
+
+class ActivityListView(LoginRequiredMixin, ListView):
     model = Activity
     template_name = 'activities/activities.html'
     context_object_name = 'activities'
@@ -17,6 +19,8 @@ class ActivityListView(ListView):
         user.save()
         return super().dispatch(request,*args, **kwargs)
 
+
+@login_required
 def activity_detail(request, pk):
     template_name = 'activities/activity-detail.html'
     activity = get_object_or_404(Activity, pk=pk)
@@ -39,7 +43,8 @@ def activity_detail(request, pk):
 
     return render(request, template_name, {'title': 'Activité', 'activity': activity, 'form': form})
 
-class UserActivityListView(ListView):
+
+class UserActivityListView(LoginRequiredMixin, ListView):
     model = Activity
     template_name = 'activities/user-activities.html'
     context_object_name = 'activities'
@@ -58,6 +63,7 @@ class ActivityCreateView(LoginRequiredMixin, CreateView):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
+
 class ActivityUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Activity
     template_name = 'activities/activity-update.html'
@@ -72,6 +78,7 @@ class ActivityUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         if self.request.user == activity.author or self.request.user.is_superuser or self.request.user.is_staff:
             return True
         return False
+
 
 class ActivityDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Activity

@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from .models import Work
 from apps.users.models import MyUser
@@ -7,7 +8,7 @@ from .models import Work, WorkComment
 from .forms import WorkCommentForm
 
 
-class WorkListView(ListView):
+class WorkListView(LoginRequiredMixin, ListView):
     model = Work
     template_name = "work/work.html"
     context_object_name = "works"
@@ -27,6 +28,8 @@ class WorkListView(ListView):
         user.save()
         return super().dispatch(request,*args, **kwargs)
 
+
+@login_required()
 def work_detail(request, pk):
     template_name = "work/work-detail.html"
     work = get_object_or_404(Work, pk=pk)
@@ -50,7 +53,7 @@ def work_detail(request, pk):
     return render(request, template_name, {'title': 'Tâche', 'work': work, 'form': form})
 
 
-class UserWorkListView(ListView):
+class UserWorkListView(LoginRequiredMixin, ListView):
     model = Work
     template_name = "work/user-work.html"
     context_object_name = "works"

@@ -9,9 +9,14 @@ User = get_user_model()
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField(label="Adresse email")
 
+
     class Meta:
         model = User
         fields = ["name", "surname", "email", "password1", "password2"]
+
+    def clean_email(self):
+        data = self.cleaned_data['email']
+        return data.lower()
 
 
 class UserUpdateForm(forms.ModelForm):

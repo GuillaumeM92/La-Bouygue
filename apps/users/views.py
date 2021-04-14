@@ -8,9 +8,15 @@ def register(request):
     if request.method == "POST":
         form = UserRegisterForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request, str("Votre compte a été créé avec succès ! Vous pouvez maintenant vous connecter."))
-            return redirect("users-login")
+            user = form.save()
+            # Make user not active by default
+            user.is_active = False
+            user.save()
+
+            messages.success(request, str("Votre compte a été créé avec succès ! Vous pourrez vous connecter dès qu'un administrateur aura validé votre compte."))
+            response = redirect("users-login")
+            response.set_cookie('is_active', 'false')
+            return response
     else:
         form = UserRegisterForm()
     return render(request, "users/register.html", {'title': 'S\'enregistrer', "form": form})

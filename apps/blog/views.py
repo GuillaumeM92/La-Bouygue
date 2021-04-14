@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
@@ -8,7 +9,7 @@ from .models import Post, Comment
 from .forms import PostCommentForm
 
 
-class PostListView(ListView):
+class PostListView(LoginRequiredMixin, ListView):
     model = Post
     template_name = 'blog/blog.html'
     context_object_name = 'posts'
@@ -21,7 +22,8 @@ class PostListView(ListView):
         user.save()
         return super().dispatch(request,*args, **kwargs)
 
-class UserPostListView(ListView):
+
+class UserPostListView(LoginRequiredMixin, ListView):
     model = Post
     template_name = 'blog/user-posts.html'
     context_object_name = 'posts'
@@ -32,6 +34,7 @@ class UserPostListView(ListView):
         return Post.objects.filter(author=user).order_by('-date_posted')
 
 
+@login_required()
 def post_detail(request, pk):
     template_name = 'blog/post-detail.html'
     post = get_object_or_404(Post, pk=pk)
@@ -54,6 +57,7 @@ def post_detail(request, pk):
 
     return render(request, template_name, {'title': 'Discussion', 'post': post, 'form': form})
 
+
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     template_name = 'blog/post-create.html'
@@ -62,6 +66,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
+
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
@@ -78,6 +83,7 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             return True
         return False
 
+
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
     template_name = 'blog/post-delete.html'
@@ -90,6 +96,7 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             # messages.success(self.request, str("La discussion a bien été supprimée."))
             return True
         return False
+
 
 class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Comment
@@ -105,6 +112,7 @@ class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         if self.request.user == post.author:
             return True
         return False
+
 
 class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Comment

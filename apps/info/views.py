@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
@@ -8,7 +9,7 @@ from .models import InfoPost, InfoComment
 from .forms import InfoCommentForm
 
 
-class InfoPostListView(ListView):
+class InfoPostListView(LoginRequiredMixin, ListView):
     model = InfoPost
     template_name = 'info/info.html'
     context_object_name = 'infoposts'
@@ -21,7 +22,8 @@ class InfoPostListView(ListView):
         user.save()
         return super().dispatch(request,*args, **kwargs)
 
-class UserInfoPostListView(ListView):
+
+class UserInfoPostListView(LoginRequiredMixin, ListView):
     model = InfoPost
     template_name = 'info/user-infoposts.html'
     context_object_name = 'infoposts'
@@ -32,6 +34,7 @@ class UserInfoPostListView(ListView):
         return InfoPost.objects.filter(author=user).order_by('-date_posted')
 
 
+@login_required()
 def infopost_detail(request, pk):
     template_name = 'info/infopost-detail.html'
     infopost = get_object_or_404(InfoPost, pk=pk)
@@ -54,6 +57,7 @@ def infopost_detail(request, pk):
 
     return render(request, template_name, {'title': 'Information', 'infopost': infopost, 'form': form})
 
+
 class InfoPostCreateView(LoginRequiredMixin, CreateView):
     model = InfoPost
     template_name = 'info/infopost-create.html'
@@ -62,6 +66,7 @@ class InfoPostCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
+
 
 class InfoPostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = InfoPost
@@ -78,6 +83,7 @@ class InfoPostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             return True
         return False
 
+
 class InfoPostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = InfoPost
     template_name = 'info/infopost-delete.html'
@@ -90,6 +96,7 @@ class InfoPostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             # messages.success(self.request, str("La discussion a bien été supprimée."))
             return True
         return False
+
 
 class InfoCommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = InfoComment
@@ -105,6 +112,7 @@ class InfoCommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView)
         if self.request.user == info.author:
             return True
         return False
+
 
 class InfoCommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = InfoComment
