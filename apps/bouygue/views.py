@@ -31,5 +31,4 @@ def home(request):
         'infoposts_length': infoposts_length,
         'works_length': works_length
         })
-    response.set_cookie('is_active', 'true')
     return response

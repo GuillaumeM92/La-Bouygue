@@ -4,16 +4,6 @@
     * Licensed under SEE_LICENSE (https://github.com/BlackrockDigital/sb-ui-kit-pro/blob/master/LICENSE)
     */
 
-var is_active = Cookies.get("is_active")
-if (is_active == 'false') {
-    let alert = document.querySelector("#layoutAuthentication_content > div > div > div > div > div.card-body > form > fieldset > div.alert.alert-block.alert-danger > ul > li")
-    if (alert) {
-        alert.innerHTML = "Désolé, votre compte est inactif. Vous pourrez vous connecter lorsque l'administrateur aura vérifié votre identité et activé votre compte."
-    }
-}
-
-
-
 (function ($) {
     "use strict";
 
