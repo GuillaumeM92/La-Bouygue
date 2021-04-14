@@ -26,6 +26,7 @@ def show_agenda(request):
                     messages.success(request, str("Votre réservation a été créée avec succès !"))
                 else:
                     messages.success(request, str("Votre réservation a été modifiée avec succès !"))
+                form = ReservationForm()
             except (IndexError, ValidationError):
                 messages.error(request, str("LE FORMAT DE LA DATE EST INVALIDE ! MERCI DE RÉESSAYER."))
 

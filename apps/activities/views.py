@@ -57,7 +57,7 @@ class UserActivityListView(LoginRequiredMixin, ListView):
 class ActivityCreateView(LoginRequiredMixin, CreateView):
     model = Activity
     template_name = 'activities/activity-create.html'
-    fields = ['title', 'content', 'difficulty', 'duration', 'distance', 'image']
+    fields = ['title', 'image', 'content', 'image2', 'content2', 'difficulty', 'duration', 'distance']
 
     def form_valid(self, form):
         form.instance.author = self.request.user

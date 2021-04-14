@@ -11,6 +11,7 @@ import datetime
 class Activity(models.Model):
     title = models.CharField(max_length=100, verbose_name=_("Titre"))
     content = models.TextField(verbose_name=_("Description"))
+    content2 = models.TextField(verbose_name=_("Précisions"))
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     difficulty = models.SmallIntegerField(
@@ -18,9 +19,10 @@ class Activity(models.Model):
         choices=[(0, "Très facile"), (1, "Facile"), (2, "Moyen"), (3, "Difficile"), (4, "Très difficile")],
         verbose_name=_("Difficulté"),
     )
-    duration = models.TimeField(default=datetime.time(00, 00), verbose_name=_("Durée"))
-    distance = models.SmallIntegerField(default=0)
+    duration = models.CharField(max_length=20, verbose_name=_("Durée"))
+    distance = models.CharField(max_length=20, verbose_name=_("Temps de route"))
     image = models.ImageField(default="activity_default.jpg", upload_to="activities")
+    image2 = models.ImageField(default="activity_default.jpg", upload_to="activities")
 
     class Meta:
         verbose_name_plural = "Activities"
