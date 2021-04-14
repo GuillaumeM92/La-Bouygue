@@ -14,7 +14,7 @@ class InfoPostListView(LoginRequiredMixin, ListView):
     template_name = 'info/info.html'
     context_object_name = 'infoposts'
     ordering = ['-date_posted']
-    paginate_by = 4
+    paginate_by = 5
 
     def dispatch(self, request, *args, **kwargs):
         user = request.user
@@ -27,7 +27,7 @@ class UserInfoPostListView(LoginRequiredMixin, ListView):
     model = InfoPost
     template_name = 'info/user-infoposts.html'
     context_object_name = 'infoposts'
-    paginate_by = 4
+    paginate_by = 5
 
     def get_queryset(self):
         user = get_object_or_404(MyUser, name=self.kwargs.get('name'), surname=self.kwargs.get('surname'))

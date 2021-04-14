@@ -62,7 +62,7 @@ class ActivityImage(models.Model):
             img.save(self.image.path)
 
 class ActivityComment(models.Model):
-    content = models.TextField(verbose_name= _(''), default="Mon commentaire")
+    content = models.TextField(verbose_name= _(''))
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     activity = models.ForeignKey(Activity, on_delete=models.CASCADE)

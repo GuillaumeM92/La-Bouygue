@@ -14,7 +14,7 @@ class PostListView(LoginRequiredMixin, ListView):
     template_name = 'blog/blog.html'
     context_object_name = 'posts'
     ordering = ['-date_posted']
-    paginate_by = 4
+    paginate_by = 5
 
     def dispatch(self, request, *args, **kwargs):
         user = request.user
@@ -27,7 +27,7 @@ class UserPostListView(LoginRequiredMixin, ListView):
     model = Post
     template_name = 'blog/user-posts.html'
     context_object_name = 'posts'
-    paginate_by = 4
+    paginate_by = 5
 
     def get_queryset(self):
         user = get_object_or_404(MyUser, name=self.kwargs.get('name'), surname=self.kwargs.get('surname'))

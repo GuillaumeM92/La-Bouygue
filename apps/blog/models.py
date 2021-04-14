@@ -19,7 +19,7 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
-    content = models.TextField(verbose_name= _(''), default="Mon commentaire")
+    content = models.TextField(verbose_name= _(''))
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)

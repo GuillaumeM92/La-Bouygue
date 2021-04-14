@@ -12,6 +12,8 @@ class ActivityListView(LoginRequiredMixin, ListView):
     model = Activity
     template_name = 'activities/activities.html'
     context_object_name = 'activities'
+    ordering = ['-date_posted']
+    paginate_by = 7
 
     def dispatch(self, request, *args, **kwargs):
         user = request.user
@@ -48,7 +50,7 @@ class UserActivityListView(LoginRequiredMixin, ListView):
     model = Activity
     template_name = 'activities/user-activities.html'
     context_object_name = 'activities'
-    paginate_by = 4
+    paginate_by = 5
 
     def get_queryset(self):
         user = get_object_or_404(MyUser, name=self.kwargs.get('name'), surname=self.kwargs.get('surname'))
