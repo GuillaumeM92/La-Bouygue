@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'apps.work',
     'apps.budget',
     'crispy_forms',
+    'captcha',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -149,3 +150,6 @@ EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 MESSAGE_TAGS = {
     messages.ERROR: 'danger',
 }
+
+RECAPTCHA_PUBLIC_KEY = os.getenv("RECAPTCHA_PUBLIC")
+RECAPTCHA_PRIVATE_KEY = os.getenv("RECAPTCHA_PRIVATE")
