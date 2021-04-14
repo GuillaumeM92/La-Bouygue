@@ -25,18 +25,17 @@
         <div class="post-archive-tag">
             <a class="btn btn-primary font-weight-bolder mt-1" href="{% url 'bouygue-home' %}" title="retour" ><i class="fas fa-chevron-left dropdown-arrow"></i></a>
             <a class="btn btn-primary font-weight-700 mt-1" href="{% url 'work-create' %}">Nouveau Travail</a>
-            <a class="btn btn-primary font-weight-700 mt-1" href="{% url 'work-done' %}">Voir les travaux terminés</a>
         </div>
         <div class="row justify-content-center">
             <div class="col-lg-10">
 
                 <div class="d-flex align-items-center justify-content-between">
                     <h2 class="mb-0">Bricolage</h2>
-                    <div class="badge badge-primary-soft text-primary badge-marketing">{{ handiwork|length }} tâche(s)</div>
+                    <div class="badge badge-primary-soft text-primary badge-marketing">{{ handiwork_done|length }} tâche(s)</div>
                 </div>
                 <hr class="mb-0" />
                 <ul class="list-group list-group-flush list-group-careers">
-                    {% for work in handiwork %}
+                    {% for work in handiwork_done %}
                     <li class="list-group-item">
                         <a href="{% url 'work-detail' work.id %}">{{ work.title }}</a>
                         <div class="small">Le {{ work.date_posted }}</div>
@@ -46,11 +45,11 @@
 
                 <div class="d-flex align-items-center justify-content-between">
                     <h2 class="mb-0">Jardinage</h2>
-                    <div class="badge badge-primary-soft text-primary badge-marketing">{{ gardening|length }} tâche(s)</div>
+                    <div class="badge badge-primary-soft text-primary badge-marketing">{{ gardening_done|length }} tâche(s)</div>
                 </div>
                 <hr class="mb-0" />
                 <ul class="list-group list-group-flush list-group-careers">
-                    {% for work in gardening %}
+                    {% for work in gardening_done %}
                     <li class="list-group-item">
                         <a href="{% url 'work-detail' work.id %}">{{ work.title }}</a>
                         <div class="small">Le {{ work.date_posted }}</div>
@@ -60,11 +59,11 @@
 
                 <div class="d-flex align-items-center justify-content-between">
                     <h2 class="mb-0">Plomberie</h2>
-                    <div class="badge badge-primary-soft text-primary badge-marketing">{{ plumbing|length }} tâche(s)</div>
+                    <div class="badge badge-primary-soft text-primary badge-marketing">{{ plumbing_done|length }} tâche(s)</div>
                 </div>
                 <hr class="mb-0" />
                 <ul class="list-group list-group-flush list-group-careers">
-                    {% for work in plumbing %}
+                    {% for work in plumbing_done %}
                     <li class="list-group-item">
                         <a href="{% url 'work-detail' work.id %}">{{ work.title }}</a>
                         <div class="small">Le {{ work.date_posted }}</div>
@@ -74,11 +73,11 @@
 
                 <div class="d-flex align-items-center justify-content-between">
                     <h2 class="mb-0">Maçonnerie</h2>
-                    <div class="badge badge-primary-soft text-primary badge-marketing">{{ masonry|length }} tâche(s)</div>
+                    <div class="badge badge-primary-soft text-primary badge-marketing">{{ masonry_done|length }} tâche(s)</div>
                 </div>
                 <hr class="mb-0" />
                 <ul class="list-group list-group-flush list-group-careers">
-                    {% for work in masonry %}
+                    {% for work in masonry_done %}
                     <li class="list-group-item">
                         <a href="{% url 'work-detail' work.id %}">{{ work.title }}</a>
                         <div class="small">Le {{ work.date_posted }}</div>
@@ -88,11 +87,11 @@
 
                 <div class="d-flex align-items-center justify-content-between">
                     <h2 class="mb-0">Autre</h2>
-                    <div class="badge badge-primary-soft text-primary badge-marketing">{{ other|length }} tâche(s)</div>
+                    <div class="badge badge-primary-soft text-primary badge-marketing">{{ other_done|length }} tâche(s)</div>
                 </div>
                 <hr class="mb-0" />
                 <ul class="list-group list-group-flush list-group-careers">
-                    {% for work in other %}
+                    {% for work in other_done %}
                     <li class="list-group-item">
                         <a href="{% url 'work-detail' work.id %}">{{ work.title }}</a>
                         <div class="small">Le {{ work.date }}</div>

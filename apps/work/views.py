@@ -15,11 +15,11 @@ class WorkListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["handiwork"] = Work.objects.filter(categories=0)
-        context["gardening"] = Work.objects.filter(categories=1)
-        context["plumbing"] = Work.objects.filter(categories=2)
-        context["masonry"] = Work.objects.filter(categories=3)
-        context["other"] = Work.objects.filter(categories=4)
+        context["handiwork"] = Work.objects.filter(categories=0).exclude(state=2)
+        context["gardening"] = Work.objects.filter(categories=1).exclude(state=2)
+        context["plumbing"] = Work.objects.filter(categories=2).exclude(state=2)
+        context["masonry"] = Work.objects.filter(categories=3).exclude(state=2)
+        context["other"] = Work.objects.filter(categories=4).exclude(state=2)
         return context
 
     def dispatch(self, request, *args, **kwargs):
@@ -27,6 +27,21 @@ class WorkListView(LoginRequiredMixin, ListView):
         user.works_viewed = len(Work.objects.all())
         user.save()
         return super().dispatch(request,*args, **kwargs)
+
+
+class WorkDoneListView(LoginRequiredMixin, ListView):
+    model = Work
+    template_name = "work/work-done.html"
+    context_object_name = "works"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["handiwork_done"] = Work.objects.filter(categories=0).filter(state=2)
+        context["gardening_done"] = Work.objects.filter(categories=1).filter(state=2)
+        context["plumbing_done"] = Work.objects.filter(categories=2).filter(state=2)
+        context["masonry_done"] = Work.objects.filter(categories=3).filter(state=2)
+        context["other_done"] = Work.objects.filter(categories=4).filter(state=2)
+        return context
 
 
 @login_required()

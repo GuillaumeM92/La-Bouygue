@@ -22,7 +22,7 @@ class Activity(models.Model):
     duration = models.CharField(max_length=20, verbose_name=_("Durée"))
     distance = models.CharField(max_length=20, verbose_name=_("Temps de route"))
     image = models.ImageField(default="activity_default.jpg", upload_to="activities")
-    image2 = models.ImageField(upload_to="activities")
+    image2 = models.ImageField(default="activity_default.jpg", upload_to="activities")
 
     class Meta:
         verbose_name_plural = "Activities"
