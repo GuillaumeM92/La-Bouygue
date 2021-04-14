@@ -24,7 +24,7 @@
             <div class="col-lg-3">
                 <ul class="list-group list-group-flush list-group-careers">
                     <li class="list-group-item pt-0">
-                        <a class="small" onClick="javascript:history.go(-1);" style="cursor: pointer"><i class="fas fa-arrow-left mr-1"></i>Retour</a>
+                        <a class="small" href="{% url "work"%}" style="cursor: pointer"><i class="fas fa-arrow-left mr-1"></i>Retour</a>
                     </li>
                     <li class="list-group-item mt-2" style="border-bottom: 0; padding-bottom: 0.3rem"><h1>{{ work.title }}</h1></li>
                     <li class="list-group-item" style="padding-top: 0.3rem; justify-content: left">
@@ -56,8 +56,34 @@
                 {% if work.state != 2 %}
                 <hr class="mt-5 mb-4">
                 <h5 class="mb-4">Signaler que cette tâche est terminée ?</h5>
-                <a class="btn btn-outline-primary font-weight-500 mb-5" href="#!">J'ai terminé !</a>
                 {% endif %}
+
+                <!-- Confirmation modal -->
+                <button class="btn btn-primary font-weight-bolder" type="button" data-toggle="modal" data-target="#staticBackdrop">J'ai terminé !</button>
+                <div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="staticBackdropLabel">Attention</h5>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Confirmez-vous avoir terminé ce travail ?</p>
+                            <!-- Registration form-->
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <!-- Form Row-->
+                                    <fieldset class="form-group">
+                                        <button class="btn btn-outline-red font-weight-bolder" data-dismiss="modal">Annuler</button>
+                                        <button class="btn btn-outline-primary font-weight-bolder ml-1" id="confirm-done" type="submit" name="action" value="done">Confirmer</button>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
             <!-- Comment Section -->
             <div class="col-lg-9 bg-gray-200 rounded ml-auto mt-4">
@@ -70,7 +96,7 @@
                         <!-- Form Row-->
                         <fieldset class="form-group mb-5">
                             {{ form|crispy }}
-                            <button class="btn btn-primary font-weight-bolder" type="submit">PUBLIER</button>
+                            <button class="btn btn-primary font-weight-bolder" type="submit" name="action" value="comment">PUBLIER</button>
                         </fieldset>
                     </form>
                     {% for comment in work.workcomment_set.all %}

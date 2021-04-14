@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from .models import Work
@@ -50,20 +52,30 @@ def work_detail(request, pk):
     work = get_object_or_404(Work, pk=pk)
     author = request.user
     new_comment = None
+    new_comment2 = None
+    form = WorkCommentForm()
 
     if request.method == 'POST':
-        form = WorkCommentForm(data=request.POST)
-        if form.is_valid():
+        if request.POST['action'] == 'comment':
+            form = WorkCommentForm(data=request.POST)
+            if form.is_valid():
 
-            # Create Comment object but don't save to database yet
+                # Create Comment object but don't save to database yet
+                new_comment = form.save(commit=False)
+                # Assign the current post and author to the comment
+                new_comment.work = work
+                new_comment.author = author
+                # Save the comment to the database
+                new_comment.save()
+        elif request.POST['action'] == 'done':
+            work.state = 2
+            work.save()
+            # Post comment saying who completed the work
             new_comment = form.save(commit=False)
-            # Assign the current post and author to the comment
             new_comment.work = work
             new_comment.author = author
-            # Save the comment to the database
+            new_comment.content = "{} {} vient de signaler qu'il a terminé ce travail.".format(author.surname, author.name)
             new_comment.save()
-    else:
-        form = WorkCommentForm()
 
     return render(request, template_name, {'title': 'Tâche', 'work': work, 'form': form})
 

@@ -3,7 +3,6 @@
     * Copyright 2013-2020 Start Bootstrap
     * Licensed under SEE_LICENSE (https://github.com/BlackrockDigital/sb-ui-kit-pro/blob/master/LICENSE)
     */
-
 (function ($) {
     "use strict";
 
