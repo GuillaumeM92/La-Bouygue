@@ -67,7 +67,7 @@ class ActivityCreateView(LoginRequiredMixin, CreateView):
 class ActivityUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Activity
     template_name = 'activities/activity-update.html'
-    fields = ['title', 'content', 'difficulty', 'duration', 'distance', 'image']
+    fields = ['title', 'image', 'content', 'image2', 'content2', 'difficulty', 'duration', 'distance']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
