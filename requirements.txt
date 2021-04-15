@@ -2,6 +2,7 @@ asgiref==3.3.1
 certifi==2020.12.5
 Django==3.1.6
 django-crispy-forms==1.11.0
+django-recaptcha==2.0.6
 Pillow==8.1.0
 psycopg2==2.8.6
 python-dotenv==0.15.0
