@@ -52,6 +52,7 @@ def post_detail(request, pk):
             new_comment.author = author
             # Save the comment to the database
             new_comment.save()
+        form = PostCommentForm()
     else:
         form = PostCommentForm()
 

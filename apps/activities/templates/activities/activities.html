@@ -49,33 +49,8 @@
                         <a class="btn btn-primary font-weight-bolder mt-1" href="{% url 'bouygue-home' %}" title="retour" ><i class="fas fa-chevron-left dropdown-arrow"></i></a>
                         <a class="btn btn-primary font-weight-700 mt-1" href="{% url 'activity-create' %}">Nouvelle Activité</a>
                     </div>
-                    {% if activities %}
-                    <a class="card post-preview post-preview-featured lift mb-5" href="{% url 'activity-detail' activities.first.id %}">
-                        <div class="row no-gutters">
-                            <div class="col-lg-5"><div class="post-preview-featured-img" style="background-image: url('{{ activities.first.image.url }}')"></div></div>
-                            <div class="col-lg-7">
-                                <div class="card-body-activities-first">
-                                    <div class="py-4 card-body-activities">
-                                        <h5 class="card-title">{{ activities.first.title }}</h5>
-                                        <p class="card-text-2 mt-4">Difficulté : {{ activities.first.get_difficulty_display }}</p>
-                                        <p class="card-text-2">Durée : {{ activities.first.duration }}</p>
-                                        <p class="card-text-2">Temps de route : {{ activities.first.distance }}</p>
-                                    </div>
-                                    <hr />
-                                    <div class="post-preview-meta">
-                                        <img class="post-preview-meta-img" src="{{ activities.first.author.profile.image.url }}" />
-                                        <div class="post-preview-meta-details">
-                                            <div class="post-preview-meta-details-name">{{ activities.first.author.surname }} {{ activities.first.author.name }}</div>
-                                            <div class="post-preview-meta-details-date">{{ activities.first.date_posted }}</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                    {% endif %}
                     <div class="row">
-                        {% for activity in activities|slice:"1:" %}
+                        {% for activity in activities %}
                             <div class="col-md-6 col-xl-4 mb-5">
                                 <a class="card post-preview lift h-100" href="{% url 'activity-detail' activity.id %}">
                                 <img class="card-img-top background-image" src="{{ activity.image.url }}" />
