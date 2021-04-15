@@ -67,6 +67,7 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- Comments Section -->
                         <div class="col-lg-10 bg-gray-200 rounded">
                             <h1 class="mt-4">Commentaires</h1>
                             <hr class="my-2" />
@@ -98,6 +99,30 @@
                                 </div>
                                 <hr class="my-5" />
                             {% endfor %}
+                            <!-- Pagination -->
+                            {% if is_paginated %}
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination pagination-blog justify-content-center">
+                                {% if page_obj.has_previous %}
+                                    <li class="page-item active"><a class="page-link" href="?page=1">Début</a></li>
+                                    <li class="page-item active"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Préc.</a></li>
+                                {% endif %}
+
+                                {% for num in page_obj.paginator.page_range %}
+                                    {% if page_obj.number == num %}
+                                        <li class="page-item disabled"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                        <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% if page_obj.has_next %}
+                                    <li class="page-item active"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Suiv.</a></li>
+                                    <li class="page-item active"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Fin</a></li>
+                                {% endif %}
+                                </ul>
+                            </nav>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

@@ -7,6 +7,7 @@ from django.contrib.auth.models import Permission
 from apps.users.models import MyUser
 from .models import Post, Comment
 from .forms import PostCommentForm
+from django.core.paginator import Paginator
 
 
 class PostListView(LoginRequiredMixin, ListView):
@@ -41,6 +42,17 @@ def post_detail(request, pk):
     author = request.user
     new_comment = None
 
+    # Paginator
+    comments = post.comment_set.all()
+    paginator = Paginator(comments, 5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    print('comments', comments)
+    print('paginator', paginator)
+    print('page_number', page_number)
+    print('page_obj', page_obj)
+
     if request.method == 'POST':
         form = PostCommentForm(data=request.POST)
         if form.is_valid():
@@ -55,7 +67,7 @@ def post_detail(request, pk):
     else:
         form = PostCommentForm()
 
-    return render(request, template_name, {'title': 'Discussion', 'post': post, 'form': form})
+    return render(request, template_name, {'title': 'Discussion', 'post': post, 'form': form, 'page_obj': page_obj})
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):
