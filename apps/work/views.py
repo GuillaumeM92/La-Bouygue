@@ -6,6 +6,7 @@ from .models import Work
 from apps.users.models import MyUser
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib import messages
 from .models import Work, WorkComment
 from .forms import WorkCommentForm
 
@@ -75,6 +76,7 @@ def work_detail(request, pk):
             new_comment.work = work
             new_comment.author = author
             new_comment.content = "{} {} vient de signaler qu'il a terminé ce travail.".format(author.surname, author.name)
+            messages.success(request, str("Travail terminé. Merci !"))
             new_comment.save()
 
     return render(request, template_name, {'title': 'Tâche', 'work': work, 'form': form})

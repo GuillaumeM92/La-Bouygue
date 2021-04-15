@@ -42,6 +42,13 @@
                 </ul>
             </div>
             <div class="col-lg-9">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="font-weight-400 text-center mb-4 calendar-alert alert-{{ message.tags }}" style="padding: 0.8rem">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
                 <h5 class="mb-4">Description</h5>
                 <p class="mb-4">{{ work.content }}</p>
                 <div class="d-flex align-items-center justify-content-between mb-5">
@@ -53,15 +60,13 @@
                         </div>
                     </div>
                 </div>
-                {% if work.state != 2 %}
                 <hr class="mt-5 mb-4">
+                {% if work.state != 2 %}
                 <h5 class="mb-4">Signaler que cette tâche est terminée ?</h5>
-                {% endif %}
-
                 <!-- Confirmation modal -->
                 <button class="btn btn-primary font-weight-bolder" type="button" data-toggle="modal" data-target="#staticBackdrop">J'ai terminé !</button>
                 <div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-dialog modal-md" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="staticBackdropLabel">Attention</h5>
@@ -82,8 +87,7 @@
                         </div>
                     </div>
                 </div>
-
-
+            {% endif %}
             </div>
             <!-- Comment Section -->
             <div class="col-lg-9 bg-gray-200 rounded ml-auto mt-4">

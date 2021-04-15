@@ -176,7 +176,4 @@ document.addEventListener('DOMContentLoaded', function () {
             $('.calendar-cancel').children()[3].click()
         }
     });
-
-
-
 });
