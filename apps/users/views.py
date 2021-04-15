@@ -57,7 +57,6 @@ def profile(request):
         p_form = ProfileUpdateForm(
             request.POST, request.FILES, instance=request.user.profile
         )
-
         context = {'p_form': p_form,}
 
         if p_form.is_valid():

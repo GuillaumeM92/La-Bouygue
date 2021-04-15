@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from apps.agenda.models import Reservation
 from apps.blog.models import Post
@@ -32,3 +32,21 @@ def home(request):
         'works_length': works_length
         })
     return response
+
+
+def data_policy(request):
+    return render(request, 'bouygue/data-policy.html')
+
+
+# Custom error pages
+def bad_request(request, exception):
+    return render(request, 'errors/error-400.html', status=400)
+
+def permission_denied(request, exception):
+    return render(request, 'errors/error-403.html', status=403)
+
+def page_not_found(request, exception):
+    return render(request, 'errors/error-404.html', status=404)
+
+def server_error(request):
+    return render(request, 'errors/error-500.html', status=500)

@@ -60,7 +60,7 @@
                                         <div class="post-archive-meta-details-name">{{ activity.author.surname }} {{ activity.author.name }}</div>
                                         <div class="post-archive-meta-details-date">{{ activity.date_posted }}</div>
                                     </div>
-                                    <a class="btn btn-outline-primary font-weight-700 ml-auto" href="{% url 'activity-detail' activity.id %}">Voir l'activité</a>
+                                    <a class="font-weight-700 col-lg-3 ml-auto" style="padding-right: 0;" href="{% url 'activity-detail' activity.id %}">Voir l'activité</a>
                                 </div>
                                 <hr class="my-5" />
                             {% endfor %}

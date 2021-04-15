@@ -26,6 +26,7 @@
                             <!-- Form Row-->
                             <fieldset class="form-group">
                                 {{ p_form|crispy }}
+                                <p class="text-danger">Attention la taille de l'image ne doit pas dépasser 8Mo</p>
                             </fieldset>
                             <a class="font-weight-700 color-red" href="{% url 'password_reset' %}">Changer mon mot de passe</a>
                             <!-- Form Group (create account submit)-->

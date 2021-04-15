@@ -1,0 +1,39 @@
+{% extends "bouygue/base.html" %}
+{% load static %}
+{% block content %}
+<section class="bg-light py-10">
+    <div class="container">
+        <h1 class="mb-4 mt-4">Traitement des données utilisateurs</h1>
+        <h4 class="mb-4">
+            <div class="icon-stack bg-primary text-white mt-3 mr-2"><i data-feather="arrow-right"></i></div>
+            Adresses Email
+        </h4>
+        <p>Pour garantir son bon fonctionnement, ce site recueille les adresses email des utilisateurs dans sa base de données.</p>
+        <p>Les adresses email sont uniquement utilisées pour le fonctionnement interne du site, et ne sont à aucun moment divulguées à des fins commerciales.</p>
+        <hr class="my-4" />
+        <h4 class="mb-4">
+            <div class="icon-stack bg-primary text-white mt-3 mr-2"><i data-feather="arrow-right"></i></div>
+            Mots de passe
+        </h4>
+        <p >Les mots de passe sont également stockés dans la base de données, mais ils sont automatiquement masqués à l'aide de l'algorithme d'encryption SHA-256.</p>
+        <p class="mb-0">Grâce à cette encrpytion, ni l'administrateur de ce site, ni un pirate informatique, ne peuvent être en mesure de prendre connaissance de votre mot de passe.</p>
+        <hr class="my-4" />
+        <h4 class="mb-4">
+            <div class="icon-stack bg-primary text-white mt-3 mr-2"><i data-feather="arrow-right"></i></div>
+            Cookies
+        </h4>
+        <p>Ce site ne génère aucun cookie, autre que ceux nécessaires au bon fonctionnement de l'application.</p>
+        <div class="card bg-light shadow-none">
+            <div class="card-body">
+                <h6>Par exemple :</h6>
+                <ul class="mb-0">
+                    <li class="font-italic">Le cookie d'identification de session, qui permet de ne pas avoir à se reconnecter à chaque visite.</li>
+                    <li class="font-italic">Le cookie de jeton CSRF, qui vérifie qu'un pirate n'a pas usurpé votre identité sur le site.</li>
+                </ul>
+            </div>
+        </div>
+    <div class="svg-border-rounded text-dark">
+        <!-- Rounded SVG Border--><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144.54 17.34" preserveAspectRatio="none" fill="#1e2c41"><path d="M144.54,17.34H0V0H144.54ZM0,0S32.36,17.34,72.27,17.34,144.54,0,144.54,0"></path></svg>
+    </div>
+</section>
+{% endblock content %}

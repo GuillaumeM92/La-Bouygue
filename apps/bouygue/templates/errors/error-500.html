@@ -1,0 +1,26 @@
+{% extends "bouygue/base.html" %}
+{% load static %}
+{% block content %}
+<body class="bg-white">
+    <div id="layoutError">
+        <div id="layoutError_content">
+            <main>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6">
+                            <div class="text-center mt-4">
+                                <img class="img-fluid p-4" src="{% static 'bouygue/assets/img/illustrations/500-internal-server-error.svg' %}" alt="" />
+                                <p class="lead">Erreur interne au serveur.</p>
+                                <a class="text-arrow-icon" onClick="javascript:history.go(-1);">
+                                    <i class="ml-0 mr-1" data-feather="arrow-left"></i>
+                                    Revenir en arrière
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+{% endblock content %}

@@ -41,9 +41,7 @@
                                         <div class="post-archive-meta-details-name">{{ post.author.surname }} {{ post.author.name }}</div></a>
                                         <div class="post-archive-meta-details-date">{{ post.date_posted }}</div>
                                     </div>
-                                    <div class="col-md-4 col-lg-3 ml-auto">
-                                        <a class="btn btn-outline-primary btn-block font-weight-700 ml-auto" href="{% url 'post-detail' post.id %}">Voir la discussion</a>
-                                    </div>
+                                    <a class="font-weight-700 col-lg-3 ml-auto" style="padding-right: 0;" href="{% url 'post-detail' post.id %}">Voir la discussion</a>
                                 </div>
                                 <hr class="my-5" />
                             {% endfor %}
