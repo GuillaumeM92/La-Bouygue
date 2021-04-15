@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import Profile
 from captcha.fields import ReCaptchaField
@@ -7,10 +7,24 @@ from captcha.fields import ReCaptchaField
 User = get_user_model()
 
 
+class UserLoginForm(AuthenticationForm):
+    def clean(self):
+        username = self.cleaned_data.get('username').lower()
+        password = self.cleaned_data.get('password')
+
+        if username is not None and password:
+            self.user_cache = authenticate(self.request, username=username, password=password)
+            if self.user_cache is None:
+                raise self.get_invalid_login_error()
+            else:
+                self.confirm_login_allowed(self.user_cache)
+
+        return self.cleaned_data
+
+
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField(label="Adresse email")
     captcha = ReCaptchaField()
-
 
     class Meta:
         model = User
