@@ -42,21 +42,9 @@ def post_detail(request, pk):
     author = request.user
     new_comment = None
 
-    # Paginator
-    comments = post.comment_set.all()
-    paginator = Paginator(comments, 5)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-
-    print('comments', comments)
-    print('paginator', paginator)
-    print('page_number', page_number)
-    print('page_obj', page_obj)
-
     if request.method == 'POST':
         form = PostCommentForm(data=request.POST)
         if form.is_valid():
-
             # Create Comment object but don't save to database yet
             new_comment = form.save(commit=False)
             # Assign the current post and author to the comment
@@ -67,7 +55,14 @@ def post_detail(request, pk):
     else:
         form = PostCommentForm()
 
-    return render(request, template_name, {'title': 'Discussion', 'post': post, 'form': form, 'page_obj': page_obj})
+    # Paginator
+    comments = post.comment_set.all()
+    comment_count = len(comments)
+    paginator = Paginator(comments, 5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, template_name, {'title': 'Discussion', 'post': post, 'form': form, 'page_obj': page_obj, 'comment_count': comment_count})
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):

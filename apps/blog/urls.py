@@ -1,8 +1,6 @@
 from . import views
 from django.urls import path
 from .views import PostListView, PostCreateView, PostUpdateView, PostDeleteView, CommentUpdateView, CommentDeleteView, UserPostListView
-from django.conf.urls.static import static
-from django.conf import settings
 
 urlpatterns = [
     path('blog/', PostListView.as_view(), name='blog'),

@@ -7,6 +7,7 @@ from django.contrib.auth.models import Permission
 from apps.users.models import MyUser
 from .models import InfoPost, InfoComment
 from .forms import InfoCommentForm
+from django.core.paginator import Paginator
 
 
 class InfoPostListView(LoginRequiredMixin, ListView):
@@ -55,7 +56,14 @@ def infopost_detail(request, pk):
     else:
         form = InfoCommentForm()
 
-    return render(request, template_name, {'title': 'Information', 'infopost': infopost, 'form': form})
+    # Paginator
+    comments = infopost.infocomment_set.all()
+    comment_count = len(comments)
+    paginator = Paginator(comments, 5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, template_name, {'title': 'Information', 'infopost': infopost, 'form': form, 'page_obj': page_obj, 'comment_count': comment_count})
 
 
 class InfoPostCreateView(LoginRequiredMixin, CreateView):

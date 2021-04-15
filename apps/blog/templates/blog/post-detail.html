@@ -80,7 +80,7 @@
                                     <button class="btn btn-primary font-weight-bolder" type="submit">PUBLIER</button>
                                 </fieldset>
                             </form>
-                            {% for comment in post.comment_set.all %}
+                            {% for comment in page_obj.object_list %}
                                 <div class="post-archive-meta d-flex">
                                     <a href="{% url 'user-posts' comment.author.surname comment.author.name %}"><img class="post-archive-meta-img" src="{{ comment.author.profile.image.url }}" />
                                     <div class="post-archive-meta-details mr-auto p-2">
@@ -100,14 +100,13 @@
                                 <hr class="my-5" />
                             {% endfor %}
                             <!-- Pagination -->
-                            {% if is_paginated %}
+                            {% if comment_count > 5 %}
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination pagination-blog justify-content-center">
                                 {% if page_obj.has_previous %}
                                     <li class="page-item active"><a class="page-link" href="?page=1">Début</a></li>
                                     <li class="page-item active"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Préc.</a></li>
                                 {% endif %}
-
                                 {% for num in page_obj.paginator.page_range %}
                                     {% if page_obj.number == num %}
                                         <li class="page-item disabled"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
@@ -115,7 +114,6 @@
                                         <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
                                     {% endif %}
                                 {% endfor %}
-
                                 {% if page_obj.has_next %}
                                     <li class="page-item active"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Suiv.</a></li>
                                     <li class="page-item active"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Fin</a></li>

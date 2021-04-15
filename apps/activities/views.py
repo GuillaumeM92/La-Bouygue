@@ -6,6 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 from .models import Activity, ActivityComment
 from .forms import ActivityCommentForm
+from django.core.paginator import Paginator
 
 
 class ActivityListView(LoginRequiredMixin, ListView):
@@ -32,7 +33,6 @@ def activity_detail(request, pk):
     if request.method == 'POST':
         form = ActivityCommentForm(data=request.POST)
         if form.is_valid():
-
             # Create Comment object but don't save to database yet
             new_comment = form.save(commit=False)
             # Assign the current post and author to the comment
@@ -43,7 +43,14 @@ def activity_detail(request, pk):
     else:
         form = ActivityCommentForm()
 
-    return render(request, template_name, {'title': 'Activité', 'activity': activity, 'form': form})
+    # Paginator
+    comments = activity.activitycomment_set.all()
+    comment_count = len(comments)
+    paginator = Paginator(comments, 5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, template_name, {'title': 'Activité', 'activity': activity, 'form': form, 'page_obj': page_obj, 'comment_count': comment_count})
 
 
 class UserActivityListView(LoginRequiredMixin, ListView):
