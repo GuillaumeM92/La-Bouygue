@@ -20,7 +20,7 @@ def register(request):
             user_name = form.data['name']
             user_surname = form.data['surname']
             send_mail("La Bouygue - Bienvenue",
-                      "Bonjour {} {}, merci d'avoir créé un compte sur le site de La Bouygue. Vous pourrez vous connecter lorsqu'un administrateur aura vérifié votre identité et activé votre compte. Vous recevrez un nouvel email pour vous informer de l'activation.".format(user_surname, user_name),
+                      "Bonjour {} {}, merci d'avoir créé un compte sur le site de La Bouygue. Vous pourrez vous connecter lorsqu'un administrateur aura vérifié votre identité et activé votre compte. Vous recevrez un nouvel email vous informant de l'activation.".format(user_surname, user_name),
                       None, [user_email], fail_silently=True, )
 
             send_mail("La Bouygue - Nouvel Utilisateur",
