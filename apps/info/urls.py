@@ -1,6 +1,6 @@
 from . import views
 from django.urls import path
-from .views import InfoPostListView, InfoPostCreateView, InfoPostUpdateView, InfoPostDeleteView, UserInfoPostListView, InfoCommentUpdateView, InfoCommentDeleteView
+from .views import InfoPostListView, InfoPostCreateView, InfoPostUpdateView, InfoPostDeleteView, UserInfoPostListView, InfoCommentUpdateView, InfoCommentDeleteView, ActivateUsersListView
 
 urlpatterns = [
     path('info/', InfoPostListView.as_view(), name='info'),
@@ -11,12 +11,6 @@ urlpatterns = [
     path('info/<int:pk>/delete/', InfoPostDeleteView.as_view(), name='infopost-delete'),
     path('info/comment/<int:pk>/update/', InfoCommentUpdateView.as_view(), name='infocomment-update'),
     path('info/comment/<int:pk>/delete/', InfoCommentDeleteView.as_view(), name='infocomment-delete'),
+     # Admin view to activate new users accounts
+    path("admin/activate/", ActivateUsersListView.as_view(), name='activate-users'),
 ]
-
-# path('user/<str:surname>/<str:name>', UserPostListView.as_view(), name='user-posts'),
-# path('blog/<int:pk>/', views.post_detail, name='post-detail'),
-# path('blog/new/', PostCreateView.as_view(), name='post-create'),
-# path('blog/<int:pk>/update/', PostUpdateView.as_view(), name='post-update'),
-# path('blog/<int:pk>/delete/', PostDeleteView.as_view(), name='post-delete'),
-# path('blog/comment/<int:pk>/update/', CommentUpdateView.as_view(), name='comment-update'),
-# path('blog/comment/<int:pk>/delete/', CommentDeleteView.as_view(), name='comment-delete'),

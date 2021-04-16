@@ -51,7 +51,7 @@
                                 {% if user == infopost.author %}
                                 <a class="btn btn-outline-primary font-weight-700 ml-1" href="{% url 'infopost-update' infopost.id %}">Modifier</a>
                                 {% endif %}
-                                {% if user == infopost.author or perms.info.delete_infopost %}
+                                {% if user == infopost.author or user.is_superuser or user.is_staff %}
                                 <a class="btn btn-outline-danger font-weight-700 ml-1" href="{% url 'infopost-delete' infopost.id %}">Supprimer</a>
                                 {% endif %}
                             </div>
@@ -89,7 +89,7 @@
                                     {% if user == comment.author %}
                                         <a class="btn btn-outline-primary font-weight-500" style="padding: 0.6rem;" href="{% url 'infocomment-update' comment.id %}">modifier</a>
                                     {% endif %}
-                                    {% if user == comment.author or perms.info.delete_comment %}
+                                    {% if user == comment.author or user.is_superuser or user.is_staff %}
                                         <a class="btn btn-outline-danger font-weight-500 ml-1" style="padding: 0.6rem;" href="{% url 'infocomment-delete' comment.id %}">supprimer</a>
                                     {% endif %}
                                     </div>

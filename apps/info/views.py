@@ -8,6 +8,7 @@ from apps.users.models import MyUser
 from .models import InfoPost, InfoComment
 from .forms import InfoCommentForm
 from django.core.paginator import Paginator
+from django.core.mail import send_mail
 
 
 class InfoPostListView(LoginRequiredMixin, ListView):
@@ -134,3 +135,28 @@ class InfoCommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView)
             # messages.success(self.request, str("Le commentaire a bien été supprimé."))
             return True
         return False
+
+
+class ActivateUsersListView(LoginRequiredMixin, ListView):
+    model = MyUser
+    template_name = 'admin/activate-users.html'
+    context_object_name = 'users'
+    ordering = ['-date_joined']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["active_users"] = MyUser.objects.filter(is_active=True)
+        context["inactive_users"] = MyUser.objects.filter(is_active=False)
+        return context
+
+    def post(self, request, *args, **kwargs):
+        if request.method == 'POST':
+            user_id = request.POST['action']
+            user = MyUser.objects.get(id=user_id)
+            user.is_active = True
+            user.save()
+            user_email = user.email
+            send_mail("La Bouygue - Compte Activé",
+                      "Votre compte La Bouygue vient d'être activé. Vous pouvez désormais vous connecter en cliquant sur le lien suivant : https://labouygue.com/login/".format(user_surname, user_name),
+                      None, [user_email], fail_silently=True, )
+        return super().get(request, *args, **kwargs)

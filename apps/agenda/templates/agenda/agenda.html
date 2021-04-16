@@ -115,7 +115,7 @@
     </div>
 </section>
 <div id="user_id" value="{{ user.id }}"></div>
-{% if user.is_superuser or perms.agenda.delete_reservation %}
+{% if user.is_superuser or user.is_superuser or user.is_staff  %}
 <div id="is_admin" value="yes"></div>
 {% endif %}
 {% endblock content %}

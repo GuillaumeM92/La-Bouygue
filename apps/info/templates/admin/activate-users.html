@@ -1,0 +1,53 @@
+{% extends "bouygue/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div hidden>{% block title %} - Travaux {% endblock %}</div>
+
+<section class="bg-light py-10">
+    <div class="container" style="padding-right: 1.6rem; padding-left: 1.6rem;">
+        <a href="{% url "bouygue-home"%}" style="cursor: pointer"><i class="fas fa-arrow-left mr-1"></i> Accueil</a>
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="d-flex align-items-center justify-content-between">
+                    <h2 class="mb-0 mt-4">Utilisateurs Inactifs</h2>
+                    <div class="badge badge-primary-soft text-primary badge-marketing">{{ inactive_users|length }} utilisateur(s)</div>
+                </div>
+                <hr class="mb-0" />
+                <ul class="list-group list-group-flush list-group-careers">
+                    {% for user in inactive_users %}
+                    <li class="list-group-item">
+                        <div>{{ user.surname }} {{ user.name }} - {{ user.email }}</div><!-- Confirmation form-->
+                        {% if user.is_superuser or user.is_staff %}
+                        <form method="POST">
+                            {% csrf_token %}
+                            <button class="btn btn-outline-primary font-weight-bold" id="confirm-done" type="submit" name="action" value="{{ user.id }}">Activer ?</button>
+                        </form>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+
+                <div class="d-flex align-items-center justify-content-between">
+                    <h2 class="mb-0">Utilisateurs Actifs</h2>
+                    <div class="badge badge-primary-soft text-primary badge-marketing">{{ active_users|length }} utilisateur(s)</div>
+                </div>
+                <hr class="mb-0" />
+                <ul class="list-group list-group-flush list-group-careers">
+                    {% for user in active_users %}
+                    <li class="list-group-item">
+                        <div>{{ user.surname }} {{ user.name }} - {{ user.email }}</div>
+                        <div class="small ml-4">Le {{ user.date_joined }}</div>
+                    </li>
+                    {% endfor %}
+                </ul>
+
+
+            </div>
+        </div>
+    </div>
+    <div class="svg-border-rounded text-dark">
+        <!-- Rounded SVG Border--><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144.54 17.34" preserveAspectRatio="none" fill="#1e2c41"><path d="M144.54,17.34H0V0H144.54ZM0,0S32.36,17.34,72.27,17.34,144.54,0,144.54,0"></path></svg>
+    </div>
+</section>
+{% endblock content %}

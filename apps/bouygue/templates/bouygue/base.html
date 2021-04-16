@@ -49,6 +49,9 @@
                                                         <a class="dropdown-item font-weight-bold" href="{% url 'agenda' %}">Calendrier</a><a class="dropdown-item font-weight-bold" href="{% url 'blog' %}">Discussions</a>
                                                         <a class="dropdown-item font-weight-bold" href="{% url 'activities' %}">Activités</a><a class="dropdown-item font-weight-bold" href="{% url 'info' %}">Informations</a>
                                                         <a class="dropdown-item font-weight-bold" href="{% url 'work' %}">Travaux</a><a class="dropdown-item font-weight-bold" href="{% url 'budget' %}">Budget</a>
+                                                        {% if user.is_superuser %}
+                                                            <a class="dropdown-item font-weight-bold" href="{% url 'activate-users' %}">Activations</a>
+                                                        {% endif %}
                                                     </div>
                                                 </div>
                                             </div>
@@ -58,12 +61,14 @@
                             </ul>
                             {% if user.is_authenticated %}
                             {% if user.is_superuser %}
-                            <a class="btn btn-outline-white font-weight-500"  style="padding: 0.75rem;" href="{% url 'admin:index' %}">Admin</a>
+                                <a class="btn btn-outline-white font-weight-500"  style="padding: 0.75rem;" href="{% url 'admin:index' %}">Admin</a>
+                            {% elif user.is_staff %}
+                                <a class="btn btn-outline-white font-weight-500"  style="padding: 0.75rem;" href="{% url 'activate-users' %}">Admin</a>
                             {% endif %}
-                            <a class="btn btn-outline-white font-weight-500 ml-lg-2" style="padding: 0.75rem;" href="{% url 'users-profile' %}">Profil</a>
-                            <a class="btn btn-outline-white font-weight-500 ml-lg-2" id="logout-icon" style="padding: 0.75rem;" href="{% url 'users-logout' %}">Déconnexion<i class="ml-2" data-feather="arrow-right"></i></a>
+                                <a class="btn btn-outline-white font-weight-500 ml-lg-2" style="padding: 0.75rem;" href="{% url 'users-profile' %}">Profil</a>
+                                <a class="btn btn-outline-white font-weight-500 ml-lg-2" id="logout-icon" style="padding: 0.75rem;" href="{% url 'users-logout' %}">Déconnexion<i class="ml-2" data-feather="arrow-right"></i></a>
                             {% else %}
-                            <a class="btn btn-outline-white font-weight-500 ml-lg-4" style="padding: 0.75rem;" href="{% url 'users-login' %}">Connexion<i class="ml-2" data-feather="arrow-right"></i></a>
+                                <a class="btn btn-outline-white font-weight-500 ml-lg-4" style="padding: 0.75rem;" href="{% url 'users-login' %}">Connexion<i class="ml-2" data-feather="arrow-right"></i></a>
                             {% endif %}
                         </div>
                     </div>

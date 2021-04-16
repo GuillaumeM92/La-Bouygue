@@ -31,7 +31,7 @@
                         {% if user == work.author %}
                             <a class="btn btn-outline-primary font-weight-600 mb-1" style="padding: 0.7rem;" href="{% url 'work-update' work.id %}">Modifier</a>
                         {% endif %}
-                        {% if user == work.author or perms.work.delete_work %}
+                        {% if user == work.author or user.is_superuser or user.is_staff %}
                             <a class="btn btn-outline-danger font-weight-600 ml-1 mb-1" style="padding: 0.7rem;" href="{% url 'work-delete' work.id %}">Supprimer</a>
                         {% endif %}
                     </li>
@@ -74,7 +74,7 @@
                             </div>
                             <div class="modal-body">
                                 <p>Confirmez-vous avoir terminé ce travail ?</p>
-                            <!-- Registration form-->
+                                <!-- Confirmation form-->
                                 <form method="POST">
                                     {% csrf_token %}
                                     <!-- Form Row-->
@@ -113,7 +113,7 @@
                             {% if user == comment.author %}
                                 <a class="btn btn-outline-primary font-weight-500" style="padding: 0.6rem;" href="{% url 'workcomment-update' comment.id %}">modifier</a>
                             {% endif %}
-                            {% if user == comment.author or perms.work.delete_comment %}
+                            {% if user == comment.author or user.is_superuser or user.is_staff %}
                                 <a class="btn btn-outline-danger font-weight-500 ml-1" style="padding: 0.6rem;" href="{% url 'workcomment-delete' comment.id %}">supprimer</a>
                             {% endif %}
                         </div>

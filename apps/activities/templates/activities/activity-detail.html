@@ -14,7 +14,7 @@
                                 {% if user == activity.author %}
                                 <a class="btn btn-outline-primary font-weight-700 ml-1" href="{% url 'activity-update' activity.id %}">Modifier</a>
                                 {% endif %}
-                                {% if user == activity.author or perms.activities.delete_activity %}
+                                {% if user == activity.author or user.is_superuser or user.is_staff %}
                                 <a class="btn btn-outline-danger font-weight-700 ml-1" href="{% url 'activity-delete' activity.id %}">Supprimer</a>
                                 {% endif %}
                             </div>
@@ -65,7 +65,7 @@
                                     {% if user == comment.author %}
                                         <a class="btn btn-outline-primary font-weight-500" style="padding: 0.6rem;" href="{% url 'activitycomment-update' comment.id %}">modifier</a>
                                     {% endif %}
-                                    {% if user == comment.author or perms.activities.delete_comment %}
+                                    {% if user == comment.author or user.is_superuser or user.is_staff  %}
                                         <a class="btn btn-outline-danger font-weight-500 ml-1" style="padding: 0.6rem;" href="{% url 'activitycomment-delete' comment.id %}">supprimer</a>
                                     {% endif %}
                                 </div>
