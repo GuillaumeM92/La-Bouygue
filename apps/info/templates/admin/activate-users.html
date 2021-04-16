@@ -20,7 +20,7 @@
                         <div>{{ user.surname }} {{ user.name }} - {{ user.email }}</div><!-- Confirmation form-->
                         <form method="POST">
                             {% csrf_token %}
-                            <button class="btn btn-outline-primary font-weight-bold" id="confirm-done" type="submit" name="action" value="{{ user.id }}">Activer ?</button>
+                            <a "font-weight-bold" id="confirm-done" type="submit" name="action" value="{{ user.id }}">Activer ?</a>
                         </form>
                     </li>
                     {% endfor %}
