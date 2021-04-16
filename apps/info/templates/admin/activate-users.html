@@ -18,12 +18,12 @@
                     {% for user in inactive_users %}
                     <li class="list-group-item">
                         <div>{{ user.surname }} {{ user.name }} - {{ user.email }}</div><!-- Confirmation form-->
-                        {% if user.is_superuser or user.is_staff %}
                         <form method="POST">
                             {% csrf_token %}
-                            <button class="btn btn-outline-primary font-weight-bold" id="confirm-done" type="submit" name="action" value="{{ user.id }}">Activer ?</button>
+                            {% if user.is_superuser or user.is_staff %}
+                                <button class="btn btn-outline-primary font-weight-bold" id="confirm-done" type="submit" name="action" value="{{ user.id }}">Activer ?</button>
+                            {% endif %}
                         </form>
-                        {% endif %}
                     </li>
                     {% endfor %}
                 </ul>
