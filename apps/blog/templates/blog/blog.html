@@ -35,7 +35,7 @@
                             {% endif %}
                             <div class="post-archive-tag">
                                 <a class="btn btn-primary font-weight-bolder mt-1" href="{% url 'bouygue-home' %}" title="retour" ><i class="fas fa-chevron-left dropdown-arrow"></i></a>
-                                <a class="btn btn-primary font-weight-700 mt-1" href="{% url 'post-create' %}">Nouvelle Discussion</a>
+                                <a class="btn btn-primary font-weight-700 mt-1" href="{% url 'post-create' %}" name="new">Nouvelle Discussion</a>
                             </div>
                             {% for post in posts %}
                                 <a class="post-archive-item" href="{% url 'post-detail' post.id %}">

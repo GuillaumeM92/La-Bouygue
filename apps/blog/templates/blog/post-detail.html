@@ -56,10 +56,10 @@
                             <div class="post-archive-tag">
                                 <a class="btn btn-outline-primary font-weight-bolder" href="{% url 'blog' %}" title="retour"><i class="fas fa-chevron-left dropdown-arrow"></i></a>
                                 {% if user == post.author %}
-                                <a class="btn btn-outline-primary font-weight-700 ml-1" href="{% url 'post-update' post.id %}">Modifier</a>
+                                <a class="btn btn-outline-primary font-weight-700 ml-1" href="{% url 'post-update' post.id %}" name="update-post">Modifier</a>
                                 {% endif %}
                                 {% if user == post.author or user.is_superuser or user.is_staff %}
-                                <a class="btn btn-outline-danger font-weight-700 ml-1" href="{% url 'post-delete' post.id %}">Supprimer</a>
+                                <a class="btn btn-outline-danger font-weight-700 ml-1" href="{% url 'post-delete' post.id %}" name="delete-post">Supprimer</a>
                                 {% endif %}
                             </div>
                             <div class="post-archive-item">
@@ -84,7 +84,7 @@
                                 <!-- Form Row-->
                                 <fieldset class="form-group mb-5">
                                     {{ form|crispy }}
-                                    <button class="btn btn-primary font-weight-bolder" type="submit">PUBLIER</button>
+                                    <button class="btn btn-primary font-weight-bolder" type="submit" name="send">PUBLIER</button>
                                 </fieldset>
                             </form>
                             {% for comment in page_obj.object_list %}
@@ -95,10 +95,10 @@
                                         <div class="post-archive-meta-details-date">{{ comment.date_posted }}</div>
                                     </div>
                                     {% if user == comment.author %}
-                                        <a class="btn btn-outline-primary font-weight-500" style="padding: 0.6rem;" href="{% url 'comment-update' comment.id %}?next={{ request.path }}">modifier</a>
+                                        <a class="btn btn-outline-primary font-weight-500" style="padding: 0.6rem;" href="{% url 'comment-update' comment.id %}?next={{ request.path }}" name="update-comment">modifier</a>
                                     {% endif %}
                                     {% if user == comment.author or user.is_superuser or user.is_staff %}
-                                        <a class="btn btn-outline-danger font-weight-500 ml-1" style="padding: 0.6rem;" href="{% url 'comment-delete' comment.id %}?next={{ request.path }}">supprimer</a>
+                                        <a class="btn btn-outline-danger font-weight-500 ml-1" style="padding: 0.6rem;" href="{% url 'comment-delete' comment.id %}?next={{ request.path }}" name="delete-comment">supprimer</a>
                                     {% endif %}
                                     </div>
                                 <div class="post-archive-item mt-3">

@@ -24,11 +24,12 @@ class UserLoginForm(AuthenticationForm):
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField(label="Adresse email")
-    captcha = ReCaptchaField()
+    # captcha = ReCaptchaField()
 
     class Meta:
         model = User
-        fields = ["name", "surname", "email", "password1", "password2", "captcha"]
+        fields = ["name", "surname", "email", "password1", "password2"]
+        # fields = ["name", "surname", "email", "password1", "password2", "captcha"]
 
     def clean_email(self):
         data = self.cleaned_data['email']
