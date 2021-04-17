@@ -68,6 +68,7 @@ def work_detail(request, pk):
                 new_comment.author = author
                 # Save the comment to the database
                 new_comment.save()
+                messages.success(request, str("Commentaire publié."))
             WorkCommentForm()
 
         elif request.POST['action'] == 'done':
@@ -119,6 +120,7 @@ class WorkUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
+        messages.success(self.request, str("Le travail a bien été modifié."))
         return super().form_valid(form)
 
     def test_func(self):
@@ -132,7 +134,10 @@ class WorkDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Work
     template_name = "work/work-delete.html"
     context_object_name = "work"
-    success_url = "/work/"
+
+    def get_success_url(self):
+        messages.success(self.request, str("Le travail a bien été supprimé."))
+        return "/work/"
 
     def test_func(self):
         work = self.get_object()
@@ -153,6 +158,7 @@ class WorkCommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView)
 
     def form_valid(self, form):
         form.instance.author = self.request.user
+        messages.success(self.request, str("Le commentaire a bien été modifié."))
         return super().form_valid(form)
 
     def test_func(self):
@@ -167,6 +173,13 @@ class WorkCommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView)
     template_name = 'work/workcomment-delete.html'
     context_object_name = 'comment'
     success_url = '/work/'
+
+    def get_success_url(self):
+        next_url = self.request.GET.get('next')
+        if next_url:
+            messages.success(self.request, str("Le commentaire a bien été supprimé."))
+            return next_url # return next url for redirection
+        return '/work/' # return some other url if next parameter not present
 
     def test_func(self):
         work = self.get_object()

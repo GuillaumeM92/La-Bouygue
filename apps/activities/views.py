@@ -4,6 +4,7 @@ from apps.users.models import MyUser
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from .models import Activity, ActivityComment
 from .forms import ActivityCommentForm
 from django.core.paginator import Paginator
@@ -40,6 +41,7 @@ def activity_detail(request, pk):
             new_comment.author = author
             # Save the comment to the database
             new_comment.save()
+            messages.success(request, str("Commentaire publié."))
         form = ActivityCommentForm()
     else:
         form = ActivityCommentForm()
@@ -81,6 +83,7 @@ class ActivityUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
+        messages.success(self.request, str("L'activité a bien été modifiée."))
         return super().form_valid(form)
 
     def test_func(self):
@@ -94,12 +97,14 @@ class ActivityDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Activity
     template_name = 'activities/activity-delete.html'
     context_object_name = 'activity'
-    success_url = '/activities/'
+
+    def get_success_url(self):
+        messages.success(self.request, str("L'activité a bien été supprimée."))
+        return '/activities/'
 
     def test_func(self):
         activity = self.get_object()
         if self.request.user == activity.author or self.request.user.is_superuser or self.request.user.has_perm('activities.delete_activity'):
-            # messages.success(self.request, str("La discussion a bien été supprimée."))
             return True
         return False
 
@@ -111,6 +116,7 @@ class ActivityCommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateV
 
     def form_valid(self, form):
         form.instance.author = self.request.user
+        messages.success(self.request, str("Le commentaire a bien été modifié."))
         return super().form_valid(form)
 
     def test_func(self):
@@ -124,11 +130,16 @@ class ActivityCommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteV
     model = ActivityComment
     template_name = 'activities/activitycomment-delete.html'
     context_object_name = 'comment'
-    success_url = '/activities/'
+
+    def get_success_url(self):
+        next_url = self.request.GET.get('next')
+        if next_url:
+            messages.success(self.request, str("Le commentaire a bien été supprimé."))
+            return next_url # return next url for redirection
+        return '/activities/' # return some other url if next parameter not present
 
     def test_func(self):
         activity = self.get_object()
         if self.request.user == activity.author or self.request.user.has_perm('activities.delete_comment'):
-            # messages.success(self.request, str("Le commentaire a bien été supprimé."))
             return True
         return False

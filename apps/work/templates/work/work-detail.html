@@ -114,7 +114,7 @@
                                 <a class="btn btn-outline-primary font-weight-500" style="padding: 0.6rem;" href="{% url 'workcomment-update' comment.id %}">modifier</a>
                             {% endif %}
                             {% if user == comment.author or user.is_superuser or user.is_staff %}
-                                <a class="btn btn-outline-danger font-weight-500 ml-1" style="padding: 0.6rem;" href="{% url 'workcomment-delete' comment.id %}">supprimer</a>
+                                <a class="btn btn-outline-danger font-weight-500 ml-1" style="padding: 0.6rem;" href="{% url 'workcomment-delete' comment.id %}?next={{ request.path }}">supprimer</a>
                             {% endif %}
                         </div>
                         <div class="post-archive-item mt-3">

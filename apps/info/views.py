@@ -54,6 +54,7 @@ def infopost_detail(request, pk):
             new_comment.author = author
             # Save the comment to the database
             new_comment.save()
+            messages.success(request, str("Commentaire publié."))
         InfoCommentForm()
     else:
         form = InfoCommentForm()
@@ -85,6 +86,7 @@ class InfoPostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
+        messages.success(self.request, str("L'information a bien été modifiée."))
         return super().form_valid(form)
 
     def test_func(self):
@@ -98,7 +100,10 @@ class InfoPostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = InfoPost
     template_name = 'info/infopost-delete.html'
     context_object_name = 'infopost'
-    success_url = '/info/'
+
+    def get_success_url(self):
+        messages.success(self.request, str("L'information a bien été supprimée."))
+        return '/info/'
 
     def test_func(self):
         post = self.get_object()
@@ -115,6 +120,7 @@ class InfoCommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView)
 
     def form_valid(self, form):
         form.instance.author = self.request.user
+        messages.success(self.request, str("Le commentaire a bien été modifié."))
         return super().form_valid(form)
 
     def test_func(self):
@@ -129,6 +135,13 @@ class InfoCommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView)
     template_name = 'info/infocomment-delete.html'
     context_object_name = 'comment'
     success_url = '/info/'
+
+    def get_success_url(self):
+        next_url = self.request.GET.get('next')
+        if next_url:
+            messages.success(self.request, str("Le commentaire a bien été supprimé."))
+            return next_url # return next url for redirection
+        return '/info/' # return some other url if next parameter not present
 
     def test_func(self):
         info = self.get_object()

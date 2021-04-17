@@ -52,6 +52,7 @@ def post_detail(request, pk):
             new_comment.author = author
             # Save the comment to the database
             new_comment.save()
+            messages.success(request, str("Commentaire publié."))
         form = PostCommentForm()
     else:
         form = PostCommentForm()
@@ -83,6 +84,7 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
+        messages.success(self.request, str("La discussion a bien été modifiée."))
         return super().form_valid(form)
 
     def test_func(self):
@@ -96,7 +98,10 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
     template_name = 'blog/post-delete.html'
     context_object_name = 'post'
-    success_url = '/blog/'
+
+    def get_success_url(self):
+        messages.success(self.request, str("La discussion a bien été supprimée."))
+        return '/blog/'
 
     def test_func(self):
         post = self.get_object()
@@ -113,6 +118,7 @@ class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
+        messages.success(self.request, str("Le commentaire a bien été modifié."))
         return super().form_valid(form)
 
     def test_func(self):
@@ -126,11 +132,16 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Comment
     template_name = 'blog/comment-delete.html'
     context_object_name = 'comment'
-    success_url = '/blog/'
+
+    def get_success_url(self):
+        next_url = self.request.GET.get('next')
+        if next_url:
+            messages.success(self.request, str("Le commentaire a bien été supprimé."))
+            return next_url # return next url for redirection
+        return '/blog/' # return some other url if next parameter not present
 
     def test_func(self):
         post = self.get_object()
         if self.request.user == post.author or self.request.user.has_perm('blog.delete_comment'):
-            # messages.success(self.request, str("Le commentaire a bien été supprimé."))
             return True
         return False

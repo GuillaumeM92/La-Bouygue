@@ -20,8 +20,15 @@
     </div>
 </header>
 
-<section class="bg-light py-10">
+<section class="bg-light py-7">
     <div class="container" style="padding-right: 1.6rem; padding-left: 1.6rem;">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
         <div class="post-archive-tag">
             <a class="btn btn-primary font-weight-bolder mt-1" href="{% url 'bouygue-home' %}" title="retour" ><i class="fas fa-chevron-left dropdown-arrow"></i></a>
             <a class="btn btn-primary font-weight-700 mt-1" href="{% url 'work-create' %}">Nouveau Travail</a>
