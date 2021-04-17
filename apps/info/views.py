@@ -55,7 +55,7 @@ def infopost_detail(request, pk):
             # Save the comment to the database
             new_comment.save()
             messages.success(request, str("Commentaire publié."))
-        InfoCommentForm()
+        form = InfoCommentForm()
     else:
         form = InfoCommentForm()
 

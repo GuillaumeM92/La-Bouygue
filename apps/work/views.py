@@ -69,7 +69,7 @@ def work_detail(request, pk):
                 # Save the comment to the database
                 new_comment.save()
                 messages.success(request, str("Commentaire publié."))
-            WorkCommentForm()
+            form = WorkCommentForm()
 
         elif request.POST['action'] == 'done':
             work.state = 2
