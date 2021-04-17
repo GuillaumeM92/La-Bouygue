@@ -36,7 +36,7 @@
                             <div class="post-archive-tag">
                                 <a class="btn btn-primary font-weight-bolder mt-1" href="{% url 'bouygue-home' %}" title="retour" ><i class="fas fa-chevron-left dropdown-arrow"></i></a>
                                 {% if perms.info or perms.infopost %}
-                                <a class="btn btn-primary font-weight-700 mt-1" href="{% url 'infopost-create' %}">Nouvelle Information</a>
+                                <a class="btn btn-primary font-weight-700 mt-1" href="{% url 'infopost-create' %}" name="new">Nouvelle Information</a>
                                 {% endif %}
                             </div>
                             {% for post in infoposts %}

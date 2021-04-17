@@ -29,10 +29,10 @@
                     <li class="list-group-item mt-2" style="border-bottom: 0; padding-bottom: 0.3rem"><h1>{{ work.title }}</h1></li>
                     <li class="list-group-item" style="padding-top: 0.3rem; justify-content: left">
                         {% if user == work.author %}
-                            <a class="btn btn-outline-primary font-weight-600 mb-1" style="padding: 0.7rem;" href="{% url 'work-update' work.id %}">Modifier</a>
+                            <a class="btn btn-outline-primary font-weight-600 mb-1" style="padding: 0.7rem;" href="{% url 'work-update' work.id %}" name="update-work">Modifier</a>
                         {% endif %}
                         {% if user == work.author or user.is_superuser or user.is_staff %}
-                            <a class="btn btn-outline-danger font-weight-600 ml-1 mb-1" style="padding: 0.7rem;" href="{% url 'work-delete' work.id %}">Supprimer</a>
+                            <a class="btn btn-outline-danger font-weight-600 ml-1 mb-1" style="padding: 0.7rem;" href="{% url 'work-delete' work.id %}" name="delete-work">Supprimer</a>
                         {% endif %}
                     </li>
                     <li class="list-group-item">Catégorie : {{ work.get_categories_display }}<i class="fas fa-tools fa-fw text-gray-400"></i></li>
@@ -100,7 +100,7 @@
                         <!-- Form Row-->
                         <fieldset class="form-group mb-5">
                             {{ form|crispy }}
-                            <button class="btn btn-primary font-weight-bolder" type="submit" name="action" value="comment">PUBLIER</button>
+                            <button class="btn btn-primary font-weight-bolder" type="submit" name="action" value="comment" name="send">PUBLIER</button>
                         </fieldset>
                     </form>
                     {% for comment in page_obj.object_list %}
@@ -111,10 +111,10 @@
                                 <div class="post-archive-meta-details-date">{{ comment.date_posted }}</div>
                             </div>
                             {% if user == comment.author %}
-                                <a class="btn btn-outline-primary font-weight-500" style="padding: 0.6rem;" href="{% url 'workcomment-update' comment.id %}">modifier</a>
+                                <a class="btn btn-outline-primary font-weight-500" style="padding: 0.6rem;" href="{% url 'workcomment-update' comment.id %}" name="update-comment">modifier</a>
                             {% endif %}
                             {% if user == comment.author or user.is_superuser or user.is_staff %}
-                                <a class="btn btn-outline-danger font-weight-500 ml-1" style="padding: 0.6rem;" href="{% url 'workcomment-delete' comment.id %}?next={{ request.path }}">supprimer</a>
+                                <a class="btn btn-outline-danger font-weight-500 ml-1" style="padding: 0.6rem;" href="{% url 'workcomment-delete' comment.id %}?next={{ request.path }}" name="delete-comment">supprimer</a>
                             {% endif %}
                         </div>
                         <div class="post-archive-item mt-3">
