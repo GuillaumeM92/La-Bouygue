@@ -40,6 +40,7 @@ def activity_detail(request, pk):
             new_comment.author = author
             # Save the comment to the database
             new_comment.save()
+        form = ActivityCommentForm()
     else:
         form = ActivityCommentForm()
 

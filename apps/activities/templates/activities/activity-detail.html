@@ -29,6 +29,13 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-lg-4 mr-auto p-2">
+                                    <ul class="list-group list-group-flush list-group-careers">
+                                        <li class="list-group-item">Difficulté : {{ activity.get_difficulty_display }}<i class="fas fa-calendar fa-fw text-gray-400"></i></li>
+                                        <li class="list-group-item">Durée : {{ activity.duration }} €<i class="fas fa-euro-sign fa-fw text-gray-400"></i></li>
+                                        <li class="list-group-item">Temps de route : {{ activity.distance }}<i class="fas fa-clock fa-fw text-gray-400"></i></li>
+                                    </ul>
+                                </div>
                                 <img class="img-fluid rounded mx-auto d-block mb-2" src="{{ activity.image.url }}" />
                                 <div class="single-post-text my-5 ml-3">
                                     <h4>Description</h4>
