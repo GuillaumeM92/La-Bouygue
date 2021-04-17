@@ -56,9 +56,11 @@ def delete_reservation(request):
     mydata = json.loads(request.body)
     reservation_id = mydata['id']
     reservation = Reservation.objects.filter(id=reservation_id)
-    reservation.delete()
-    messages.success(request, str("Votre réservation a bien été supprimée !"))
-    return JsonResponse(serializers.serialize('json', reservation), safe=False)
+    user = request.user
+    if user == reservation.first().user or user.is_superuser or user.is_staff:
+        reservation.first().delete()
+        messages.success(request, str("Votre réservation a bien été supprimée !"))
+        return JsonResponse(serializers.serialize('json', reservation), safe=False)
 
 
 @login_required

@@ -146,7 +146,6 @@ class WorkDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             or self.request.user.is_superuser
             or self.request.user.has_perm("work.delete_work")
         ):
-            # messages.success(self.request, str("La discussion a bien été supprimée."))
             return True
         return False
 
@@ -172,7 +171,6 @@ class WorkCommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView)
     model = WorkComment
     template_name = 'work/workcomment-delete.html'
     context_object_name = 'comment'
-    success_url = '/work/'
 
     def get_success_url(self):
         next_url = self.request.GET.get('next')
@@ -183,7 +181,6 @@ class WorkCommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView)
 
     def test_func(self):
         work = self.get_object()
-        if self.request.user == work.author or self.request.user.has_perm('work.delete_comment'):
-            # messages.success(self.request, str("Le commentaire a bien été supprimé."))
+        if self.request.user == work.author or self.request.user.is_superuser or self.request.user.is_staff:
             return True
         return False

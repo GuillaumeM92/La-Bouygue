@@ -104,7 +104,7 @@ class ActivityDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def test_func(self):
         activity = self.get_object()
-        if self.request.user == activity.author or self.request.user.is_superuser or self.request.user.has_perm('activities.delete_activity'):
+        if self.request.user == activity.author or self.request.user.is_superuser or self.request.user.is_staff:
             return True
         return False
 
@@ -140,6 +140,6 @@ class ActivityCommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteV
 
     def test_func(self):
         activity = self.get_object()
-        if self.request.user == activity.author or self.request.user.has_perm('activities.delete_comment'):
+        if self.request.user == activity.author or self.request.user.is_superuser or self.request.user.is_staff:
             return True
         return False

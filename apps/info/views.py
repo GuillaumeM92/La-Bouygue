@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib import messages
@@ -9,6 +9,7 @@ from .models import InfoPost, InfoComment
 from .forms import InfoCommentForm
 from django.core.paginator import Paginator
 from django.core.mail import send_mail
+from django.http import HttpResponseNotFound
 
 
 class InfoPostListView(LoginRequiredMixin, ListView):
@@ -107,8 +108,7 @@ class InfoPostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def test_func(self):
         post = self.get_object()
-        if self.request.user == post.author or self.request.user.is_superuser or self.request.user.has_perm('info.delete_infopost'):
-            # messages.success(self.request, str("La discussion a bien été supprimée."))
+        if self.request.user == post.author or self.request.user.is_superuser or self.request.user.is_staff:
             return True
         return False
 
@@ -134,7 +134,6 @@ class InfoCommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView)
     model = InfoComment
     template_name = 'info/infocomment-delete.html'
     context_object_name = 'comment'
-    success_url = '/info/'
 
     def get_success_url(self):
         next_url = self.request.GET.get('next')
@@ -145,8 +144,7 @@ class InfoCommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView)
 
     def test_func(self):
         info = self.get_object()
-        if self.request.user == info.author or self.request.user.has_perm('info.delete_comment'):
-            # messages.success(self.request, str("Le commentaire a bien été supprimé."))
+        if self.request.user == info.author or self.request.user.is_superuser or self.request.user.is_staff:
             return True
         return False
 
@@ -164,13 +162,17 @@ class ActivateUsersListView(LoginRequiredMixin, ListView):
         return context
 
     def post(self, request, *args, **kwargs):
-        if request.method == 'POST':
-            user_id = request.POST['action']
-            user = MyUser.objects.get(id=user_id)
-            user.is_active = True
-            user.save()
-            user_email = user.email
-            send_mail("La Bouygue - Compte Activé",
-                      "Votre compte La Bouygue vient d'être activé. Vous pouvez désormais vous connecter en cliquant sur le lien suivant : https://labouygue.com/login/",
-                      None, [user_email], fail_silently=True, )
-        return super().get(request, *args, **kwargs)
+        if self.request.user.is_superuser or self.request.user.is_staff:
+            if request.method == 'POST':
+                user_id = request.POST['action']
+                user = MyUser.objects.get(id=user_id)
+                user.is_active = True
+                user.save()
+                user_email = user.email
+                send_mail("La Bouygue - Compte Activé",
+                        "Votre compte La Bouygue vient d'être activé. Vous pouvez désormais vous connecter en cliquant sur le lien suivant : https://labouygue.com/login/",
+                        None, [user_email], fail_silently=True, )
+                messages.success(self.request, str("Utilisateur activé !"))
+            return super().get(request, *args, **kwargs)
+        else:
+            return render(request, 'errors/error-403.html', status=403)

@@ -105,8 +105,7 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def test_func(self):
         post = self.get_object()
-        if self.request.user == post.author or self.request.user.is_superuser or self.request.user.has_perm('blog.delete_post'):
-            # messages.success(self.request, str("La discussion a bien été supprimée."))
+        if self.request.user == post.author or self.request.user.is_superuser or self.request.user.is_staff:
             return True
         return False
 
@@ -142,6 +141,6 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def test_func(self):
         post = self.get_object()
-        if self.request.user == post.author or self.request.user.has_perm('blog.delete_comment'):
+        if self.request.user == post.author or self.request.user.is_superuser or self.request.user.is_staff:
             return True
         return False
