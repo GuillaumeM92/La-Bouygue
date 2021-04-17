@@ -21752,7 +21752,7 @@ section {
   margin-right: 0.5rem;
 }
 
-.post-archive-meta2 .post-archive-meta-img {
+.post-archive-meta2 .post-archive-meta2-img {
   height: 3rem;
   width: 3rem;
   border-radius: 100%;
@@ -21772,7 +21772,7 @@ section {
 }
 
 @media (max-width: 600px) {
-  .post-archive-meta2 .post-archive-meta-img {
+  .post-archive-meta2 .post-archive-meta2-img {
   height: 2.25rem;
   width: 2.25rem;
   border-radius: 100%;
