@@ -9,7 +9,7 @@
                 <div class="container" style="padding-left: 1.5rem; padding-right: 1.5rem;">
                     <div class="row justify-content-center">
                         <div class="col-lg-12 col-xl-10">
-                            <div class="post-archive-tag d-flex" style="margin-bottom: 2rem;">
+                            <div class="post-archive-tag d-flex">
                                 <a class="btn btn-outline-primary font-weight-bolder" href="{% url 'activities' %}" title="retour"><i class="fas fa-chevron-left dropdown-arrow"></i></a>
                                 {% if user == activity.author %}
                                 <a class="btn btn-outline-primary font-weight-700 ml-1" href="{% url 'activity-update' activity.id %}">Modifier</a>
@@ -19,36 +19,34 @@
                                 {% endif %}
                             </div>
 
-                            <div class="single-post">
-                                <h1 class="mb-5">{{ activity.title }}</h1>
-                                <div class="col-lg-4 mr-auto p-2">
-                                    <ul class="list-group list-group-flush list-group-careers">
-                                        <li class="list-group-item">Difficulté : {{ activity.get_difficulty_display }}<i class="fas fa-hiking fa-fw text-gray-400"></i></li>
-                                        <li class="list-group-item">Durée : {{ activity.duration }}<i class="fas fa-euro-sign fa-clock text-gray-400"></i></li>
-                                        <li class="list-group-item">Temps de route : {{ activity.distance }}<i class="fas fa-car fa-fw text-gray-400"></i></li>
-                                    </ul>
-                                </div>
-                                <img class="img-fluid rounded mx-auto d-block mb-2" src="{{ activity.image.url }}" />
-                                <div class="single-post-text my-5 ml-3">
-                                    <h4>Description</h4>
-                                        <p>{{ activity.content }}</p>
-                                        {% if activity.image2 %}
-                                            <img class="img-fluid rounded mx-auto d-block mb-2" src="{{ activity.image2.url }}" />
-                                        {% endif %}
-                                    <h4>Précisions</h4>
-                                        <p>{{ activity.content2 }}</p>
-                                </div>
-                                <div class="align-items-center justify-content-between d-flex">
-                                    <div class="post-archive-meta mt-2 ml-auto">
-                                        <a href="{% url 'user-activities' activity.author.surname activity.author.name %}"><img class="post-archive-meta-img" src="{{ activity.author.profile.image.url }}" />
-                                        <div class="post-archive-meta-details p-2">
-                                            <div class="post-archive-meta-details-name">{{ activity.author.surname }} {{ activity.author.name }}</div></a>
-                                            <div class="post-archive-meta-details-date">{{ activity.date_posted }}</div>
-                                        </div>
+                            <h1>{{ activity.title }}</h1>
+                            <div class="col-lg-4 mr-auto p-2">
+                                <ul class="list-group list-group-flush list-group-careers">
+                                    <li class="list-group-item">Difficulté : {{ activity.get_difficulty_display }}<i class="fas fa-hiking fa-fw text-gray-400"></i></li>
+                                    <li class="list-group-item">Durée : {{ activity.duration }}<i class="fas fa-euro-sign fa-clock text-gray-400"></i></li>
+                                    <li class="list-group-item">Temps de route : {{ activity.distance }}<i class="fas fa-car fa-fw text-gray-400"></i></li>
+                                </ul>
+                            </div>
+                            <img class="img-fluid rounded mx-auto d-block mb-2" src="{{ activity.image.url }}" />
+                            <div class="single-post-text my-5 ml-3">
+                                <h4>Description</h4>
+                                    <p>{{ activity.content }}</p>
+                                    {% if activity.image2 %}
+                                        <img class="img-fluid rounded mx-auto d-block mb-2" src="{{ activity.image2.url }}" />
+                                    {% endif %}
+                                <h4>Précisions</h4>
+                                    <p>{{ activity.content2 }}</p>
+                            </div>
+                            <div class="align-items-center justify-content-between d-flex">
+                                <div class="post-archive-meta mt-2 ml-auto">
+                                    <a href="{% url 'user-activities' activity.author.surname activity.author.name %}"><img class="post-archive-meta-img" src="{{ activity.author.profile.image.url }}" />
+                                    <div class="post-archive-meta-details p-2">
+                                        <div class="post-archive-meta-details-name">{{ activity.author.surname }} {{ activity.author.name }}</div></a>
+                                        <div class="post-archive-meta-details-date">{{ activity.date_posted }}</div>
                                     </div>
                                 </div>
-                                <hr class="my-4 mb-5" />
                             </div>
+                            <hr class="my-4 mb-5" />
                         </div>
                         <!-- Comment Section -->
                         <div class="col-lg-10 bg-gray-200 rounded mb-10">
