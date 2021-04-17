@@ -21745,6 +21745,51 @@ section {
   line-height: 1;
   }
 }
+
+.post-archive-meta2 {
+  display: flex;
+  align-items: top;
+  margin-right: 0.5rem;
+}
+
+.post-archive-meta2 .post-archive-meta-img {
+  height: 3rem;
+  width: 3rem;
+  border-radius: 100%;
+  margin-right: 0.5rem;
+  flex-shrink: 0;
+}
+
+.post-archive-meta2 .post-archive-meta-details .post-archive-meta-details-name {
+  font-size: 1rem;
+  line-height: 1.2;
+  margin-bottom: 0.3rem;
+}
+
+.post-archive-meta2 .post-archive-meta-details .post-archive-meta-details-date {
+  font-size: 0.9rem;
+  line-height: 1.2;
+}
+
+@media (max-width: 600px) {
+  .post-archive-meta2 .post-archive-meta-img {
+  height: 2.25rem;
+  width: 2.25rem;
+  border-radius: 100%;
+  margin-right: 0.5rem;
+  flex-shrink: 0;
+  }
+.post-archive-meta2 .post-archive-meta-details .post-archive-meta-details-name {
+  font-size: 0.9rem;
+  line-height: 1;
+  margin-bottom: 0.25rem;
+  }
+.post-archive-meta2 .post-archive-meta-details .post-archive-meta-details-date {
+  font-size: 0.75rem;
+  line-height: 1;
+  }
+}
+
 .single-post .single-post-meta {
   display: flex;
   align-items: center;
