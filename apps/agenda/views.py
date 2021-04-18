@@ -25,7 +25,7 @@ def show_agenda(request):
                 if id == 0:
                     messages.success(request, str("Votre réservation a été créée avec succès !"))
                 else:
-                    messages.success(request, str("Votre réservation a été modifiée avec succès !"))
+                    messages.success(request, str("La réservation a été modifiée avec succès !"))
                 form = ReservationForm()
             except (IndexError, ValidationError):
                 messages.error(request, str("LE FORMAT DE LA DATE EST INVALIDE ! MERCI DE RÉESSAYER."))
@@ -59,7 +59,7 @@ def delete_reservation(request):
     user = request.user
     if user == reservation.first().user or user.is_superuser or user.is_staff:
         reservation.first().delete()
-        messages.success(request, str("Votre réservation a bien été supprimée !"))
+        messages.success(request, str("La réservation a bien été supprimée !"))
         return JsonResponse(serializers.serialize('json', reservation), safe=False)
 
 
