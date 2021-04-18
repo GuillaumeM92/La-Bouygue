@@ -1,6 +1,6 @@
 {% load crispy_forms_tags %}
 <!-- Reservation modal -->
-<button class="btn btn-teal btn-block text-center mb-2 font-weight-bolder" type="button" data-toggle="modal" data-target="#staticBackdrop">AJOUTER UNE RÉSERVATION</button>
+<button class="btn btn-teal btn-block text-center mb-2 font-weight-bolder" type="button" data-toggle="modal" data-target="#staticBackdrop" name="new">AJOUTER UNE RÉSERVATION</button>
 <div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -22,7 +22,7 @@
                     </fieldset>
                     <!-- Form Group (create account submit)-->
                     <div class="modal-footer form-group mb-0">
-                        <button class="btn btn-teal font-weight-bolder" type="submit">Valider ma réservation</button>
+                        <button class="btn btn-teal font-weight-bolder" type="submit" name="create">Valider ma réservation</button>
                     </div>
                 </form>
             </div>

@@ -79,10 +79,10 @@
                                         <div class="post-archive-meta-details-date">{{ comment.date_posted }}</div>
                                     </div>
                                     {% if user == comment.author %}
-                                        <a class="btn btn-outline-primary font-weight-500" style="padding: 0.6rem;" href="{% url 'activitycomment-update' comment.id %}" name="update-comment">modifier</a>
+                                        <a class="btn btn-outline-primary font-weight-500" style="padding: 0.6rem;" href="{% url 'activitycomment-update' comment.id %}" name="activitycomment-update">modifier</a>
                                     {% endif %}
                                     {% if user == comment.author or user.is_superuser or user.is_staff  %}
-                                        <a class="btn btn-outline-danger font-weight-500 ml-1" style="padding: 0.6rem;" href="{% url 'activitycomment-delete' comment.id %}?next={{ request.path }}" name="delete-comment">supprimer</a>
+                                        <a class="btn btn-outline-danger font-weight-500 ml-1" style="padding: 0.6rem;" href="{% url 'activitycomment-delete' comment.id %}?next={{ request.path }}" name="activitycomment-delete">supprimer</a>
                                     {% endif %}
                                 </div>
                                 <div class="post-archive-item mt-3">

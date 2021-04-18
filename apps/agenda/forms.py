@@ -4,7 +4,7 @@ from .models import Reservation
 
 class ReservationForm(forms.ModelForm):
     id = forms.CharField(required=False, widget = forms.HiddenInput())
-    name = forms.CharField(label='Titre', max_length=200, widget=forms.TextInput(attrs={'placeholder': 'par exemple : Famille Merle Guillaume'}))
+    name = forms.CharField(label='Nom', max_length=200, widget=forms.TextInput(attrs={'placeholder': 'par exemple : Famille Merle Guillaume'}))
     start_date = forms.DateTimeField(label='Date de début', widget=AdminDateWidget())
     end_date = forms.DateTimeField(label='Date de fin', widget=AdminDateWidget())
     description = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'par exemple : 10 jours à la Bouygue en famille'}))

@@ -12,6 +12,10 @@ from selenium.common import exceptions
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+
 import os
 import time
 
@@ -36,18 +40,6 @@ class UserStorySeleniumTest(LiveServerTestCase):
     def setUp(self):
         """Create and populate a testing database."""
         pass
-        # Category.objects.create(name="boisson")
-        # self.pepsi = Product.objects.create(id=1, name="pepsi", nutriscore="E")
-        # self.fanta = Product.objects.create(id=2, name="fanta", nutriscore="C")
-        # self.apple_juice = Product.objects.create(
-        #     id=3, name="jus de pomme", nutriscore="B"
-        # )
-
-        # self.products = Product.objects.all()
-        # self.category = Category.objects.first()
-
-        # for product in self.products:
-        #     product.categories.add(self.category)
 
     @classmethod
     def setUpClass(cls):
@@ -64,9 +56,9 @@ class UserStorySeleniumTest(LiveServerTestCase):
         # fill registration form
         self.selenium.get("%s%s" % (self.live_server_url, "/register/"))
         name_input = self.selenium.find_element_by_name("name")
-        name_input.send_keys("John")
+        name_input.send_keys("Doe")
         surname_input = self.selenium.find_element_by_name("surname")
-        surname_input.send_keys("Doe")
+        surname_input.send_keys("John")
         username_input = self.selenium.find_element_by_name("email")
         username_input.send_keys("test@email.com")
         password_input = self.selenium.find_element_by_name("password1")
@@ -108,6 +100,8 @@ class UserStorySeleniumTest(LiveServerTestCase):
         url = driver.current_url
         self.assertEqual(url, self.live_server_url + "/login/?next=/profile/")
 
+
+################################   BLOG   ##################################
     def test_add_post(self):
         # register and login
         self.test_register()
@@ -115,15 +109,14 @@ class UserStorySeleniumTest(LiveServerTestCase):
         # create blog post
         self.selenium.find_element_by_name("blog").click()
         self.selenium.find_element_by_name("new").click()
-        username_input = self.selenium.find_element_by_name("title")
-        username_input.send_keys("my title")
-        password_input = self.selenium.find_element_by_name("content")
-        password_input.send_keys("my content")
+        title_input = self.selenium.find_element_by_name("title")
+        title_input.send_keys("my title")
+        content_input = self.selenium.find_element_by_name("content")
+        content_input.send_keys("my content")
         self.selenium.find_element_by_name("create").click()
         # check if post is created
         post = Post.objects.first()
-        post_title = post.title
-        self.assertEqual("my title", post_title)
+        self.assertEqual("my title", post.title)
 
     def test_update_post(self):
         # register, login and create blog post
@@ -137,8 +130,7 @@ class UserStorySeleniumTest(LiveServerTestCase):
         self.selenium.find_element_by_name("update").click()
         # check if post is updated
         post = Post.objects.first()
-        post_new_title = post.title
-        self.assertEqual("my title is updated", post_new_title)
+        self.assertEqual("my title is updated", post.title)
 
     def test_delete_post(self):
         # register, login and create blog post
@@ -160,8 +152,7 @@ class UserStorySeleniumTest(LiveServerTestCase):
         # check if comment is created
         post = Post.objects.first()
         comment = post.comment_set.first()
-        comment_content = comment.content
-        self.assertEqual("my comment", comment_content)
+        self.assertEqual("my comment", comment.content)
 
     def test_update_comment(self):
         # register, login and create blog comment
@@ -174,8 +165,7 @@ class UserStorySeleniumTest(LiveServerTestCase):
         # check if comment is updated
         post = Post.objects.first()
         comment = post.comment_set.first()
-        comment_new_content = comment.content
-        self.assertEqual("my comment is updated", comment_new_content)
+        self.assertEqual("my comment is updated", comment.content)
 
     def test_delete_comment(self):
         # register, login and create blog comment
@@ -187,3 +177,291 @@ class UserStorySeleniumTest(LiveServerTestCase):
         post = Post.objects.first()
         comment = post.comment_set.all()
         self.assertEqual(0, len(comment))
+
+
+################################   INFO   ##################################
+    def test_add_infopost(self):
+        # register and login
+        self.test_register()
+        self.test_login()
+        # make user admin
+        user = MyUser.objects.first()
+        user.is_staff = True
+        # breakpoint()
+        user.save()
+        # create infopost
+        self.selenium.find_element_by_name("info").click()
+        self.selenium.find_element_by_name("new").click()
+        title_input = self.selenium.find_element_by_name("title")
+        title_input.send_keys("my title")
+        content_input = self.selenium.find_element_by_name("content")
+        content_input.send_keys("my content")
+        self.selenium.find_element_by_name("create").click()
+        # check if infopost is created
+        infopost = InfoPost.objects.first()
+        self.assertEqual("my title", infopost.title)
+
+    def test_update_infopost(self):
+        # register, login and create blog infopost
+        self.test_add_infopost()
+        # update infopost
+        self.selenium.find_element_by_name("update-infopost").click()
+        title_input = self.selenium.find_element_by_name("title")
+        title_input.send_keys(" is updated")
+        content_input = self.selenium.find_element_by_name("content")
+        content_input.send_keys(" is updated")
+        self.selenium.find_element_by_name("update").click()
+        # check if infopost is updated
+        infopost = InfoPost.objects.first()
+        self.assertEqual("my title is updated", infopost.title)
+
+    def test_delete_infopost(self):
+        # register, login and create blog infopost
+        self.test_add_infopost()
+        # delete infopost
+        self.selenium.find_element_by_name("delete-infopost").click()
+        self.selenium.find_element_by_name("delete").click()
+        # check if infopost is deleted
+        infopost = InfoPost.objects.all()
+        self.assertEqual(0, len(infopost))
+
+    def test_add_infocomment(self):
+        # register, login and create blog infopost
+        self.test_add_infopost()
+        # create infocomment
+        infocomment_input = self.selenium.find_element_by_name("content")
+        infocomment_input.send_keys("my infocomment")
+        self.selenium.find_element_by_name("send").click()
+        # check if infocomment is created
+        infopost = InfoPost.objects.first()
+        infocomment = infopost.infocomment_set.first()
+        self.assertEqual("my infocomment", infocomment.content)
+
+    def test_update_infocomment(self):
+        # register, login and create blog infocomment
+        self.test_add_infocomment()
+        # update infocomment
+        self.selenium.find_element_by_name("infocomment-update").click()
+        content_input = self.selenium.find_element_by_name("content")
+        content_input.send_keys(" is updated")
+        self.selenium.find_element_by_name("update").click()
+        # check if infocomment is updated
+        infopost = InfoPost.objects.first()
+        infocomment = infopost.infocomment_set.first()
+        self.assertEqual("my infocomment is updated", infocomment.content)
+
+    def test_delete_infocomment(self):
+        # register, login and create blog infocomment
+        self.test_add_infocomment()
+        # delete infocomment
+        self.selenium.find_element_by_name("infocomment-delete").click()
+        self.selenium.find_element_by_name("delete").click()
+        # check if infocomment is deleted
+        infopost = InfoPost.objects.first()
+        infocomment = infopost.infocomment_set.all()
+        self.assertEqual(0, len(infocomment))
+
+
+################################   ACTIVITIES   ##################################
+    def test_add_activity(self):
+        # register and login
+        self.test_register()
+        self.test_login()
+        # create activity
+        self.selenium.find_element_by_name("activities").click()
+        self.selenium.find_element_by_name("new").click()
+        title_input = self.selenium.find_element_by_name("title")
+        title_input.send_keys("my title")
+        content_input = self.selenium.find_element_by_name("content")
+        content_input.send_keys("my content")
+        content2_input = self.selenium.find_element_by_name("content2")
+        content2_input.send_keys("my content2")
+        duration_input = self.selenium.find_element_by_name("duration")
+        duration_input.send_keys("1h")
+        distance_input = self.selenium.find_element_by_name("distance")
+        distance_input.send_keys("15mn")
+        self.selenium.find_element_by_name("create").click()
+        # check if activity is created
+        activity = Activity.objects.first()
+        self.assertEqual("my title", activity.title)
+
+    def test_update_activity(self):
+        # register, login and create activity
+        self.test_add_activity()
+        # update activity
+        self.selenium.find_element_by_name("update-activity").click()
+        title_input = self.selenium.find_element_by_name("title")
+        title_input.send_keys(" is updated")
+        content_input = self.selenium.find_element_by_name("content")
+        content_input.send_keys(" is updated")
+        self.selenium.find_element_by_name("update").click()
+        # check if activity is updated
+        activity = Activity.objects.first()
+        self.assertEqual("my title is updated", activity.title)
+
+    def test_delete_activity(self):
+        # register, login and create activity
+        self.test_add_activity()
+        # delete activity
+        self.selenium.find_element_by_name("delete-activity").click()
+        self.selenium.find_element_by_name("delete").click()
+        # check if activity is deleted
+        activity = Activity.objects.all()
+        self.assertEqual(0, len(activity))
+
+    def test_add_activitycomment(self):
+        # register, login and create activity
+        self.test_add_activity()
+        # create comment
+        comment_input = self.selenium.find_element_by_name("content")
+        comment_input.send_keys("my comment")
+        self.selenium.find_element_by_name("send").click()
+        # check if comment is created
+        activity = Activity.objects.first()
+        comment = activity.activitycomment_set.first()
+        self.assertEqual("my comment", comment.content)
+
+    def test_update_activitycomment(self):
+        # register, login and create activity comment
+        self.test_add_activitycomment()
+        # update comment
+        self.selenium.find_element_by_name("activitycomment-update").click()
+        content_input = self.selenium.find_element_by_name("content")
+        content_input.send_keys(" is updated")
+        self.selenium.find_element_by_name("update").click()
+        # check if comment is updated
+        activity = Activity.objects.first()
+        comment = activity.activitycomment_set.first()
+        self.assertEqual("my comment is updated", comment.content)
+
+    def test_delete_activitycomment(self):
+        # register, login and create activity comment
+        self.test_add_activitycomment()
+        # delete comment
+        self.selenium.find_element_by_name("activitycomment-delete").click()
+        self.selenium.find_element_by_name("delete").click()
+        # check if comment is deleted
+        activity = Activity.objects.first()
+        comment = activity.activitycomment_set.all()
+        self.assertEqual(0, len(comment))
+
+
+################################   WORK   ##################################
+    def test_add_work(self):
+        # register and login
+        self.test_register()
+        self.test_login()
+        # create work
+        self.selenium.find_element_by_name("work").click()
+        self.selenium.find_element_by_name("new").click()
+        title_input = self.selenium.find_element_by_name("title")
+        title_input.send_keys("my title")
+        content_input = self.selenium.find_element_by_name("content")
+        content_input.send_keys("my content")
+        cost_input = self.selenium.find_element_by_name("cost")
+        cost_input.send_keys("15")
+        self.selenium.find_element_by_name("create").click()
+        # check if work is created
+        work = Work.objects.first()
+        self.assertEqual("my title", work.title)
+
+    def test_update_work(self):
+        # register, login and create work
+        self.test_add_work()
+        # update work
+        self.selenium.find_element_by_name("update-work").click()
+        title_input = self.selenium.find_element_by_name("title")
+        title_input.send_keys(" is updated")
+        content_input = self.selenium.find_element_by_name("content")
+        content_input.send_keys(" is updated")
+        self.selenium.find_element_by_name("update").click()
+        # check if work is updated
+        work = Work.objects.first()
+        self.assertEqual("my title is updated", work.title)
+
+    def test_delete_work(self):
+        # register, login and create work
+        self.test_add_work()
+        # delete work
+        self.selenium.find_element_by_name("delete-work").click()
+        self.selenium.find_element_by_name("delete").click()
+        # check if work is deleted
+        work = Work.objects.all()
+        self.assertEqual(0, len(work))
+
+    def test_add_workcomment(self):
+        # register, login and create work
+        self.test_add_work()
+        # create comment
+        comment_input = self.selenium.find_element_by_name("content")
+        comment_input.send_keys("my comment")
+        self.selenium.find_element_by_xpath('//*[@id="layoutDefault"]/div[2]/section/div[1]/div/div[3]/div/form/fieldset/button').click()
+        # check if comment is created
+        work = Work.objects.first()
+        comment = work.workcomment_set.first()
+        self.assertEqual("my comment", comment.content)
+
+    def test_update_workcomment(self):
+        # register, login and create work comment
+        self.test_add_workcomment()
+        # update comment
+        self.selenium.find_element_by_name("workcomment-update").click()
+        content_input = self.selenium.find_element_by_name("content")
+        content_input.send_keys(" is updated")
+        self.selenium.find_element_by_name("update").click()
+        # check if comment is updated
+        work = Work.objects.first()
+        comment = work.workcomment_set.first()
+        self.assertEqual("my comment is updated", comment.content)
+
+    def test_delete_workcomment(self):
+        # register, login and create work comment
+        self.test_add_workcomment()
+        # delete comment
+        self.selenium.find_element_by_name("workcomment-delete").click()
+        self.selenium.find_element_by_name("delete").click()
+        # check if comment is deleted
+        work = Work.objects.first()
+        comment = work.workcomment_set.all()
+        self.assertEqual(0, len(comment))
+
+    def test_work_done(self):
+        # register, login and create work
+        self.test_add_work()
+        # click work completed button
+        self.selenium.find_element_by_name("action").click()
+        # check if work status has changed
+        work = Work.objects.first()
+        self.assertEqual("Terminé", work.get_state_display())    # here 2 is equivalent to a completed work, value was set to 0 on creation
+
+    def test_comment_posted_on_work_done(self):
+        # register, login and create work
+        self.test_add_work()
+        # click work completed button
+        self.selenium.find_element_by_name("action").click()
+        # check if work done comment was posted
+        work = Work.objects.first()
+        comment = work.workcomment_set.first()
+        self.assertEqual("John Doe vient de signaler qu'il a terminé ce travail.", comment.content)
+
+
+################################   AGENDA   ##################################
+    def test_add_reservation(self):
+        # register and login
+        self.test_register()
+        self.test_login()
+        # create reservation
+        self.selenium.find_element_by_name("calendar").click()
+        self.selenium.find_element_by_name("new").click()
+        name_input = self.selenium.find_element_by_name("name")
+        name_input.send_keys("my name")
+        start_date_input = self.selenium.find_element_by_name("start_date")
+        start_date_input.send_keys("18/04/2021")
+        end_date_input = self.selenium.find_element_by_name("end_date")
+        end_date_input.send_keys("23/04/2021")
+        description_input = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="id_description"]')))
+        description_input.send_keys("my description")
+        self.selenium.find_element_by_name("create").click()
+        # check if reservation is created
+        reservation = Reservation.objects.first()
+        self.assertEqual("my name", reservation.name)
