@@ -11,6 +11,5 @@ urlpatterns = [
     path('info/<int:pk>/delete/', InfoPostDeleteView.as_view(), name='infopost-delete'),
     path('info/comment/<int:pk>/update/', InfoCommentUpdateView.as_view(), name='infocomment-update'),
     path('info/comment/<int:pk>/delete/', InfoCommentDeleteView.as_view(), name='infocomment-delete'),
-     # Admin view to activate new users accounts
-    path("admin/activate/", ActivateUsersListView.as_view(), name='activate-users'),
+    path('admin/activate/', ActivateUsersListView.as_view(), name='activate-users'),
 ]

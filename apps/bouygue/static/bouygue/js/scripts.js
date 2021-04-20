@@ -64,7 +64,6 @@
 
 })(jQuery);
 
-console.log($(location).attr('href'));
 if ($(location).attr('href').includes('from=https://guillaume-merle.herokuapp.com')) {
     $('#id_username').val($('#id_username').val() + 'testuser@email.com');
     $('#id_password').val($('#id_password').val() + 'Test123.');
