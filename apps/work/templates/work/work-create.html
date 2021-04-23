@@ -5,7 +5,7 @@
 {% block import %}
     {% include 'blocks/image-resize-imports.html' %}
 {% endblock %}
-<div id="layoutAuthentication_content" class="bg-img-cover" style="background-color: #1e2c41; padding-right: 0.5rem; padding-left: 0.5rem; background-image: url({% static 'bouygue/assets/img/backgrounds/montagne/piejau.jpg' %});">
+<div id="layoutAuthentication_content" class="bg-gray-900 bg-img-cover" style="padding-right: 0.5rem; padding-left: 0.5rem; background-image: url({% static 'bouygue/assets/img/backgrounds/montagne/piejau.jpg' %});">
     <div class="container" style="padding-right: 1rem; padding-left: 1rem;">
         <div class="row justify-content-center">
             <div class="col-lg-9">
@@ -19,7 +19,7 @@
                     </div>
                     <div class="card-body">
                         <!-- Post create form-->
-                        <form method="POST" enctype="multipart/form-data">
+                        <form method="POST">
                             {% csrf_token %}
                             <!-- Form Row-->
                             <fieldset class="form-group">

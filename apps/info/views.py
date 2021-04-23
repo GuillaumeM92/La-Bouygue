@@ -3,13 +3,11 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib import messages
-from django.contrib.auth.models import Permission
 from apps.users.models import MyUser
 from .models import InfoPost, InfoComment
 from .forms import InfoCommentForm
 from django.core.paginator import Paginator
 from django.core.mail import send_mail
-from django.http import HttpResponseNotFound
 from client_side_image_cropping import ClientsideCroppingWidget
 
 

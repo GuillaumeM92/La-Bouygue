@@ -1,11 +1,9 @@
-import json
 from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from .models import Work
-from apps.users.models import MyUser
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib import messages
+from apps.users.models import MyUser
 from .models import Work, WorkComment
 from .forms import WorkCommentForm
 from django.core.paginator import Paginator
@@ -47,6 +45,17 @@ class WorkDoneListView(LoginRequiredMixin, ListView):
         context["masonry_done"] = Work.objects.filter(categories=3).filter(state=2)
         context["other_done"] = Work.objects.filter(categories=4).filter(state=2)
         return context
+
+
+class UserWorkListView(LoginRequiredMixin, ListView):
+    model = Work
+    template_name = "work/user-work.html"
+    context_object_name = "works"
+    paginate_by = 4
+
+    def get_queryset(self):
+        user = get_object_or_404(MyUser, name=self.kwargs.get("name"), surname=self.kwargs.get("surname"))
+        return Work.objects.filter(author=user).order_by("-date_posted")
 
 
 @login_required()
@@ -92,21 +101,10 @@ def work_detail(request, pk):
     return render(request, template_name, {'title': 'Tâche', 'work': work, 'form': form, 'page_obj': page_obj, 'comment_count': comment_count})
 
 
-class UserWorkListView(LoginRequiredMixin, ListView):
-    model = Work
-    template_name = "work/user-work.html"
-    context_object_name = "works"
-    paginate_by = 4
-
-    def get_queryset(self):
-        user = get_object_or_404(MyUser, name=self.kwargs.get("name"), surname=self.kwargs.get("surname"))
-        return Work.objects.filter(author=user).order_by("-date_posted")
-
-
 class WorkCreateView(LoginRequiredMixin, CreateView):
     model = Work
-    template_name = "work/work-create.html"
-    fields = ["title", "content", "image", "categories", "state", "status", "cost"]
+    template_name = 'work/work-create.html'
+    fields = ['title', 'content', 'categories', 'state', 'status', 'cost', 'image']
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)

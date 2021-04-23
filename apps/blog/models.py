@@ -10,7 +10,7 @@ class Post(models.Model):
     content = models.TextField(verbose_name= _('Contenu'))
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(MyUser, on_delete=models.CASCADE)
-    image = models.ImageField(blank=True, upload_to="blog/post")
+    image = models.ImageField(blank=True, upload_to="blog")
 
     def __str__(self):
         return self.title
@@ -24,7 +24,7 @@ class Comment(models.Model):
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    image = models.ImageField(blank=True, upload_to="blog/comments")
+    image = models.ImageField(blank=True, upload_to="comments")
 
     class Meta:
         ordering = ['-date_posted']

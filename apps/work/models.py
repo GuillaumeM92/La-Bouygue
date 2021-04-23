@@ -4,34 +4,33 @@ from django.db.models.deletion import CASCADE
 from django.utils import timezone
 from django.utils.translation import ugettext as _
 from apps.users.models import MyUser
-import datetime
 
 
 class Work(models.Model):
-    title = models.CharField(max_length=100, verbose_name=_("Titre"))
-    content = models.TextField(verbose_name=_("Description"))
-    image = models.ImageField(null=True, upload_to="work")
+    title = models.CharField(max_length=100, verbose_name=_('Titre'))
+    content = models.TextField(verbose_name= _('Description'))
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(MyUser, on_delete=models.CASCADE)
+    cost = models.SmallIntegerField(default=0, verbose_name=_("Coût estimé"))
+    image = models.ImageField(default="profile_default.jpg", upload_to="profile_pics")
     categories = models.SmallIntegerField(
-        default=0,
-        choices=[(0, "Bricolage"), (1, "Jardinage"), (2, "Plomberie"), (3, "Maçonnerie"), (4, "Autre")],
-        verbose_name=_("Catégories"),
-    )
+        default=0, choices=[(0, "Bricolage"),
+        (1, "Jardinage"), (2, "Plomberie"), (3, "Maçonnerie"), (4, "Autre")],
+        verbose_name=_("Catégories")
+        )
     state = models.SmallIntegerField(
         default=0,
         choices=[(0, "À faire"), (1, "En cours"), (2, "Terminé")],
-        verbose_name=_("État"),
-    )
+        verbose_name=_("État")
+        )
     status = models.SmallIntegerField(
         default=1,
         choices=[(0, "Peut attendre"), (1, "Important"), (2, "Urgent")],
-        verbose_name=_("Statut"),
-    )
-    cost = models.SmallIntegerField(default=0, verbose_name=_("Coût estimé"))
+        verbose_name=_("Statut")
+        )
 
-    class Meta:
-        ordering = ["-date_posted"]
+    # class Meta:
+    #     ordering = ["-date_posted"]
 
     def __str__(self):
         return self.title
@@ -45,7 +44,7 @@ class WorkComment(models.Model):
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     work = models.ForeignKey(Work, on_delete=models.CASCADE)
-    image = models.ImageField(null=True, upload_to="work/comments")
+    image = models.ImageField(null=True, upload_to="comments")
 
     class Meta:
         ordering = ['-date_posted']

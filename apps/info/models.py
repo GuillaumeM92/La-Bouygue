@@ -5,12 +5,13 @@ from django.utils import timezone
 from django.utils.translation import ugettext as _
 from apps.users.models import MyUser
 
+
 class InfoPost(models.Model):
-    title = models.CharField(max_length=100, verbose_name= _('Titre'))
+    title = models.CharField(max_length=100, verbose_name=_('Titre'))
     content = models.TextField(verbose_name= _('Contenu'))
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(MyUser, on_delete=models.CASCADE)
-    image = models.ImageField(blank=True, upload_to="info/post")
+    image = models.ImageField(blank=True, upload_to="info")
 
     def __str__(self):
         return self.title
@@ -23,7 +24,7 @@ class InfoComment(models.Model):
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     infopost = models.ForeignKey(InfoPost, on_delete=models.CASCADE)
-    image = models.ImageField(blank=True, upload_to="info/comment")
+    image = models.ImageField(blank=True, upload_to="comments")
 
     class Meta:
         ordering = ['-date_posted']
