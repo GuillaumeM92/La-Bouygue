@@ -3,8 +3,7 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import ugettext as _
 from django.contrib.auth.base_user import BaseUserManager
-from PIL import Image
-from django_resized import ResizedImageField
+# from PIL import Image
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -66,20 +65,20 @@ class MyUser(AbstractUser):
 
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    image = ResizedImageField(default="profile_default.jpg", size=[1024, 768], crop=['middle', 'center'], quality=75, upload_to="profile_pics")
+    image = models.ImageField(default="profile_default.jpg", upload_to="profile_pics")
 
     def __str__(self):
         return f"{self.user.email} Profile"
 
-    def save(self, *args, **kwargs):
-        super(Profile, self).save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     super(Profile, self).save(*args, **kwargs)
 
-        img = Image.open(self.image.path)
+    #     img = Image.open(self.image.path)
 
-        if img.height > 300 or img.width > 300:
-            output_size = (300, 300)
-            img.thumbnail(output_size)
-            img.save(self.image.path)
+    #     if img.height > 300 or img.width > 300:
+    #         output_size = (300, 300)
+    #         img.thumbnail(output_size)
+    #         img.save(self.image.path)
 
 
 @receiver(post_save, sender=MyUser)
