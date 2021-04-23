@@ -22,93 +22,18 @@
             {% endfor %}
         {% endif %}
 
-        {% block modal %}
-            {% include 'blocks/modal.html' %}
+        {% block reservation-modal %}
+            {% include 'blocks/reservation-modal.html' %}
         {% endblock %}
 
-        <!-- Hidden view reservation modal -->
-        <button hidden="hidden" class="btn" id="view-reservation-button" type="button" data-toggle="modal" data-target="#staticBackdrop3"></button>
-        <div class="modal fade" id="staticBackdrop3" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel">Réservation</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                    </div>
-                    <div class="modal-body">
-                    <!-- view reservation-->
-                        <h6 class="font-weight-bold mt-3">Titre :</h6>
-                            <hr class="mt-0" />
-                            <div id="view_name" class="mb-4"></div>
-                        <h6 class="font-weight-bold">Date de début :</h6>
-                            <hr class="mt-0" />
-                            <div id="view_start_date" class="mb-4"></div>
-                        <h6 class="font-weight-bold">Date de fin :</h6>
-                            <hr class="mt-0" />
-                            <div id="view_end_date" class="mb-4"></div>
-                        <h6 class="font-weight-bold">Description :</h6>
-                            <hr class="mt-0" />
-                            <div id="view_description" class="mb-4"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        {% block hidden-view-reservation-modal %}
+            {% include 'blocks/hidden-view-reservation-modal.html' %}
+        {% endblock %}
 
-        <!-- Hidden reservation modification modal -->
-        <button hidden="hidden" class="btn" id="modify-reservation-button" type="button" data-toggle="modal" data-target="#staticBackdrop2"></button>
-        <div class="modal fade" id="staticBackdrop2" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel">Réservation</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                    </div>
-                    <div class="modal-body">
-                    <!-- Registration form-->
-                        <form method="POST">
-                            {% csrf_token %}
-                            <!-- Form Row-->
-                            <fieldset class="form-group">
-                                {{ form.id|as_crispy_field }}
-                                {{ form.name|as_crispy_field }}
-                                {{ form.start_date|as_crispy_field }}
-                                {{ form.end_date|as_crispy_field }}
-                                {{ form.description|as_crispy_field }}
-                            </fieldset>
-                            <!-- Form Group (create account submit)-->
-                            <div class="modal-footer form-group mb-0">
+        {% block hidden-modify-reservation-modal %}
+            {% include 'blocks/hidden-modify-reservation-modal.html' %}
+        {% endblock %}
 
-                                <!-- Confirmation modal -->
-                                <button class="btn btn-outline-red font-weight-bolder" type="button" data-toggle="modal" data-target="#staticBackdrop4">Supprimer la réservation</button>
-                                <button class="btn btn-outline-teal font-weight-bolder" type="submit">Modifier la réservation</button>
-                                <div class="modal fade" id="staticBackdrop4" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-md" role="document">
-                                        <div class="modal-content bg-dark" style="margin-top: 20rem;">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title text-white" id="staticBackdropLabel">Attention</h5>
-                                                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                            </div>
-                                            <div class="modal-body text-white">
-                                                <p>Etes vous sûr de vouloir supprimer cette réservation ?</p>
-                                            <!-- Registration form-->
-                                                <form method="POST">
-                                                    {% csrf_token %}
-                                                    <!-- Form Row-->
-                                                    <fieldset class="form-group">
-                                                        <button class="btn btn-primary font-weight-bolder" data-dismiss="modal">Annuler</button>
-                                                        <button class="btn btn-red font-weight-bolder ml-1" type="button" id="delete-reservation">Supprimer</button>
-                                                    </fieldset>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
         <!-- Agenda-->
         <div id='calendar'></div>
     </div>

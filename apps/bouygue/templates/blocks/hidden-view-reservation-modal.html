@@ -1,0 +1,29 @@
+{% load static %}
+{% load crispy_forms_tags %}
+<!-- Hidden view reservation modal -->
+<button hidden="hidden" class="btn" id="view-reservation-button" type="button" data-toggle="modal" data-target="#staticBackdrop3"></button>
+<div class="modal fade" id="staticBackdrop3" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Réservation</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+            <!-- view reservation-->
+                <h6 class="font-weight-bold mt-3">Titre :</h6>
+                    <hr class="mt-0" />
+                    <div id="view_name" class="mb-4"></div>
+                <h6 class="font-weight-bold">Date de début :</h6>
+                    <hr class="mt-0" />
+                    <div id="view_start_date" class="mb-4"></div>
+                <h6 class="font-weight-bold">Date de fin :</h6>
+                    <hr class="mt-0" />
+                    <div id="view_end_date" class="mb-4"></div>
+                <h6 class="font-weight-bold">Description :</h6>
+                    <hr class="mt-0" />
+                    <div id="view_description" class="mb-4"></div>
+            </div>
+        </div>
+    </div>
+</div>

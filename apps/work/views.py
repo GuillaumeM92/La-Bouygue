@@ -104,7 +104,7 @@ def work_detail(request, pk):
 class WorkCreateView(LoginRequiredMixin, CreateView):
     model = Work
     template_name = 'work/work-create.html'
-    fields = ['title', 'content', 'categories', 'state', 'status', 'cost', 'image']
+    fields = ['title', 'content', 'image', 'categories', 'state', 'status', 'cost', ]
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
