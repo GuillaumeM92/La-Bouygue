@@ -54,7 +54,9 @@
                 {% endif %}
                 <h5 class="mb-4">Description</h5>
                 <p class="mb-4">{{ work.content }}</p>
-                {% if work.image %} <img src="{{ work.image.url }}" class="img-fluid"/> {% endif %}
+                {% if work.image %} <img src="{{ work.image.url }}" class="img-fluid"/>
+                {% else %} <img src="{% static 'bouygue/assets/img/activity_default.jpg' %}" class="img-fluid"/>
+                {% endif %}
                 <div class="d-flex align-items-center justify-content-between mt-3 mb-5">
                     <div class="post-archive-meta mr-4 ml-auto p-2">
                         <a href="{% url 'user-work' work.author.surname work.author.name %}"><img class="post-archive-meta-img" src="{{ work.author.profile.image.url }}"/>

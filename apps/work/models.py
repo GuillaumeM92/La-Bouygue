@@ -4,7 +4,6 @@ from django.db.models.deletion import CASCADE
 from django.utils import timezone
 from django.utils.translation import ugettext as _
 from apps.users.models import MyUser
-from PIL import Image
 import datetime
 
 

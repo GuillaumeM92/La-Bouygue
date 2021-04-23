@@ -59,7 +59,11 @@
                     {% if activities %}
                     <a class="card post-preview post-preview-featured lift mb-5" href="{% url 'activity-detail' activities.first.id %}">
                         <div class="row no-gutters">
-                            <div class="col-lg-5"><div class="post-preview-featured-img" style="background-image: url('{{ activities.first.image.url }}')"></div></div>
+                            {% if activities.first.image %}
+                                <div class="col-lg-5"><div class="post-preview-featured-img" style="background-image: url('{{ activities.first.image.url }}')"></div></div>
+                            {% else %}
+                                <div class="col-lg-5"><div class="post-preview-featured-img" style="background-image: url({% static 'bouygue/assets/img/activity_default.jpg' %})"></div></div>
+                            {% endif %}
                             <div class="col-lg-7">
                                 <div class="card-body-activities-first">
                                     <div class="py-4 card-body-activities">
@@ -85,7 +89,11 @@
                         {% for activity in activities|slice:"1:" %}
                             <div class="col-md-6 col-xl-4 mb-5">
                                 <a class="card post-preview lift h-100" href="{% url 'activity-detail' activity.id %}">
-                                <img class="card-img-top background-image" src="{{ activity.image.url }}" />
+                                    {% if activity.image %}
+                                        <img class="card-img-top background-image" src="{{ activity.image.url }}" />
+                                    {% else %}
+                                        <img class="card-img-top background-image" src="{% static 'bouygue/assets/img/activity_default.jpg' %}" />
+                                    {% endif %}
                                     <div class="card-body-activities">
                                         <h5 class="card-title">{{ activity.title }}</h5>
                                         <p class="card-text-2 mt-4">Difficulté : {{ activity.get_difficulty_display }}</p>

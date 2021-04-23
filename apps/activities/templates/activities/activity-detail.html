@@ -48,15 +48,19 @@
                                 </div>
                             </div>
                             <div class="single-post">
+                                {% if activity.image %}
                                 <img class="img-fluid rounded mx-auto d-block mb-2" src="{{ activity.image.url }}" />
+                                {% else %}
+                                <img class="img-fluid rounded mx-auto d-block mb-2" src="{% static 'bouygue/assets/img/activity_default.jpg' %}" />
+                                {% endif %}
                                 <div class="single-post-text my-5">
                                     <h4>Description</h4>
-                                        <p class="mb-5">{{ activity.content }}</p>
-                                        {% if activity.image2 %}
-                                            <img class="img-fluid rounded mx-auto d-block mb-2" src="{{ activity.image2.url }}" />
-                                        {% endif %}
+                                    <p class="mb-5">{{ activity.content }}</p>
+                                    {% if activity.image2 %}
+                                        <img class="img-fluid rounded mx-auto d-block mb-2" src="{{ activity.image2.url }}" />
+                                    {% endif %}
                                     <h4>Précisions</h4>
-                                        <p class="mb-5">{{ activity.content2 }}</p>
+                                    <p class="mb-5">{{ activity.content2 }}</p>
                                 </div>
                                 <hr class="my-4 mb-5" />
                             </div>
