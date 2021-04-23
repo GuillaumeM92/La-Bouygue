@@ -103,7 +103,7 @@
                                     </div>
                                 <div class="post-archive-item mt-3">
                                     <p>{{ comment.content }}</p>
-                                    <img src="{{ comment.image.url }}" />
+                                    {% if comment.image %} <img src="{{ comment.image.url }}" />    {% endif %}
                                 </div>
                                 <hr class="my-5" />
                             {% endfor %}
