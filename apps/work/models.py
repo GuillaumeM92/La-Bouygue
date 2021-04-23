@@ -12,7 +12,7 @@ class Work(models.Model):
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     cost = models.SmallIntegerField(default=0, verbose_name=_("Coût estimé"))
-    image = models.ImageField(default="profile_default.jpg", upload_to="profile_pics")
+    image = models.ImageField(blank=True, null=True, upload_to="work")
     categories = models.SmallIntegerField(
         default=0, choices=[(0, "Bricolage"),
         (1, "Jardinage"), (2, "Plomberie"), (3, "Maçonnerie"), (4, "Autre")],
