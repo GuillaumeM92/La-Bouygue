@@ -113,7 +113,7 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Comment
     template_name = 'blog/comment-update.html'
-    fields = ['content']
+    fields = ['content', 'image']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
