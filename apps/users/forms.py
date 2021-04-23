@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import Profile
 from captcha.fields import ReCaptchaField
+from client_side_image_cropping import ClientsideCroppingWidget
 
 User = get_user_model()
 
@@ -48,3 +49,11 @@ class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ["image"]
+        widgets = {
+            'cover_photo': ClientsideCroppingWidget(
+                width=400,
+                height=600,
+                preview_width=100,
+                preview_height=150,
+            )
+        }
