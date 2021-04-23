@@ -3,7 +3,6 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import ugettext as _
 from django.contrib.auth.base_user import BaseUserManager
-# from PIL import Image
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
