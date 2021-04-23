@@ -6,8 +6,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Activity, ActivityComment
-from .forms import ActivityCommentForm, ActivityCreateForm
+from .forms import ActivityCommentForm
 from django.core.paginator import Paginator
+from client_side_image_cropping import ClientsideCroppingWidget
 
 
 class ActivityListView(LoginRequiredMixin, ListView):
@@ -69,8 +70,24 @@ class UserActivityListView(LoginRequiredMixin, ListView):
 class ActivityCreateView(LoginRequiredMixin, CreateView):
     model = Activity
     template_name = 'activities/activity-create.html'
-    form_class = ActivityCreateForm
-    # fields = ['title', 'image', 'content', 'image2', 'content2', 'difficulty', 'duration', 'distance']
+    fields = ['title', 'image', 'content', 'image2', 'content2', 'difficulty', 'duration', 'distance']
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.request = self.request
+        form.fields['image'].widget = ClientsideCroppingWidget(
+                width=1000,
+                height=600,
+                preview_width=120,
+                preview_height=72,
+            )
+        form.fields['image2'].widget = ClientsideCroppingWidget(
+                width=1000,
+                height=600,
+                preview_width=120,
+                preview_height=72,
+            )
+        return form
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -81,6 +98,23 @@ class ActivityUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Activity
     template_name = 'activities/activity-update.html'
     fields = ['title', 'image', 'content', 'image2', 'content2', 'difficulty', 'duration', 'distance']
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.request = self.request
+        form.fields['image'].widget = ClientsideCroppingWidget(
+                width=1000,
+                height=600,
+                preview_width=120,
+                preview_height=72,
+            )
+        form.fields['image2'].widget = ClientsideCroppingWidget(
+                width=1000,
+                height=600,
+                preview_width=120,
+                preview_height=72,
+            )
+        return form
 
     def form_valid(self, form):
         form.instance.author = self.request.user

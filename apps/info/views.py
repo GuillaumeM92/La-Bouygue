@@ -10,6 +10,7 @@ from .forms import InfoCommentForm
 from django.core.paginator import Paginator
 from django.core.mail import send_mail
 from django.http import HttpResponseNotFound
+from client_side_image_cropping import ClientsideCroppingWidget
 
 
 class InfoPostListView(LoginRequiredMixin, ListView):
@@ -73,7 +74,18 @@ def infopost_detail(request, pk):
 class InfoPostCreateView(LoginRequiredMixin, CreateView):
     model = InfoPost
     template_name = 'info/infopost-create.html'
-    fields = ['title', 'content']
+    fields = ['title', 'content', 'image']
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.request = self.request
+        form.fields['image'].widget = ClientsideCroppingWidget(
+                width=1000,
+                height=600,
+                preview_width=120,
+                preview_height=72,
+            )
+        return form
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -83,7 +95,18 @@ class InfoPostCreateView(LoginRequiredMixin, CreateView):
 class InfoPostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = InfoPost
     template_name = 'info/infopost-update.html'
-    fields = ['title', 'content']
+    fields = ['title', 'content', 'image']
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.request = self.request
+        form.fields['image'].widget = ClientsideCroppingWidget(
+                width=1000,
+                height=600,
+                preview_width=120,
+                preview_height=72,
+            )
+        return form
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -116,7 +139,18 @@ class InfoPostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 class InfoCommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = InfoComment
     template_name = 'info/infocomment-update.html'
-    fields = ['content']
+    fields = ['content', 'image']
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.request = self.request
+        form.fields['image'].widget = ClientsideCroppingWidget(
+                width=1000,
+                height=600,
+                preview_width=120,
+                preview_height=72,
+            )
+        return form
 
     def form_valid(self, form):
         form.instance.author = self.request.user

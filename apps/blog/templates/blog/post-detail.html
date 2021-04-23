@@ -70,7 +70,7 @@
                                 <p>{{ post.content }}</p>
                                 {% if post.image %} <img src="{{post.image.url }}" class="img-fluid"/> {% endif %}
                             </div>
-                            <div class="post-archive-meta mb-7">
+                            <div class="post-archive-meta mt-3 mb-7">
                                 <a href="{% url 'user-posts' post.author.surname post.author.name %}"><img class="post-archive-meta-img" src="{{ post.author.profile.image.url }}" />
                                 <div class="post-archive-meta-details">
                                     <div class="post-archive-meta-details-name">{{ post.author.surname }} {{ post.author.name }}</div></a>

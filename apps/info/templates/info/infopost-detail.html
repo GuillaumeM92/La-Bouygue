@@ -65,8 +65,9 @@
                             <div class="post-archive-item">
                                 <h5>{{ infopost.title }}</h5>
                                 <p>{{ infopost.content }}</p>
+                                {% if infopost.image %} <img src="{{infopost.image.url }}" class="img-fluid"/> {% endif %}
                             </div>
-                            <div class="post-archive-meta mb-7">
+                            <div class="post-archive-meta mt-3 mb-7">
                                 <a href="{% url 'user-infoposts' infopost.author.surname infopost.author.name %}"><img class="post-archive-meta-img" src="{{ infopost.author.profile.image.url }}" />
                                 <div class="post-archive-meta-details">
                                     <div class="post-archive-meta-details-name">{{ infopost.author.surname }} {{ infopost.author.name }}</div></a>
@@ -102,7 +103,7 @@
                                     </div>
                                 <div class="post-archive-item mt-3">
                                     <p>{{ comment.content }}</p>
-                                    <img src="{{ comment.image.url }}" />
+                                    {% if comment.image %} <img src="{{ comment.image.url }}" class="img-fluid"/> {% endif %}
                                 </div>
                                 <hr class="my-5" />
                             {% endfor %}

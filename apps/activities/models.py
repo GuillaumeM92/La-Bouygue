@@ -19,8 +19,8 @@ class Activity(models.Model):
     )
     duration = models.CharField(max_length=20, verbose_name=_("Durée"))
     distance = models.CharField(max_length=20, verbose_name=_("Temps de route"))
-    image = models.ImageField(default="activity_default.jpg", upload_to="activities")
-    image2 = models.ImageField(default="activity_default.jpg", upload_to="activities")
+    image = models.ImageField(blank=True, upload_to="activities")
+    image2 = models.ImageField(blank=True, upload_to="activities")
 
     class Meta:
         verbose_name_plural = "Activities"
@@ -38,7 +38,7 @@ class ActivityComment(models.Model):
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     activity = models.ForeignKey(Activity, on_delete=models.CASCADE)
-    image = models.ImageField(null=True, upload_to="activities/comments")
+    image = models.ImageField(blank=True, upload_to="activities/comments")
 
     class Meta:
         ordering = ['-date_posted']
