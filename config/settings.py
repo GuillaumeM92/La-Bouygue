@@ -33,7 +33,6 @@ INSTALLED_APPS = [
     'apps.info',
     'apps.work',
     'apps.budget',
-    'apps.client_side_image_cropping',
     'crispy_forms',
     'captcha',
     'django.contrib.admin',
@@ -42,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'client_side_image_cropping',
 ]
 
 MIDDLEWARE = [
