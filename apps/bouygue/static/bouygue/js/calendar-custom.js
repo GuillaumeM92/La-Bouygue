@@ -1,3 +1,30 @@
+let calendarEl = document.getElementById('calendar');
+const csrftoken = Cookies.get('csrftoken')
+const user_id = $("#user_id").attr("value")
+const is_admin = $("#is_admin").attr("value")
+
+// these HTTP methods do not require CSRF protection
+function csrfSafeMethod(method) {
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+
+fetch('/reservations/')
+.then(function(response) {
+  return response.blob();
+})
+.then(function(myBlob) {
+  const objectURL = URL.createObjectURL(myBlob);
+  myImage.src = objectURL;
+});
+// setting the csrf token for ajax post request
+$.ajaxSetup({
+    beforeSend: function (xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
+
 document.addEventListener('DOMContentLoaded', function () {
     let calendarEl = document.getElementById('calendar');
     let xmlhttp = new XMLHttpRequest()

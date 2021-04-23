@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractUser
 from django.utils.translation import ugettext as _
 from django.contrib.auth.base_user import BaseUserManager
 from PIL import Image
+from django_resized import ResizedImageField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -65,7 +66,7 @@ class MyUser(AbstractUser):
 
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    image = models.ImageField(default="profile_default.jpg", upload_to="profile_pics")
+    image = ResizedImageField(default="profile_default.jpg", size=[1024, 768], crop=['middle', 'center'], quality=75, upload_to="profile_pics")
 
     def __str__(self):
         return f"{self.user.email} Profile"

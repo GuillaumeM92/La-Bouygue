@@ -5,7 +5,7 @@ from django.utils import timezone
 from django.utils.translation import ugettext as _
 from apps.users.models import MyUser
 from PIL import Image
-
+from django_resized import ResizedImageField
 
 class Activity(models.Model):
     title = models.CharField(max_length=100, verbose_name=_("Titre"))
@@ -20,8 +20,8 @@ class Activity(models.Model):
     )
     duration = models.CharField(max_length=20, verbose_name=_("Durée"))
     distance = models.CharField(max_length=20, verbose_name=_("Temps de route"))
-    image = models.ImageField(default="activity_default.jpg", upload_to="activities")
-    image2 = models.ImageField(default="activity_default.jpg", upload_to="activities")
+    image = ResizedImageField(default="activity_default.jpg", size=[1024, 768], crop=['middle', 'center'], quality=75, upload_to="activities")
+    image2 = ResizedImageField(default="activity_default.jpg", size=[1024, 768], crop=['middle', 'center'], quality=75, upload_to="activities")
 
     class Meta:
         verbose_name_plural = "Activities"
@@ -39,7 +39,7 @@ class Activity(models.Model):
         img = Image.open(self.image.path)
 
         if img.height > 600 or img.width > 800:
-            output_size = (800, 600)
+            output_size = (1024, 768)
             img.thumbnail(output_size)
             img.save(self.image.path)
 
