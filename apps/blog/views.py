@@ -71,8 +71,19 @@ def post_detail(request, pk):
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     template_name = 'blog/post-create.html'
-    fields = ['title', 'content']
+    fields = ['title', 'content', 'image']
 
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.request = self.request
+        form.fields['image'].widget = ClientsideCroppingWidget(
+                width=1000,
+                height=600,
+                preview_width=120,
+                preview_height=72,
+            )
+        return form
+        
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
