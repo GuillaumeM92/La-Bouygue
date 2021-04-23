@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Activity, ActivityComment
-from .forms import ActivityCommentForm
+from .forms import ActivityCommentForm, ActyivityCreateForm
 from django.core.paginator import Paginator
 
 
@@ -69,6 +69,7 @@ class UserActivityListView(LoginRequiredMixin, ListView):
 class ActivityCreateView(LoginRequiredMixin, CreateView):
     model = Activity
     template_name = 'activities/activity-create.html'
+    form = ActyivityCreateForm()
     fields = ['title', 'image', 'content', 'image2', 'content2', 'difficulty', 'duration', 'distance']
 
     def form_valid(self, form):

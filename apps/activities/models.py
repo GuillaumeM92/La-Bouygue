@@ -32,23 +32,6 @@ class Activity(models.Model):
     def get_absolute_url(self):
         return reverse("activity-detail", kwargs={"pk": self.pk})
 
-    def save(self, *args, **kwargs):
-        super(Activity, self).save(*args, **kwargs)
-
-        img = Image.open(self.image.path)
-
-        if img.height > 600 or img.width > 800:
-            output_size = (800, 600)
-            img.thumbnail(output_size)
-            img.save(self.image.path)
-
-
-class ActivityImage(models.Model):
-    image = models.ImageField(default="default.jpg", upload_to="activities")
-
-    def __str__(self):
-        return f"{self.activity.title} image"
-
 
 class ActivityComment(models.Model):
     content = models.TextField(verbose_name= _(''))
