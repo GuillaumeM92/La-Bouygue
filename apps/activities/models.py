@@ -38,6 +38,7 @@ class ActivityComment(models.Model):
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     activity = models.ForeignKey(Activity, on_delete=models.CASCADE)
+    image = models.ImageField(null=True, upload_to="activities/comments")
 
     class Meta:
         ordering = ['-date_posted']

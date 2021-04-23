@@ -22,6 +22,7 @@ class InfoComment(models.Model):
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     infopost = models.ForeignKey(InfoPost, on_delete=models.CASCADE)
+    image = models.ImageField(null=True, upload_to="info/comments")
 
     class Meta:
         ordering = ['-date_posted']

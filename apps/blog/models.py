@@ -23,6 +23,7 @@ class Comment(models.Model):
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    image = models.ImageField(null=True, upload_to="blog/comments")
 
     class Meta:
         ordering = ['-date_posted']

@@ -5,17 +5,25 @@ from client_side_image_cropping import ClientsideCroppingWidget
 class ActivityCommentForm(forms.ModelForm):
     class Meta:
         model = ActivityComment
-        fields = ['content',]
+        fields = ['content', 'image']
+        widgets = {
+            'image': ClientsideCroppingWidget(
+                width=400,
+                height=600,
+                preview_width=100,
+                preview_height=150,
+            )
+        }
 
-class ActyivityCreateForm(forms.ModelForm):
+class ActivityCreateForm(forms.ModelForm):
     class Meta:
         model = Activity
         fields = ['title', 'image', 'content', 'image2', 'content2', 'difficulty', 'duration', 'distance']
         widgets = {
             'image': ClientsideCroppingWidget(
-                width=1024,
-                height=768,
-                preview_width=150,
-                preview_height=112,
+                width=400,
+                height=600,
+                preview_width=100,
+                preview_height=150,
             )
         }

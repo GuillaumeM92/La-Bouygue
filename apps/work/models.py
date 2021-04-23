@@ -45,6 +45,7 @@ class WorkComment(models.Model):
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     work = models.ForeignKey(Work, on_delete=models.CASCADE)
+    image = models.ImageField(null=True, upload_to="work/comments")
 
     class Meta:
         ordering = ['-date_posted']
