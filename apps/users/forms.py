@@ -51,7 +51,7 @@ class ProfileUpdateForm(forms.ModelForm):
         fields = ["image"]
         widgets = {
             'image': ClientsideCroppingWidget(
-                width=600,
+                width=400,
                 height=600,
                 preview_width=100,
                 preview_height=150,
