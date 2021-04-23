@@ -52,8 +52,10 @@
                         </div>
                     {% endfor %}
                 {% endif %}
-                <div class="d-flex">
-                    <h5 class="mb-4">Description</h5>
+                <h5 class="mb-4">Description</h5>
+                <p class="mb-4">{{ work.content }}</p>
+                {% if work.image %} <img src="{{ work.image.url }}" class="img-fluid"/> {% endif %}
+                <div class="d-flex align-items-center justify-content-between mt-4 mb-5">
                     <div class="post-archive-meta mr-4 ml-auto p-2">
                         <a href="{% url 'user-work' work.author.surname work.author.name %}"><img class="post-archive-meta-img" src="{{ work.author.profile.image.url }}"/>
                         <div class="post-archive-meta-details">
@@ -61,11 +63,6 @@
                             <div class="post-archive-meta-details-date">{{ work.date_posted }}</div>
                         </div>
                     </div>
-                </div>
-                <p class="mb-4">{{ work.content }}</p>
-                {% if work.image %} <img src="{{ work.image.url }}" class="img-fluid"/> {% endif %}
-                <div class="d-flex align-items-center justify-content-between mt-3 mb-5">
-                    
                 </div>
                 <hr class="mt-5 mb-4">
                 {% if work.state != 2 %}
@@ -97,8 +94,8 @@
             {% endif %}
             </div>
             <!-- Comment Section -->
-            <div class="col-lg-9 bg-gray-200 rounded ml-auto mt-5">
-                <div class="bg-gray-200 rounded mt-4 mb-4">
+            <div class="col-lg-9 bg-gray-200 rounded ml-auto mt-4">
+                <div class="bg-gray-200 rounded mt-5 mb-4">
                     <h1 class="mt-3">Commentaires</h1>
                     <hr class="my-2" />
                     <!-- Post Comment form-->
