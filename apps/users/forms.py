@@ -53,7 +53,7 @@ class ProfileUpdateForm(forms.ModelForm):
             'image': ClientsideCroppingWidget(
                 width=600,
                 height=600,
-                preview_width=50,
-                preview_height=50,
+                preview_width=90,
+                preview_height=90,
             )
         }
