@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import Profile
 from captcha.fields import ReCaptchaField
-from client_side_image_cropping import ClientsideCroppingWidget
+from apps.client_side_image_cropping.widgets import ClientsideCroppingWidget
 
 User = get_user_model()
 

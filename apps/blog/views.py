@@ -8,7 +8,7 @@ from apps.users.models import MyUser
 from .models import Post, Comment
 from .forms import PostCommentForm
 from django.core.paginator import Paginator
-from client_side_image_cropping import ClientsideCroppingWidget
+from apps.client_side_image_cropping.widgets import ClientsideCroppingWidget
 
 
 class PostListView(LoginRequiredMixin, ListView):
