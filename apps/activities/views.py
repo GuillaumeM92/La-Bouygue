@@ -157,7 +157,8 @@ class ActivityCommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateV
                 height=600,
                 preview_width=120,
                 preview_height=72,
-        )
+                )
+        return form
 
     def form_valid(self, form):
         form.instance.author = self.request.user
