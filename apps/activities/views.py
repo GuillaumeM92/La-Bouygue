@@ -147,7 +147,17 @@ class ActivityDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 class ActivityCommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = ActivityComment
     template_name = 'activities/activitycomment-update.html'
-    fields = ['content']
+    fields = ['content', 'image']
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.request = self.request
+        form.fields['image'].widget = ClientsideCroppingWidget(
+                width=1000,
+                height=600,
+                preview_width=120,
+                preview_height=72,
+        )
 
     def form_valid(self, form):
         form.instance.author = self.request.user

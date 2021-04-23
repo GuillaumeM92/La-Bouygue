@@ -8,9 +8,9 @@ class WorkCommentForm(forms.ModelForm):
         fields = ['content', 'image']
         widgets = {
             'image': ClientsideCroppingWidget(
-                width=600,
+                width=1000,
                 height=600,
-                preview_width=50,
-                preview_height=50,
+                preview_width=120,
+                preview_height=72,
             )
         }

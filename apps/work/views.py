@@ -1,5 +1,4 @@
 import json
-
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from .models import Work
@@ -10,6 +9,7 @@ from django.contrib import messages
 from .models import Work, WorkComment
 from .forms import WorkCommentForm
 from django.core.paginator import Paginator
+from client_side_image_cropping import ClientsideCroppingWidget
 
 
 class WorkListView(LoginRequiredMixin, ListView):
@@ -106,7 +106,18 @@ class UserWorkListView(LoginRequiredMixin, ListView):
 class WorkCreateView(LoginRequiredMixin, CreateView):
     model = Work
     template_name = "work/work-create.html"
-    fields = ["title", "content", "categories", "state", "status", "cost"]
+    fields = ["title", "content", "image", "categories", "state", "status", "cost"]
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.request = self.request
+        form.fields['image'].widget = ClientsideCroppingWidget(
+                width=1000,
+                height=600,
+                preview_width=120,
+                preview_height=72,
+            )
+        return form
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -116,7 +127,18 @@ class WorkCreateView(LoginRequiredMixin, CreateView):
 class WorkUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Work
     template_name = "work/work-update.html"
-    fields = ["title", "content", "categories", "state", "status", "cost"]
+    fields = ["title", "content", "image", "categories", "state", "status", "cost"]
+    
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.request = self.request
+        form.fields['image'].widget = ClientsideCroppingWidget(
+                width=1000,
+                height=600,
+                preview_width=120,
+                preview_height=72,
+            )
+        return form
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -153,7 +175,18 @@ class WorkDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 class WorkCommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = WorkComment
     template_name = 'work/workcomment-update.html'
-    fields = ['content']
+    fields = ['content', 'image']
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.request = self.request
+        form.fields['image'].widget = ClientsideCroppingWidget(
+                width=1000,
+                height=600,
+                preview_width=120,
+                preview_height=72,
+            )
+        return form
 
     def form_valid(self, form):
         form.instance.author = self.request.user

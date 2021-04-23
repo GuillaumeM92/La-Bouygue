@@ -2,6 +2,9 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% block content %}
+{% block import %}
+    {% include 'blocks/image-resize-imports.html' %}
+{% endblock %}
 <!-- Page Header-->
 <header class="page-header page-header-dark bg-img-cover overlay overlay-60" style="background-image: url({% static 'bouygue/assets/img/backgrounds/montagne/pic_har.jpg' %}); height: 19rem;">
     <div class="page-header-content">
@@ -51,7 +54,8 @@
                 {% endif %}
                 <h5 class="mb-4">Description</h5>
                 <p class="mb-4">{{ work.content }}</p>
-                <div class="d-flex align-items-center justify-content-between mb-5">
+                {% if work.image %} <img src="{{ work.image.url }}" class="img-fluid"/> {% endif %}
+                <div class="d-flex align-items-center justify-content-between mt-3 mb-5">
                     <div class="post-archive-meta mr-4 ml-auto p-2">
                         <a href="{% url 'user-work' work.author.surname work.author.name %}"><img class="post-archive-meta-img" src="{{ work.author.profile.image.url }}"/>
                         <div class="post-archive-meta-details">
@@ -119,7 +123,7 @@
                         </div>
                         <div class="post-archive-item mt-3">
                             <p>{{ comment.content }}</p>
-                            <img src="{{ comment.image.url }}" />
+                            {% if comment.image %} <img src="{{ comment.image.url }}" class="img-fluid"/> {% endif %}
                         </div>
                         <hr class="my-5" />
                     {% endfor %}

@@ -11,6 +11,7 @@ import datetime
 class Work(models.Model):
     title = models.CharField(max_length=100, verbose_name=_("Titre"))
     content = models.TextField(verbose_name=_("Description"))
+    image = models.ImageField(null=True, upload_to="work")
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     categories = models.SmallIntegerField(
