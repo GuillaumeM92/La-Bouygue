@@ -1,12 +1,10 @@
 import json
-
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.contrib import messages
 from django.http import JsonResponse
 from django.core.exceptions import ValidationError
 from django.core import serializers
 from django.contrib.auth.decorators import login_required
-
 from .models import Reservation
 from .forms import ReservationForm
 
@@ -23,15 +21,19 @@ def show_agenda(request):
             try:
                 Reservation.objects.create_or_update_reservation(form, user, id)
                 if id == 0:
-                    messages.success(request, str("Votre réservation a été créée avec succès !"))
+                    messages.success(request, str(
+                        "Votre réservation a été créée avec succès !"))
                 else:
-                    messages.success(request, str("La réservation a été modifiée avec succès !"))
+                    messages.success(request, str(
+                        "La réservation a été modifiée avec succès !"))
                 form = ReservationForm()
             except (IndexError, ValidationError):
-                messages.error(request, str("LE FORMAT DE LA DATE EST INVALIDE ! MERCI DE RÉESSAYER."))
+                messages.error(request, str(
+                    "LE FORMAT DE LA DATE EST INVALIDE ! MERCI DE RÉESSAYER."))
 
         else:
-            messages.error(request, str('ERREUR : ' + form.cleaned_data["error_message"]))
+            messages.error(request, str(
+                'ERREUR : ' + form.cleaned_data["error_message"]))
             form = ReservationForm(request.POST)
 
     else:
@@ -65,5 +67,6 @@ def delete_reservation(request):
 
 @login_required
 def reservations(request):
-    data = list(Reservation.objects.all().values())  # wrap in list(), because QuerySet is not JSON serializable
+    # wrap in list(), because QuerySet is not JSON serializable
+    data = list(Reservation.objects.all().values())
     return JsonResponse(data, safe=False)

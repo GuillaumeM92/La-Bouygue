@@ -6,6 +6,7 @@ import random
 
 User = get_user_model()
 
+
 class ReservationManager(models.Manager):
     """Reservation manager."""
 
@@ -17,7 +18,8 @@ class ReservationManager(models.Manager):
 
     def randomColor(self):
         """Pick a random color for the calendar events"""
-        colors = ['#122f5c', '#102340', '#1f4278', '#184a96', '#1f1354', '#1f0d6e', '#361f9c']
+        colors = ['#122f5c', '#102340', '#1f4278',
+                  '#184a96', '#1f1354', '#1f0d6e', '#361f9c']
         randint = random.randint(0, 6)
         return colors[randint]
 
@@ -26,11 +28,14 @@ class ReservationManager(models.Manager):
         end_date = self.format_date(form.data['end_date'])
         if id == 0:
             random_color = self.randomColor()
-            return Reservation.objects.get_or_create(name=form.data['name'], start_date=start_date, end_date=end_date, description=form.data['description'], color=random_color, user=user)
+            return Reservation.objects.get_or_create(
+                name=form.data['name'], start_date=start_date, end_date=end_date,
+                description=form.data['description'], color=random_color, user=user)
         else:
             reservation = Reservation.objects.filter(id=id)
             if user == reservation.first().user or user.is_superuser or user.is_staff:
-                reservation.update(name=form.data['name'], start_date=start_date, end_date=end_date, description=form.data['description'])
+                reservation.update(name=form.data['name'], start_date=start_date,
+                                   end_date=end_date, description=form.data['description'])
                 return reservation
 
 
@@ -40,7 +45,8 @@ class Reservation(models.Model):
     name = models.CharField(max_length=200, unique=False, default="Mon nom")
     description = models.TextField(default="Description", blank=True)
     color = models.CharField(max_length=50, unique=False, default="blue")
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_reservation", default=1)
+    user = models.ForeignKey(User, on_delete=models.CASCADE,
+                             related_name="user_reservation", default=1)
     start_date = models.DateField(default=timezone.now)
     end_date = models.DateField(default=timezone.now)
 

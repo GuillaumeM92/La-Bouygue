@@ -1,6 +1,5 @@
 from django.db import models
 from django.urls import reverse
-from django.db.models.deletion import CASCADE
 from django.utils import timezone
 from django.utils.translation import ugettext as _
 from apps.users.models import MyUser
@@ -8,26 +7,26 @@ from apps.users.models import MyUser
 
 class Work(models.Model):
     title = models.CharField(max_length=100, verbose_name=_('Titre'))
-    content = models.TextField(verbose_name= _('Description'))
+    content = models.TextField(verbose_name=_('Description'))
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     cost = models.SmallIntegerField(default=0, verbose_name=_("Coût estimé"))
     image = models.ImageField(blank=True, null=True, upload_to="work")
     categories = models.SmallIntegerField(
         default=0, choices=[(0, "Bricolage"),
-        (1, "Jardinage"), (2, "Plomberie"), (3, "Maçonnerie"), (4, "Autre")],
+                            (1, "Jardinage"), (2, "Plomberie"), (3, "Maçonnerie"), (4, "Autre")],
         verbose_name=_("Catégories")
-        )
+    )
     state = models.SmallIntegerField(
         default=0,
         choices=[(0, "À faire"), (1, "En cours"), (2, "Terminé")],
         verbose_name=_("État")
-        )
+    )
     status = models.SmallIntegerField(
         default=1,
         choices=[(0, "Peut attendre"), (1, "Important"), (2, "Urgent")],
         verbose_name=_("Statut")
-        )
+    )
 
     # class Meta:
     #     ordering = ["-date_posted"]
@@ -40,7 +39,7 @@ class Work(models.Model):
 
 
 class WorkComment(models.Model):
-    content = models.TextField(verbose_name= _(''))
+    content = models.TextField(verbose_name=_(''))
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     work = models.ForeignKey(Work, on_delete=models.CASCADE)

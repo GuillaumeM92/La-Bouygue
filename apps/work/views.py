@@ -29,7 +29,7 @@ class WorkListView(LoginRequiredMixin, ListView):
         user = request.user
         user.works_viewed = len(Work.objects.all())
         user.save()
-        return super().dispatch(request,*args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
 
 class WorkDoneListView(LoginRequiredMixin, ListView):
@@ -54,7 +54,10 @@ class UserWorkListView(LoginRequiredMixin, ListView):
     paginate_by = 4
 
     def get_queryset(self):
-        user = get_object_or_404(MyUser, name=self.kwargs.get("name"), surname=self.kwargs.get("surname"))
+        user = get_object_or_404(
+            MyUser,
+            name=self.kwargs.get("name"),
+            surname=self.kwargs.get("surname"))
         return Work.objects.filter(author=user).order_by("-date_posted")
 
 
@@ -87,7 +90,8 @@ def work_detail(request, pk):
             new_comment = form.save(commit=False)
             new_comment.work = work
             new_comment.author = author
-            new_comment.content = "{} {} vient de signaler qu'il a terminé ce travail.".format(author.surname, author.name)
+            new_comment.content = "{} {} vient de signaler qu'il a terminé ce travail.".format(
+                author.surname, author.name)
             messages.success(request, str("Travail terminé. Merci !"))
             new_comment.save()
 
@@ -98,7 +102,13 @@ def work_detail(request, pk):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    return render(request, template_name, {'title': 'Tâche', 'work': work, 'form': form, 'page_obj': page_obj, 'comment_count': comment_count})
+    return render(request,
+                  template_name,
+                  {'title': 'Tâche',
+                   'work': work,
+                   'form': form,
+                   'page_obj': page_obj,
+                   'comment_count': comment_count})
 
 
 class WorkCreateView(LoginRequiredMixin, CreateView):
@@ -110,11 +120,11 @@ class WorkCreateView(LoginRequiredMixin, CreateView):
         form = super().get_form(form_class)
         form.request = self.request
         form.fields['image'].widget = ClientsideCroppingWidget(
-                width=1000,
-                height=600,
-                preview_width=120,
-                preview_height=72,
-            )
+            width=1000,
+            height=600,
+            preview_width=120,
+            preview_height=72,
+        )
         return form
 
     def form_valid(self, form):
@@ -126,16 +136,16 @@ class WorkUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Work
     template_name = "work/work-update.html"
     fields = ["title", "content", "image", "categories", "state", "status", "cost"]
-    
+
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
         form.request = self.request
         form.fields['image'].widget = ClientsideCroppingWidget(
-                width=1000,
-                height=600,
-                preview_width=120,
-                preview_height=72,
-            )
+            width=1000,
+            height=600,
+            preview_width=120,
+            preview_height=72,
+        )
         return form
 
     def form_valid(self, form):
@@ -145,7 +155,8 @@ class WorkUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def test_func(self):
         work = self.get_object()
-        if self.request.user == work.author or self.request.user.is_superuser or self.request.user.is_staff:
+        user = self.request.user
+        if user == work.author or user.is_superuser or user.is_staff:
             return True
         return False
 
@@ -179,11 +190,11 @@ class WorkCommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView)
         form = super().get_form(form_class)
         form.request = self.request
         form.fields['image'].widget = ClientsideCroppingWidget(
-                width=1000,
-                height=600,
-                preview_width=120,
-                preview_height=72,
-            )
+            width=1000,
+            height=600,
+            preview_width=120,
+            preview_height=72,
+        )
         return form
 
     def form_valid(self, form):
@@ -207,11 +218,12 @@ class WorkCommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView)
         next_url = self.request.GET.get('next')
         if next_url:
             messages.success(self.request, str("Le commentaire a bien été supprimé."))
-            return next_url # return next url for redirection
-        return '/work/' # return some other url if next parameter not present
+            return next_url  # return next url for redirection
+        return '/work/'  # return some other url if next parameter not present
 
     def test_func(self):
         work = self.get_object()
-        if self.request.user == work.author or self.request.user.is_superuser or self.request.user.is_staff:
+        user = self.request.user
+        if user == work.author or user.is_superuser or user.is_staff:
             return True
         return False

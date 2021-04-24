@@ -1,14 +1,13 @@
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from .models import Activity
-from apps.users.models import MyUser
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import Activity, ActivityComment
-from .forms import ActivityCommentForm
 from django.core.paginator import Paginator
 from client_side_image_cropping import ClientsideCroppingWidget
+from apps.users.models import MyUser
+from .models import Activity, ActivityComment
+from .forms import ActivityCommentForm
 
 
 class ActivityListView(LoginRequiredMixin, ListView):
@@ -22,7 +21,7 @@ class ActivityListView(LoginRequiredMixin, ListView):
         user = request.user
         user.activities_viewed = len(Activity.objects.all())
         user.save()
-        return super().dispatch(request,*args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
 
 @login_required
@@ -54,7 +53,9 @@ def activity_detail(request, pk):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    return render(request, template_name, {'title': 'Activité', 'activity': activity, 'form': form, 'page_obj': page_obj, 'comment_count': comment_count})
+    return render(request, template_name, {
+        'title': 'Activité', 'activity': activity, 'form': form,
+        'page_obj': page_obj, 'comment_count': comment_count})
 
 
 class UserActivityListView(LoginRequiredMixin, ListView):
@@ -64,29 +65,32 @@ class UserActivityListView(LoginRequiredMixin, ListView):
     paginate_by = 5
 
     def get_queryset(self):
-        user = get_object_or_404(MyUser, name=self.kwargs.get('name'), surname=self.kwargs.get('surname'))
+        user = get_object_or_404(MyUser, name=self.kwargs.get(
+            'name'), surname=self.kwargs.get('surname'))
         return Activity.objects.filter(author=user).order_by('-date_posted')
+
 
 class ActivityCreateView(LoginRequiredMixin, CreateView):
     model = Activity
     template_name = 'activities/activity-create.html'
-    fields = ['title', 'image', 'content', 'image2', 'content2', 'difficulty', 'duration', 'distance']
+    fields = ['title', 'image', 'content', 'image2',
+              'content2', 'difficulty', 'duration', 'distance']
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
         form.request = self.request
         form.fields['image'].widget = ClientsideCroppingWidget(
-                width=1000,
-                height=600,
-                preview_width=120,
-                preview_height=72,
-            )
+            width=1000,
+            height=600,
+            preview_width=120,
+            preview_height=72,
+        )
         form.fields['image2'].widget = ClientsideCroppingWidget(
-                width=1000,
-                height=600,
-                preview_width=120,
-                preview_height=72,
-            )
+            width=1000,
+            height=600,
+            preview_width=120,
+            preview_height=72,
+        )
         return form
 
     def form_valid(self, form):
@@ -97,23 +101,24 @@ class ActivityCreateView(LoginRequiredMixin, CreateView):
 class ActivityUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Activity
     template_name = 'activities/activity-update.html'
-    fields = ['title', 'image', 'content', 'image2', 'content2', 'difficulty', 'duration', 'distance']
+    fields = ['title', 'image', 'content', 'image2',
+              'content2', 'difficulty', 'duration', 'distance']
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
         form.request = self.request
         form.fields['image'].widget = ClientsideCroppingWidget(
-                width=1000,
-                height=600,
-                preview_width=120,
-                preview_height=72,
-            )
+            width=1000,
+            height=600,
+            preview_width=120,
+            preview_height=72,
+        )
         form.fields['image2'].widget = ClientsideCroppingWidget(
-                width=1000,
-                height=600,
-                preview_width=120,
-                preview_height=72,
-            )
+            width=1000,
+            height=600,
+            preview_width=120,
+            preview_height=72,
+        )
         return form
 
     def form_valid(self, form):
@@ -123,7 +128,8 @@ class ActivityUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def test_func(self):
         activity = self.get_object()
-        if self.request.user == activity.author or self.request.user.is_superuser or self.request.user.is_staff:
+        user = self.request.user
+        if user == activity.author or user.is_superuser or user.is_staff:
             return True
         return False
 
@@ -139,7 +145,8 @@ class ActivityDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def test_func(self):
         activity = self.get_object()
-        if self.request.user == activity.author or self.request.user.is_superuser or self.request.user.is_staff:
+        user = self.request.user
+        if user == activity.author or user.is_superuser or user.is_staff:
             return True
         return False
 
@@ -153,11 +160,11 @@ class ActivityCommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateV
         form = super().get_form(form_class)
         form.request = self.request
         form.fields['image'].widget = ClientsideCroppingWidget(
-                width=1000,
-                height=600,
-                preview_width=120,
-                preview_height=72,
-                )
+            width=1000,
+            height=600,
+            preview_width=120,
+            preview_height=72,
+        )
         return form
 
     def form_valid(self, form):
@@ -181,11 +188,12 @@ class ActivityCommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteV
         next_url = self.request.GET.get('next')
         if next_url:
             messages.success(self.request, str("Le commentaire a bien été supprimé."))
-            return next_url # return next url for redirection
-        return '/activities/' # return some other url if next parameter not present
+            return next_url  # return next url for redirection
+        return '/activities/'  # return some other url if next parameter not present
 
     def test_func(self):
         activity = self.get_object()
-        if self.request.user == activity.author or self.request.user.is_superuser or self.request.user.is_staff:
+        user = self.request.user
+        if user == activity.author or user.is_superuser or user.is_staff:
             return True
         return False

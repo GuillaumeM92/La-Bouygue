@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import Profile
-from captcha.fields import ReCaptchaField
+# from captcha.fields import ReCaptchaField
 from client_side_image_cropping import ClientsideCroppingWidget
 
 User = get_user_model()
@@ -14,7 +14,8 @@ class UserLoginForm(AuthenticationForm):
         password = self.cleaned_data.get('password')
 
         if username is not None and password:
-            self.user_cache = authenticate(self.request, username=username, password=password)
+            self.user_cache = authenticate(
+                self.request, username=username, password=password)
             if self.user_cache is None:
                 raise self.get_invalid_login_error()
             else:

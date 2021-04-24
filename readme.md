@@ -8,6 +8,8 @@ Website for our family's vacation house.
 
 The site handles reservations, as well as discussions, and other functionnalities listed below.
 
+The calendar was built with FullCalendar : https://fullcalendar.io/
+
 ## Features
 * Register
 * Login or Reset your Password

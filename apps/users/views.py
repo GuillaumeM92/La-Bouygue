@@ -20,13 +20,21 @@ def register(request):
             user_name = form.data['name']
             user_surname = form.data['surname']
             send_mail("La Bouygue - Bienvenue",
-                      "Bonjour {} {}, merci d'avoir créé un compte sur le site de La Bouygue. Vous pourrez vous connecter lorsqu'un administrateur aura vérifié votre identité et activé votre compte. Vous recevrez un nouvel email vous informant de l'activation.".format(user_surname, user_name),
+                      ("Bonjour {} {}, merci d'avoir créé un compte sur le site de La Bouygue. "
+                       "Vous pourrez vous connecter lorsqu'un administrateur aura vérifié votre "
+                       "identité et activé votre compte. Vous recevrez un nouvel email vous "
+                       "informant de l'activation.").format(user_surname, user_name),
                       None, [user_email], fail_silently=True, )
 
             send_mail("La Bouygue - Nouvel Utilisateur",
-                      "{} {} s'est créé un compte sur le site de la Bouygue. Merci de vérifier son identité avant d'activer son compte. Lien : https://labouygue.com/admin/activate/".format(user_surname, user_name),
+                      ("{} {} s'est créé un compte sur le site de la Bouygue. Merci de vérifier "
+                       "son identité avant d'activer son compte. Lien : "
+                       "https://labouygue.com/admin/activate/").format(user_surname, user_name),
                       None, ["gemacx@gmail.com"], fail_silently=True, )
-            messages.success(request, str("Votre compte a été créé avec succès ! Un email de confirmation vient de vous être envoyé. Vous pourrez vous connecter dès qu'un administrateur aura validé votre compte."))
+            messages.success(request, str(
+                "Votre compte a été créé avec succès ! Un email de confirmation vient de vous "
+                "être envoyé. Vous pourrez vous connecter dès qu'un administrateur aura "
+                "validé votre compte."))
             return redirect("users-login")
         else:
             if "captcha" in form.errors:
@@ -45,7 +53,10 @@ class MyLoginView(SuccessMessageMixin, LoginView):
         try:
             user = MyUser.objects.get(email=user_email)
             if not user.is_active:
-                form._errors["__all__"] = form.error_class([u"Désolé, votre compte est inactif pour le moment. Vous pourrez vous connecter lorsqu'un administrateur aura vérifié votre identité et activé votre compte."])
+                form._errors["__all__"] = form.error_class(
+                    [(u"Désolé, votre compte est inactif pour le moment. Vous pourrez vous "
+                      "connecter lorsqu'un administrateur aura vérifié votre "
+                      "identité et activé votre compte.")])
         except MyUser.DoesNotExist:
             pass
         return super().form_invalid(form)
@@ -57,7 +68,7 @@ def profile(request):
         p_form = ProfileUpdateForm(
             request.POST, request.FILES, instance=request.user.profile
         )
-        context = {'p_form': p_form,}
+        context = {'p_form': p_form, }
 
         if p_form.is_valid():
             p_form.save()

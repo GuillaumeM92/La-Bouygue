@@ -3,7 +3,6 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib import messages
-from django.contrib.auth.models import Permission
 from apps.users.models import MyUser
 from .models import Post, Comment
 from .forms import PostCommentForm
@@ -22,7 +21,7 @@ class PostListView(LoginRequiredMixin, ListView):
         user = request.user
         user.discussions_viewed = len(Post.objects.all())
         user.save()
-        return super().dispatch(request,*args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
 
 class UserPostListView(LoginRequiredMixin, ListView):
@@ -32,7 +31,8 @@ class UserPostListView(LoginRequiredMixin, ListView):
     paginate_by = 5
 
     def get_queryset(self):
-        user = get_object_or_404(MyUser, name=self.kwargs.get('name'), surname=self.kwargs.get('surname'))
+        user = get_object_or_404(MyUser, name=self.kwargs.get(
+            'name'), surname=self.kwargs.get('surname'))
         return Post.objects.filter(author=user).order_by('-date_posted')
 
 
@@ -65,7 +65,10 @@ def post_detail(request, pk):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    return render(request, template_name, {'title': 'Discussion', 'post': post, 'form': form, 'page_obj': page_obj, 'comment_count': comment_count})
+    return render(request, template_name, {
+        'title': 'Discussion', 'post': post, 'form': form,
+        'page_obj': page_obj, 'comment_count': comment_count
+    })
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):
@@ -77,11 +80,11 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         form = super().get_form(form_class)
         form.request = self.request
         form.fields['image'].widget = ClientsideCroppingWidget(
-                width=1000,
-                height=600,
-                preview_width=120,
-                preview_height=72,
-            )
+            width=1000,
+            height=600,
+            preview_width=120,
+            preview_height=72,
+        )
         return form
 
     def form_valid(self, form):
@@ -98,11 +101,11 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         form = super().get_form(form_class)
         form.request = self.request
         form.fields['image'].widget = ClientsideCroppingWidget(
-                width=1000,
-                height=600,
-                preview_width=120,
-                preview_height=72,
-            )
+            width=1000,
+            height=600,
+            preview_width=120,
+            preview_height=72,
+        )
         return form
 
     def form_valid(self, form):
@@ -112,7 +115,8 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def test_func(self):
         post = self.get_object()
-        if self.request.user == post.author or self.request.user.is_superuser or self.request.user.is_staff:
+        user = self.request.user
+        if user == post.author or user.is_superuser or user.user.is_staff:
             return True
         return False
 
@@ -128,7 +132,8 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def test_func(self):
         post = self.get_object()
-        if self.request.user == post.author or self.request.user.is_superuser or self.request.user.is_staff:
+        user = self.request.user
+        if user == post.author or user.is_superuser or user.user.is_staff:
             return True
         return False
 
@@ -142,11 +147,11 @@ class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         form = super().get_form(form_class)
         form.request = self.request
         form.fields['image'].widget = ClientsideCroppingWidget(
-                width=1000,
-                height=600,
-                preview_width=120,
-                preview_height=72,
-            )
+            width=1000,
+            height=600,
+            preview_width=120,
+            preview_height=72,
+        )
         return form
 
     def form_valid(self, form):
@@ -170,11 +175,12 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         next_url = self.request.GET.get('next')
         if next_url:
             messages.success(self.request, str("Le commentaire a bien été supprimé."))
-            return next_url # return next url for redirection
-        return '/blog/' # return some other url if next parameter not present
+            return next_url  # return next url for redirection
+        return '/blog/'  # return some other url if next parameter not present
 
     def test_func(self):
         post = self.get_object()
-        if self.request.user == post.author or self.request.user.is_superuser or self.request.user.is_staff:
+        user = self.request.user
+        if user == post.author or user.is_superuser or user.user.is_staff:
             return True
         return False

@@ -1,13 +1,13 @@
 from django.db import models
 from django.urls import reverse
-from django.db.models.deletion import CASCADE
 from django.utils import timezone
 from django.utils.translation import ugettext as _
 from apps.users.models import MyUser
 
+
 class Post(models.Model):
-    title = models.CharField(max_length=100, verbose_name= _('Titre'))
-    content = models.TextField(verbose_name= _('Contenu'))
+    title = models.CharField(max_length=100, verbose_name=_('Titre'))
+    content = models.TextField(verbose_name=_('Contenu'))
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     image = models.ImageField(blank=True, upload_to="blog")
@@ -20,7 +20,7 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
-    content = models.TextField(verbose_name= _(''))
+    content = models.TextField(verbose_name=_(''))
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)

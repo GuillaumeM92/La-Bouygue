@@ -1,28 +1,25 @@
-from apps.users.models import MyUser
-from apps.activities.models import Activity
-from apps.agenda.models import Reservation
-from apps.blog.models import Post, Comment
-from apps.info.models import InfoPost
-from apps.work.models import Work
-
-from django.test import TestCase
+import os
 from django.contrib.staticfiles.testing import LiveServerTestCase
-
 from selenium.common import exceptions
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
-import os
-import time
+from apps.users.models import MyUser
+from apps.activities.models import Activity
+from apps.agenda.models import Reservation
+from apps.blog.models import Post
+from apps.info.models import InfoPost
+from apps.work.models import Work
+
 
 # -------------------------- SELENIUM TESTS ---------------------------
 if os.name == "nt":
     driver = webdriver.Chrome(
-        executable_path="C:/Users/Guillaume/Desktop/Formation OPC/P13_merle_guillaume/config/chromedriver.exe"
+        executable_path=("C:/Users/Guillaume/Desktop/Formation OPC/P13_merle_guillaume"
+                         "/config/chromedriver.exe")
     )
 
 else:
@@ -100,8 +97,7 @@ class UserStorySeleniumTest(LiveServerTestCase):
         url = driver.current_url
         self.assertEqual(url, self.live_server_url + "/login/?next=/profile/")
 
-
-################################   BLOG   ##################################
+    # BLOG
     def test_add_post(self):
         # register and login
         self.test_register()
@@ -178,8 +174,7 @@ class UserStorySeleniumTest(LiveServerTestCase):
         comment = post.comment_set.all()
         self.assertEqual(0, len(comment))
 
-
-################################   INFO   ##################################
+    # INFO
     def test_add_infopost(self):
         # register and login
         self.test_register()
@@ -261,8 +256,7 @@ class UserStorySeleniumTest(LiveServerTestCase):
         infocomment = infopost.infocomment_set.all()
         self.assertEqual(0, len(infocomment))
 
-
-################################   ACTIVITIES   ##################################
+    # ACTIVITIES
     def test_add_activity(self):
         # register and login
         self.test_register()
@@ -345,8 +339,7 @@ class UserStorySeleniumTest(LiveServerTestCase):
         comment = activity.activitycomment_set.all()
         self.assertEqual(0, len(comment))
 
-
-################################   WORK   ##################################
+    # WORK
     def test_add_work(self):
         # register and login
         self.test_register()
@@ -395,7 +388,9 @@ class UserStorySeleniumTest(LiveServerTestCase):
         # create comment
         comment_input = self.selenium.find_element_by_name("content")
         comment_input.send_keys("my comment")
-        self.selenium.find_element_by_xpath('//*[@id="layoutDefault"]/div[2]/section/div[1]/div/div[3]/div/form/fieldset/button').click()
+        self.selenium.find_element_by_xpath(
+            '//*[@id="layoutDefault"]/div[2]/section/div[1]/div/div[3]/'
+            'div/form/fieldset/button').click()
         # check if comment is created
         work = Work.objects.first()
         comment = work.workcomment_set.first()
@@ -432,7 +427,8 @@ class UserStorySeleniumTest(LiveServerTestCase):
         self.selenium.find_element_by_name("action").click()
         # check if work status has changed
         work = Work.objects.first()
-        self.assertEqual("Terminé", work.get_state_display())    # here 2 is equivalent to a completed work, value was set to 0 on creation
+        # here 2 is equivalent to a completed work, value was set to 0 on creation
+        self.assertEqual("Terminé", work.get_state_display())
 
     def test_comment_posted_on_work_done(self):
         # register, login and create work
@@ -442,10 +438,10 @@ class UserStorySeleniumTest(LiveServerTestCase):
         # check if work done comment was posted
         work = Work.objects.first()
         comment = work.workcomment_set.first()
-        self.assertEqual("John Doe vient de signaler qu'il a terminé ce travail.", comment.content)
+        self.assertEqual(
+            "John Doe vient de signaler qu'il a terminé ce travail.", comment.content)
 
-
-################################   AGENDA   ##################################
+    # AGENDA
     def test_add_reservation(self):
         # register and login
         self.test_register()
@@ -459,7 +455,8 @@ class UserStorySeleniumTest(LiveServerTestCase):
         start_date_input.send_keys("18/04/2021")
         end_date_input = self.selenium.find_element_by_name("end_date")
         end_date_input.send_keys("23/04/2021")
-        description_input = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="id_description"]')))
+        description_input = WebDriverWait(driver, 20).until(
+            EC.element_to_be_clickable((By.XPATH, '//*[@id="id_description"]')))
         description_input.send_keys("my description")
         self.selenium.find_element_by_name("create").click()
         # check if reservation is created
