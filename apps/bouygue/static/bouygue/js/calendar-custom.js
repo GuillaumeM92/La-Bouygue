@@ -187,16 +187,16 @@ document.addEventListener('DOMContentLoaded', function () {
        Also makes sure not to open 2 calendars at once */
     $(window).on("click", function (e) {
         if (e.target.name == 'end_date' && ($('#calendarbox0').css('display') != 'block')) {
-            $('#calendarbox1').css({ 'display': 'block', 'left': (e['pageX']), 'top': (e['pageY'] - 87) })
-            $('#calendarbox3').css({ 'display': 'block', 'left': (e['pageX']), 'top': (e['pageY'] - 87) })
+            $('#calendarbox1').css({ 'display': 'block', 'left': (e['pageX']), 'top': (e['pageY'] - 87), 'background-color': 'dark' })
+            $('#calendarbox3').css({ 'display': 'block', 'left': (e['pageX']), 'top': (e['pageY'] - 87), 'background-color': 'gray' })
         }
         else if (e.target.name != 'start_date' && ($('#calendarbox0').css('display') == 'block')) {
             $('.calendar-cancel').children()[0].click()
             $('.calendar-cancel').children()[2].click()
         }
         else if (e.target.name == 'start_date' && ($('#calendarbox1').css('display') != 'block')) {
-            $('#calendarbox0').css({ 'display': 'block', 'left': (e['pageX']), 'top': (e['pageY'] - 87) })
-            $('#calendarbox2').css({ 'display': 'block', 'left': (e['pageX']), 'top': (e['pageY'] - 87) })
+            $('#calendarbox0').css({ 'display': 'block', 'left': (e['pageX']), 'top': (e['pageY'] - 87), 'background-color': 'dark' })
+            $('#calendarbox2').css({ 'display': 'block', 'left': (e['pageX']), 'top': (e['pageY'] - 87), 'background-color': 'gray' })
         }
         else if (e.target.name != 'end_date' && ($('#calendarbox1').css('display') == 'block')) {
             $('.calendar-cancel').children()[1].click()

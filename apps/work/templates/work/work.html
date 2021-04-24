@@ -100,10 +100,12 @@
                 <hr class="mb-0" />
                 <ul class="list-group list-group-flush list-group-careers">
                     {% for work in other %}
-                    <li class="list-group-item">
-                        <a href="{% url 'work-detail' work.id %}">{{ work.title }}</a>
-                        <div class="small">Le {{ work.date }}</div>
-                    </li>
+                    <a href="{% url 'work-detail' work.id %}">
+                        <li class="list-group-item">
+                            <p>{{ work.title }}</p>
+                            <div class="small">Le {{ work.date }}</div>
+                        </li>
+                    </a>
                     {% endfor %}
                 </ul>
             </div>
