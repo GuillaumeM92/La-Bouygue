@@ -11,7 +11,7 @@
             </div>
             <div class="modal-body">
             <!-- Registration form-->
-                <form method="POST" autocomplete="off chrome-off false">
+                <form method="POST" autocomplete="off">
                     {% csrf_token %}
                     <!-- Form Row-->
                     <fieldset class="form-group">
@@ -37,7 +37,7 @@
                                     <div class="modal-body text-white">
                                         <p>Etes vous sûr de vouloir supprimer cette réservation ?</p>
                                     <!-- Registration form-->
-                                        <form method="POST" autocomplete="off chrome-off false">
+                                        <form method="POST"  autocomplete="off">
                                             {% csrf_token %}
                                             <!-- Form Row-->
                                             <fieldset class="form-group">
