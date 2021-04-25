@@ -12,7 +12,10 @@ def budget(request):
     previous_budget = Budget.objects.order_by('-date_posted').all()[1]
     difference = current_budget.total - previous_budget.total
     funding = Funding.objects.order_by('-date_posted').first()
-    funding_percent = int((funding.progress / funding.goal) * 100)
+    if funding:
+        funding_percent = int((funding.progress / funding.goal) * 100)
+    else:
+        funding_percent = None
     return render(request, 'budget/budget.html', {'title': 'Budget', 'current_budget': current_budget, 'difference': difference, 'funding': funding, 'funding_percent': funding_percent})
 
 
