@@ -1,4 +1,4 @@
-fetch('/budget-data/')
+fetch('/budget/data/')
     .then(response => response.json())
     .then(function (data) {
         console.log(data)
@@ -6,6 +6,7 @@ fetch('/budget-data/')
         let dateDict = []; // create empty arrays
         for (const i of data) {
             totalDict.push(i['total']); // fill it with budget totals
+
             dateDict.push(i['date_posted']); // fill it with dates
         }
 

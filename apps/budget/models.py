@@ -13,4 +13,16 @@ class Budget(models.Model):
         verbose_name_plural = "Budget"
 
     def __str__(self):
-        return str(self.date_posted)
+        return str(self.date_posted.date())
+
+
+class Funding(models.Model):
+    date_posted = models.DateTimeField(default=timezone.now)
+    progress = models.SmallIntegerField(default=0, verbose_name=_("Progrès"))
+    goal = models.SmallIntegerField(default=0, verbose_name=_("Objectif"))
+
+    class Meta:
+        verbose_name_plural = "Funding"
+
+    def __str__(self):
+        return str(self.date_posted.date())

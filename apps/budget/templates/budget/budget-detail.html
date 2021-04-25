@@ -1,0 +1,33 @@
+{% extends "bouygue/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div hidden>{% block title %} - Opérations {% endblock %}</div>
+
+<section class="bg-light py-10">
+    <div class="container" style="padding-right: 1.6rem; padding-left: 1.6rem;">
+        <a href="{% url "budget"%}" style="cursor: pointer"><i class="fas fa-arrow-left mr-1"></i> Retour</a>
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="d-flex align-items-center justify-content-between">
+                    <h2 class="mb-0">Opérations enregistrées</h2>
+                    <div class="badge badge-primary-soft text-primary badge-marketing">{{ budget_entries|length }} opération(s)</div>
+                </div>
+                <hr class="mb-0" />
+                <ul class="list-group list-group-flush list-group-careers">
+                    {% for entry in budget_detail %}
+                    <li class="list-group-item">
+                        <div><b>{{ entry.total }} €</b> - {{ entry.description }}</div>
+                        <div class="small ml-4">{{ entry.date_posted.date }}</div>
+                        
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="svg-border-rounded text-dark">
+        <!-- Rounded SVG Border--><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144.54 17.34" preserveAspectRatio="none" fill="#1e2c41"><path d="M144.54,17.34H0V0H144.54ZM0,0S32.36,17.34,72.27,17.34,144.54,0,144.54,0"></path></svg>
+    </div>
+</section>
+{% endblock content %}
