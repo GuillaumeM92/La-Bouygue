@@ -12,7 +12,9 @@ def budget(request):
     previous_budget = Budget.objects.order_by('-date_posted').all()
     if len(previous_budget) > 1:
         previous_budget = previous_budget[1]
-    difference = current_budget.total - previous_budget.total
+        difference = current_budget.total - previous_budget.total
+    else:
+        difference = None
     funding = Funding.objects.order_by('-date_posted').first()
     if funding:
         funding_percent = int((funding.progress / funding.goal) * 100)
