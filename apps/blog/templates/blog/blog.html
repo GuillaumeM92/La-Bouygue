@@ -18,9 +18,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="svg-border-rounded text-light">
-                    <!-- Rounded SVG Border--><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144.54 17.34" preserveAspectRatio="none" fill="currentColor"><path d="M144.54,17.34H0V0H144.54ZM0,0S32.36,17.34,72.27,17.34,144.54,0,144.54,0"></path></svg>
-                </div>
+                {% block border-wave %}
+                    {% include 'blocks/svg-border-wave.html' %}
+                {% endblock %}
             </header>
             <section class="bg-light py-7">
                 <div class="container" style="padding-left: 1.5rem; padding-right: 1.5rem;">

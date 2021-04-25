@@ -41,7 +41,7 @@ class BudgetCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 
     def test_func(self):
         user = self.request.user
-        if user.is_superuser or user.user.is_staff:
+        if user.is_superuser or user.is_staff:
             return True
         return False
 
@@ -66,6 +66,6 @@ class FundingCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 
     def test_func(self):
         user = self.request.user
-        if user.is_superuser or user.user.is_staff:
+        if user.is_superuser or user.is_staff:
             return True
         return False

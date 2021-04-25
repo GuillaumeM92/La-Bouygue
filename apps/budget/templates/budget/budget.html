@@ -61,9 +61,9 @@
                 Progression des financements
                 {% if user.is_superuser or user.is_staff %}
                 <div class="dropdown no-caret">
-                    <button class="btn btn-transparent-dark btn-icon dropdown-toggle" id="dropdownMenuButton" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="text-gray-500" data-feather="more-vertical"></i></button>
+                    <button class="btn btn-transparent-dark btn-icon dropdown-toggle" name="funding-menu" id="dropdownMenuButton" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="text-gray-500" data-feather="more-vertical"></i></button>
                     <div class="dropdown-menu dropdown-menu-right animated--fade-in-up" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="{% url 'funding-create' %}">
+                        <a class="dropdown-item" name="add-funding" href="{% url 'funding-create' %}">
                             <div class="dropdown-item-icon"><i class="text-gray-500" data-feather="list"></i></div>
                             Modifier
                         </a>

@@ -13,6 +13,7 @@ from apps.agenda.models import Reservation
 from apps.blog.models import Post
 from apps.info.models import InfoPost
 from apps.work.models import Work
+from apps.budget.models import Budget, Funding
 
 
 # -------------------------- SELENIUM TESTS ---------------------------
@@ -182,7 +183,6 @@ class UserStorySeleniumTest(LiveServerTestCase):
         # make user admin
         user = MyUser.objects.first()
         user.is_staff = True
-        # breakpoint()
         user.save()
         # create infopost
         self.selenium.find_element_by_name("info").click()
@@ -440,6 +440,51 @@ class UserStorySeleniumTest(LiveServerTestCase):
         comment = work.workcomment_set.first()
         self.assertEqual(
             "John Doe vient de signaler qu'il a terminé ce travail.", comment.content)
+
+    # BUDGET
+    def test_add_budget(self):
+        # register and login
+        self.test_register()
+        self.test_login()
+        # make user admin
+        user = MyUser.objects.first()
+        user.is_staff = True
+        user.save()
+        # create budget
+        self.selenium.find_element_by_name("budget").click()
+        self.selenium.find_element_by_name("create-budget").click()
+        total_input = self.selenium.find_element_by_name("total")
+        total_input.send_keys("42")
+        description_input = WebDriverWait(driver, 20).until(
+            EC.element_to_be_clickable((By.XPATH, '//*[@id="id_description"]')))
+        description_input.send_keys("my description")
+        self.selenium.find_element_by_name("update").click()
+        # check if budget is created
+        budget = Budget.objects.first()
+        # 420 because there is a trailing zero already in the field
+        self.assertEqual(420, budget.total)
+
+    def test_add_funding(self):
+        # register and login
+        self.test_register()
+        self.test_login()
+        # make user admin
+        user = MyUser.objects.first()
+        user.is_staff = True
+        user.save()
+        # create funding
+        self.selenium.find_element_by_name("budget").click()
+        self.selenium.find_element_by_name("funding-menu").click()
+        self.selenium.find_element_by_name("add-funding").click()
+        progress_input = self.selenium.find_element_by_name("progress")
+        progress_input.send_keys("24")
+        goal_input = self.selenium.find_element_by_name("goal")
+        goal_input.send_keys("42")
+        self.selenium.find_element_by_name("update").click()
+        # check if funding is created
+        funding = Funding.objects.first()
+        # 240 because there is a trailing zero already in the field
+        self.assertEqual(240, funding.progress)
 
     # AGENDA
     def test_add_reservation(self):
