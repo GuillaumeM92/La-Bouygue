@@ -36,7 +36,7 @@
                                 <div class="post-archive-meta">
                                     <img class="post-archive-meta-img" src="{{ post.author.profile.image.url }}" />
                                     <div class="post-archive-meta-details">
-                                        <div class="post-archive-meta-details-name">{{ post.author.surname }} {{ post.author.name }}</div>
+                                        <div class="post-archive-meta-details-name {% if post.author.is_superuser or post.author.is_staff %} text-purple {% endif %}">{{ post.author.surname }} {{ post.author.name }}</div>
                                         <div class="post-archive-meta-details-date">{{ post.date_posted }}</div>
                                     </div>
                                     <a class="font-weight-700 col-lg-3 ml-auto" style="padding-right: 0;" href="{% url 'post-detail' post.id %}">Voir la discussion</a>

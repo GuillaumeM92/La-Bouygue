@@ -52,7 +52,7 @@
                             <div class="post-archive-meta mt-3 mb-7">
                                 <a href="{% url 'user-infoposts' infopost.author.surname infopost.author.name %}"><img class="post-archive-meta-img" src="{{ infopost.author.profile.image.url }}" />
                                 <div class="post-archive-meta-details">
-                                    <div class="post-archive-meta-details-name">{{ infopost.author.surname }} {{ infopost.author.name }}</div></a>
+                                    <div class="post-archive-meta-details-name {% if infopost.author.is_superuser or infopost.author.is_staff %} text-purple {% endif %}">{{ infopost.author.surname }} {{ infopost.author.name }}</div></a>
                                     <div class="post-archive-meta-details-date">{{ infopost.date_posted }}</div>
                                 </div>
                             </div>
@@ -73,7 +73,7 @@
                                 <div class="post-archive-meta d-flex">
                                     <a href="{% url 'user-posts' comment.author.surname comment.author.name %}"><img class="post-archive-meta-img" src="{{ comment.author.profile.image.url }}" />
                                     <div class="post-archive-meta-details mr-auto p-2">
-                                        <div class="post-archive-meta-details-name">{{ comment.author.surname }} {{ comment.author.name }}</div></a>
+                                        <div class="post-archive-meta-details-name {% if comment.author.is_superuser or comment.author.is_staff %} text-purple {% endif %}">{{ comment.author.surname }} {{ comment.author.name }}</div></a>
                                         <div class="post-archive-meta-details-date">{{ comment.date_posted }}</div>
                                     </div>
                                     {% if user == comment.author %}

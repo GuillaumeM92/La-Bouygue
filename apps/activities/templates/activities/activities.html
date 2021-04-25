@@ -55,7 +55,7 @@
                                     <div class="post-preview-meta">
                                         <img class="post-preview-meta-img" src="{{ activities.first.author.profile.image.url }}" />
                                         <div class="post-preview-meta-details">
-                                            <div class="post-preview-meta-details-name">{{ activities.first.author.surname }} {{ activities.first.author.name }}</div>
+                                            <div class="post-preview-meta-details-name {% if activies.first.author.is_superuser or activities.first.author.is_staff %} text-purple {% endif %}">{{ activities.first.author.surname }} {{ activities.first.author.name }}</div>
                                             <div class="post-preview-meta-details-date">{{ activities.first.date_posted }}</div>
                                         </div>
                                     </div>
@@ -83,7 +83,7 @@
                                         <div class="post-preview-meta">
                                             <img class="post-preview-meta-img" src="{{ activity.author.profile.image.url }}" />
                                             <div class="post-preview-meta-details">
-                                                <div class="post-preview-meta-details-name">{{ activity.author.surname }} {{ activity.author.name }}</div>
+                                                <div class="post-preview-meta-details-name {% if activity.author.is_superuser or activity.author.is_staff %} text-purple {% endif %}">{{ activity.author.surname }} {{ activity.author.name }}</div>
                                                 <div class="post-preview-meta-details-date">{{ activity.date_posted }}</div>
                                             </div>
                                         </div>

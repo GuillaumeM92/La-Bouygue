@@ -18,7 +18,7 @@ class Budget(models.Model):
 
 class Funding(models.Model):
     date_posted = models.DateTimeField(default=timezone.now)
-    progress = models.SmallIntegerField(default=0, verbose_name=_("Progrès"))
+    progress = models.SmallIntegerField(default=0, verbose_name=_("Progression"))
     goal = models.SmallIntegerField(default=0, verbose_name=_("Objectif"))
 
     class Meta:
