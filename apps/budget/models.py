@@ -7,7 +7,7 @@ from django.utils.translation import ugettext as _
 class Budget(models.Model):
     date_posted = models.DateTimeField(default=timezone.now)
     total = models.SmallIntegerField(default=0, verbose_name=_("Nouveau Total"))
-    description = models.CharField(max_length=300, verbose_name=_('Brève Description'))
+    description = models.CharField(max_length=64, verbose_name=_('Brève Description'))
 
     class Meta:
         verbose_name_plural = "Budget"
