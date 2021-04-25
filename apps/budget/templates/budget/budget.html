@@ -1,0 +1,108 @@
+{% extends "bouygue/base.html" %}
+{% load static %}
+{% block content %}
+
+<!-- Header-->
+<header class="page-header page-header-dark bg-gradient-primary-to-secondary pb-10 overlay" style="background-image: url({% static 'bouygue/assets/img/backgrounds/montagne/ossau.jpg' %}); height: 22rem;">
+    <div class="container">
+        <div class="page-header-content pt-1">
+            <div class="row align-items-center justify-content-between">
+                <div class="col-auto mt-4">
+                    <h1 class="page-header-title">
+                        Budget
+                    </h1>
+                    <div class="page-header-subtitle mb-2">
+                        Représentations graphiques du budget de la Bouygue
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Main page content-->
+<div class="container mt-n10 mb-10" style="padding-left: 1.5rem; padding-right: 1.5rem;">
+    <div class="row mt-4">
+    {% if user.is_superuser or user.is_staff %}
+    <div class="col-xxl-6 col-lg-12 d-flex">
+        <a class="btn btn-green font-weight-700 mb-4" href="{% url 'budget-create' %}" name="create-budget">Mettre à jour le Budget</a>
+    </div>
+    {% endif %}
+    <div class="col-xxl-3 col-lg-6">
+        <div class="card mb-4">
+            <div class="card-body bg-blue">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="mr-3">
+                        <div class="text-white-75 small">Compte indivision</div>
+                        <div class="text-lg text-white font-weight-bold">Total : {{ current_budget.total }} €</div>
+                    </div>
+                    <i class="feather-xl text-white-50" data-feather="dollar-sign"></i>
+                </div>
+            </div>
+            <div class="card-body bg-white">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="mr-3">
+                        <div class="text-black small">Dernière Opération</div>
+                        <div class="text-lg text-black font-weight-bold">{% if difference > 0 %} + {% endif %} {{ difference }} €</div>
+                    </div>
+                    <i class="feather-xl text-white-50" data-feather="dollar-sign"></i>
+                </div>
+            </div>
+            <div class="card-footer d-flex align-items-center justify-content-between bg-rgba(0,0,0,.03)">
+                <a class="small text-black stretched-link" href="#">Voir toutes les opérations</a>
+                <div class="small text-black"><i class="fas fa-angle-right"></i></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xxl-4 col-xl-6 mb-4">
+        <div class="card card-header-actions h-100">
+            <div class="card-header">
+                Progression des financements
+                <div class="dropdown no-caret">
+                    <button class="btn btn-transparent-dark btn-icon dropdown-toggle" id="dropdownMenuButton" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="text-gray-500" data-feather="more-vertical"></i></button>
+                    <div class="dropdown-menu dropdown-menu-right animated--fade-in-up" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="#!">
+                            <div class="dropdown-item-icon"><i class="text-gray-500" data-feather="list"></i></div>
+                            Modifier
+                        </a>
+                        <a class="dropdown-item" href="#!">
+                            <div class="dropdown-item-icon"><i class="text-gray-500" data-feather="plus-circle"></i></div>
+                            Ajouter
+                        </a>
+                        <a class="dropdown-item" href="#!">
+                            <div class="dropdown-item-icon"><i class="text-gray-500" data-feather="minus-circle"></i></div>
+                            Supprimer
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <h4 class="small mb-3">
+                    <b>Participations Annuelles</b><br>
+                    <span class="float-right font-weight-bold">36%</span>
+                    <p class="mt-1">450/1250</p>
+                </h4>
+                <div class="progress mb-4"><div class="progress-bar bg-success" role="progressbar" style="width: 36%" aria-valuenow="36" aria-valuemin="0" aria-valuemax="100"></div></div>
+            </div>
+            <a class="card-footer" href="#!">
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Area chart example-->
+<div class="card mb-4">
+    <div class="card-header">Evolution du budget</div>
+    <div class="card-body">
+        <div class="chart-area"><canvas id="myAreaChart" width="100%" height="30"></canvas></div>
+    </div>
+    <div class="card-footer small text-muted">Mise à jour hier à 23h59</div>
+</div>
+
+<!-- Budget specific imports -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" crossorigin="anonymous"></script>
+<script src="{% static 'budget/js/demo/chart-area-budget.js' %}"></script>
+<script src="{% static 'budget/js/demo/chart-bar-demo.js' %}"></script>
+<script src="{% static 'budget/js/demo/chart-pie-demo.js' %}"></script>
+{% endblock content %}
