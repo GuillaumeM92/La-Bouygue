@@ -47,7 +47,6 @@ def show_agenda(request):
 def get_reservation_details(request):
     """This view is used when the user clicks on an existing reservation"""
     mydata = json.loads(request.body)
-    print(mydata)
     reservation_id = mydata['id']
     reservation = Reservation.objects.filter(id=reservation_id)
     return JsonResponse(serializers.serialize('json', reservation), safe=False)
