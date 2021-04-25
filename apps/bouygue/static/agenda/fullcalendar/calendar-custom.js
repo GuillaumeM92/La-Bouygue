@@ -1,33 +1,15 @@
 document.addEventListener('DOMContentLoaded', function () {
-    let calendarEl = document.getElementById('calendar');
-    let xmlhttp = new XMLHttpRequest()
-    let url = "/reservations/"
-
     const csrftoken = Cookies.get('csrftoken')
     const user_id = $("#user_id").attr("value")
     const is_admin = $("#is_admin").attr("value")
+    let calendarEl = document.getElementById('calendar');
+    let reservationsDict = []; // create an empty array
 
-    // these HTTP methods do not require CSRF protection
-    function csrfSafeMethod(method) {
-        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-    }
-    // setting the csrf token for ajax post request
-    $.ajaxSetup({
-        beforeSend: function (xhr, settings) {
-            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                xhr.setRequestHeader("X-CSRFToken", csrftoken);
-            }
-        }
-    });
-
-    // Full calendar async handling
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            let reservations = JSON.parse(xmlhttp.responseText)
-            let reservationsDict = []; // create an empty array
-
+    fetch('/reservations/')
+        .then(response => response.json())
+        .then(function (data) {
             // Fill the calendar with reservations from the DB(through json url)
-            for (const reservation of reservations) {
+            for (const reservation of data) {
                 reservationsDict.push({
                     title: reservation["name"],
                     start: reservation["start_date"] + 'T12:00:00',
@@ -40,14 +22,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     end_date: reservation["end_date"],
                 });
             }
-
             // Full calendar settings
             let calendar = new FullCalendar.Calendar(calendarEl, {
                 expandRows: true,
                 initialView: 'dayGridMonth',
                 firstDay: 1,
                 displayEventTime: false,
-
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
@@ -67,80 +47,63 @@ document.addEventListener('DOMContentLoaded', function () {
                 nowIndicator: true,
                 dayMaxEvents: true, // allow "more" link when too many events
                 events: reservationsDict,
-
-                eventClick: function (clickInfo) { },
             });
-
             // Send reservation ID when user clicks on a calendar event
             calendar.on('eventClick', function (clickInfo) {
                 let reservationID = clickInfo.event.extendedProps.reservationID
-                $.ajax({
+                fetch("/reservation/", {
                     method: "POST",
-                    url: "/reservation/",
-                    data: JSON.stringify({
-                        id: reservationID,
-                    }),
-                    dataType: "json",
-                    success: function (data) {
-                        jsonData = JSON.parse(data)
+                    body: JSON.stringify({ id: reservationID }),
+                    headers: { "X-CSRFToken": csrftoken }
+                })
+                    .then(response => response.json())
+                    .then(function (data) {
+                        data = JSON.parse(data)
                         // Format start date
-                        let startDate = jsonData[0]["fields"]["start_date"].split("-")
+                        let startDate = data[0]["fields"]["start_date"].split("-")
                         let startDate2 = startDate[2] + "/" + startDate[1] + "/" + startDate[0]
                         // Format end date
-                        let endDate = jsonData[0]["fields"]["end_date"].split("-")
+                        let endDate = data[0]["fields"]["end_date"].split("-")
                         let endDate2 = endDate[2] + "/" + endDate[1] + "/" + endDate[0]
-
                         // check if the user is the owner of the reservation
                         if (user_id == clickInfo.event.extendedProps.userID || is_admin == "yes") {
                             $('#modify-reservation-button').click()
                             // Insert the reservation data in the 'modify reservation' modal
                             let modifyModal = $("#staticBackdrop2")
                             modifyModal.find("#id_id").val(reservationID)
-                            modifyModal.find("#id_name").val(jsonData[0]["fields"]["name"])
+                            modifyModal.find("#id_name").val(data[0]["fields"]["name"])
                             modifyModal.find("#id_start_date").val(startDate2)
                             modifyModal.find("#id_end_date").val(endDate2)
-                            modifyModal.find("#id_description").val(jsonData[0]["fields"]["description"])
-
+                            modifyModal.find("#id_description").val(data[0]["fields"]["description"])
                             // Send a newajax request when a user clicks on the delete reservation button
                             $("#delete-reservation").on("click", function (e) {
-                                $.ajax({
+                                fetch("/delete_reservation/", {
                                     method: "DELETE",
-                                    url: "/delete_reservation/",
-                                    data: JSON.stringify({
-                                        id: reservationID,
-                                    }),
-                                    dataType: "json",
-                                    success: function (data) {
-                                        jsonData = JSON.parse(data)
+                                    body: JSON.stringify({ id: reservationID }),
+                                    headers: { "X-CSRFToken": csrftoken }
+                                })
+                                    .then(response => response.json())
+                                    .then(function (data) {
+                                        data = JSON.parse(data)
                                         // Reload the window to update the calendar
                                         window.location.href = "/home/";
                                         window.location.href = "/agenda/";
-                                    },
-                                    error: function (data) { console.log("error") }
-                                });
+                                    });
                             });
-
-                        }
-                        else {
+                        } else {
                             $('#view-reservation-button').click()
                             // Insert the reservation data in the 'view reservation' modal
                             let viewModal = $("#staticBackdrop3")
-                            viewModal.find("#view_name").empty().empty().append(jsonData[0]["fields"]["name"])
+                            viewModal.find("#view_name").empty().empty().append(data[0]["fields"]["name"])
                             viewModal.find("#view_start_date").empty().append(startDate2)
                             viewModal.find("#view_end_date").empty().append(endDate2)
-                            viewModal.find("#view_description").empty().append(jsonData[0]["fields"]["description"])
+                            viewModal.find("#view_description").empty().append(data[0]["fields"]["description"])
                         }
-                    },
-                    error: function (data) { console.log("error") }
-                });
+                    });
             });
             calendar.render();
-        }
-    }
-    xmlhttp.open('GET', url, true)
-    xmlhttp.send()
-
-    // Make sure the calendar widget displays on top of the form modal window
+        });
+    //Make sure the calendar widget displays on top of the form modal window
     $(window).on('load', function () {
         let datePicker = document.getElementsByClassName('calendarbox module');
         let modalWindow = document.getElementById("staticBackdrop")
@@ -150,12 +113,10 @@ document.addEventListener('DOMContentLoaded', function () {
         modalWindow2.appendChild(datePicker[2])
         modalWindow2.appendChild(datePicker[3])
     });
-
     // Resize the footer to match fixed calendar width on mobile devices
     if ($('#responsive-calendar').css('width') == "850px") {
         $('#layoutDefault_footer').css('width', '855px')
     };
-
     /* Make the calendar widget disappear when the user clicks outside of it
        Also makes sure not to open 2 calendars at once */
     $(window).on("click", function (e) {

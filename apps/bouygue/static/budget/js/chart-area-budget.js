@@ -130,7 +130,6 @@ fetch('/budget/data/')
                 }
             }
         });
-
     });
 
 
