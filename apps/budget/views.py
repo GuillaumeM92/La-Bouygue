@@ -9,7 +9,9 @@ from .models import Budget, Funding
 @login_required
 def budget(request):
     current_budget = Budget.objects.order_by('-date_posted').first()
-    previous_budget = Budget.objects.order_by('-date_posted').all()[1]
+    previous_budget = Budget.objects.order_by('-date_posted').all()
+    if len(previous_budget) > 1:
+        previous_budget = previous_budget[1]
     difference = current_budget.total - previous_budget.total
     funding = Funding.objects.order_by('-date_posted').first()
     if funding:
