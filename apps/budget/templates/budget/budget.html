@@ -73,7 +73,7 @@
             <div class="card-body">
                 <h4 class="small mb-3">
                     <b>Participations Annuelles</b><br>
-                    <span class="float-right font-weight-bold">{% if _percent %}  {{ funding_percent }} {% endif %}%</span>
+                    <span class="float-right font-weight-bold">{% if funding_percent %}  {{ funding_percent }} {% endif %}%</span>
                     <p class="mt-1">{% if funding %} {{ funding.progress }} / {{ funding.goal }} {% endif %}</p>
                 </h4>
                 <div class="progress mb-4"><div class="progress-bar bg-success" role="progressbar" style="width: {{ funding_percent }}%" aria-valuenow="{{ funding_percent }}" aria-valuemin="0" aria-valuemax="100"></div></div>
