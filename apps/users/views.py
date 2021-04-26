@@ -30,7 +30,7 @@ def register(request):
                       ("{} {} s'est créé un compte sur le site de la Bouygue. Merci de vérifier "
                        "son identité avant d'activer son compte. Lien : "
                        "https://labouygue.com/admin/activate/").format(user_surname, user_name),
-                      None, ["gemacx@gmail.com"], fail_silently=True, )
+                      None, ["gemacx@gmail.com", "aurelieporcq@gmail.com"], fail_silently=True, )
             messages.success(request, str(
                 "Votre compte a été créé avec succès ! Un email de confirmation vient de vous "
                 "être envoyé. Vous pourrez vous connecter dès qu'un administrateur aura "
