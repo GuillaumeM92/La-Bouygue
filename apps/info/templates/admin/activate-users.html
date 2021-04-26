@@ -3,7 +3,6 @@
 {% load crispy_forms_tags %}
 {% block content %}
 <div hidden>{% block title %} - Travaux {% endblock %}</div>
-
 <section class="bg-light py-10">
     <div class="container" style="padding-right: 1.6rem; padding-left: 1.6rem;">
         <a href="{% url "bouygue-home"%}" style="cursor: pointer"><i class="fas fa-arrow-left mr-1"></i> Accueil</a>
@@ -32,7 +31,6 @@
                     </li>
                     {% endfor %}
                 </ul>
-
                 <div class="d-flex align-items-center justify-content-between">
                     <h2 class="mb-0">Utilisateurs Actifs</h2>
                     <div class="badge badge-primary-soft text-primary badge-marketing">{{ active_users|length }} utilisateur(s)</div>
@@ -46,8 +44,6 @@
                     </li>
                     {% endfor %}
                 </ul>
-
-
             </div>
         </div>
     </div>

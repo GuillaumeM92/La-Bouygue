@@ -61,9 +61,9 @@
                             </ul>
                             {% if user.is_authenticated %}
                             {% if user.is_superuser %}
-                                <a class="btn btn-outline-white font-weight-500"  style="padding: 0.75rem;" href="{% url 'admin:index' %}">Admin</a>
+                                <a class="btn btn-outline-white font-weight-500" style="padding: 0.75rem;" href="{% url 'admin:index' %}">Admin</a>
                             {% elif user.is_staff %}
-                                <a class="btn btn-outline-white font-weight-500"  style="padding: 0.75rem;" href="{% url 'activate-users' %}">Admin</a>
+                                <a class="btn btn-outline-white font-weight-500" id="admin" style="padding: 0.75rem;" href="{% url 'activate-users' %}">Admin</a>
                             {% endif %}
                                 <a class="btn btn-outline-white font-weight-500 ml-lg-2" style="padding: 0.75rem;" href="{% url 'users-profile' %}" name="profile">Profil</a>
                                 <a class="btn btn-outline-white font-weight-500 ml-lg-2" id="logout-icon" style="padding: 0.75rem;" href="{% url 'users-logout' %}">Déconnexion<i class="ml-2" data-feather="arrow-right"></i></a>

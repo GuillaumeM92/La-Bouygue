@@ -34,7 +34,7 @@ else:
     )
 
 
-class UserStorySeleniumTest(LiveServerTestCase):
+class SeleniumTesting(LiveServerTestCase):
     def setUp(self):
         """Create and populate a testing database."""
         pass
@@ -50,6 +50,7 @@ class UserStorySeleniumTest(LiveServerTestCase):
         cls.selenium.quit()
         super().tearDownClass()
 
+    # USERS
     def test_register(self):
         # fill registration form
         self.selenium.get("%s%s" % (self.live_server_url, "/register/"))
@@ -71,7 +72,7 @@ class UserStorySeleniumTest(LiveServerTestCase):
     def test_login(self):
         # register
         self.test_register()
-        user = MyUser.objects.first()
+        user = MyUser.objects.get(email="test@email.com")
         user.is_active = True
         user.save()
         # fill login form
@@ -97,6 +98,35 @@ class UserStorySeleniumTest(LiveServerTestCase):
         self.selenium.get("%s%s" % (self.live_server_url, "/profile"))
         url = driver.current_url
         self.assertEqual(url, self.live_server_url + "/login/?next=/profile/")
+
+    def test_activate_user(self):
+        # create inactive user
+        self.selenium.get("%s%s" % (self.live_server_url, "/register/"))
+        name_input = self.selenium.find_element_by_name("name")
+        name_input.send_keys("Doey")
+        surname_input = self.selenium.find_element_by_name("surname")
+        surname_input.send_keys("Johny")
+        username_input = self.selenium.find_element_by_name("email")
+        username_input.send_keys("test2@email.com")
+        password_input = self.selenium.find_element_by_name("password1")
+        password_input.send_keys("testing1234")
+        password_input = self.selenium.find_element_by_name("password2")
+        password_input.send_keys("testing1234")
+        self.selenium.find_element_by_name("register").click()
+        # register and login
+        self.test_register()
+        self.test_login()
+        # make user admin
+        user = MyUser.objects.get(email="test@email.com")
+        user.is_staff = True
+        user.save()
+        # go to user activation page
+        self.selenium.get("%s%s" % (self.live_server_url, "/info/admin/activate/"))
+        # click activate user button
+        self.selenium.find_element_by_name("action").click()
+        # check if user is now activated
+        other_user = MyUser.objects.get(email="test2@email.com")
+        self.assertEqual(other_user.is_active, True)
 
     # BLOG
     def test_add_post(self):
