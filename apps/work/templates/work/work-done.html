@@ -28,7 +28,7 @@
             <a class="btn btn-primary font-weight-700 mt-1" href="{% url 'work' %}">Voir les travaux à faire</a>
         </div>
         <div class="row justify-content-center">
-            <div class="col-lg-10">
+            <div class="col-lg-10 mb-5">
 
                 <div class="d-flex align-items-center justify-content-between">
                     <h2 class="mb-0">Bricolage</h2>
@@ -38,8 +38,8 @@
                 <ul class="list-group list-group-flush list-group-careers">
                     {% for work in handiwork_done %}
                     <li class="list-group-item">
-                        <a href="{% url 'work-detail' work.id %}">{{ work.title }}</a>
-                        <div class="small">Le {{ work.date_posted }}</div>
+                        <a href="{% url 'work-detail' work.id %}" class="mr-2">{{ work.title }}</a>
+                        <div class="small ml-2">Le {{ work.date_posted }}</div>
                     </li>
                     {% endfor %}
                 </ul>
@@ -52,8 +52,8 @@
                 <ul class="list-group list-group-flush list-group-careers">
                     {% for work in gardening_done %}
                     <li class="list-group-item">
-                        <a href="{% url 'work-detail' work.id %}">{{ work.title }}</a>
-                        <div class="small">Le {{ work.date_posted }}</div>
+                        <a href="{% url 'work-detail' work.id %}" class="mr-2">{{ work.title }}</a>
+                        <div class="small ml-2">Le {{ work.date_posted }}</div>
                     </li>
                     {% endfor %}
                 </ul>
@@ -66,8 +66,8 @@
                 <ul class="list-group list-group-flush list-group-careers">
                     {% for work in plumbing_done %}
                     <li class="list-group-item">
-                        <a href="{% url 'work-detail' work.id %}">{{ work.title }}</a>
-                        <div class="small">Le {{ work.date_posted }}</div>
+                        <a href="{% url 'work-detail' work.id %}" class="mr-2">{{ work.title }}</a>
+                        <div class="small ml-2">Le {{ work.date_posted }}</div>
                     </li>
                     {% endfor %}
                 </ul>
@@ -80,8 +80,8 @@
                 <ul class="list-group list-group-flush list-group-careers">
                     {% for work in masonry_done %}
                     <li class="list-group-item">
-                        <a href="{% url 'work-detail' work.id %}">{{ work.title }}</a>
-                        <div class="small">Le {{ work.date_posted }}</div>
+                        <a href="{% url 'work-detail' work.id %}" class="mr-2">{{ work.title }}</a>
+                        <div class="small ml-2">Le {{ work.date_posted }}</div>
                     </li>
                     {% endfor %}
                 </ul>
@@ -94,8 +94,8 @@
                 <ul class="list-group list-group-flush list-group-careers">
                     {% for work in other_done %}
                     <li class="list-group-item">
-                        <a href="{% url 'work-detail' work.id %}">{{ work.title }}</a>
-                        <div class="small">Le {{ work.date }}</div>
+                        <a href="{% url 'work-detail' work.id %}" class="mr-2">{{ work.title }}</a>
+                        <div class="small ml-2">Le {{ work.date }}</div>
                     </li>
                     {% endfor %}
                 </ul>
