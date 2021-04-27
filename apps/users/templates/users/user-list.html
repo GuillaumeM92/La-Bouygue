@@ -29,7 +29,11 @@
                                 <a class="btn btn-primary font-weight-bolder" onClick="javascript:history.go(-1);" title="retour" ><i class="fas fa-chevron-left dropdown-arrow"></i></a>
                             </div>
                             {% for post in app %}
-                                <a class="post-archive-item" href="{% url 'post-detail' post.id %}">
+                                {% if view.kwargs.app == "discussion(s)" %} <a class="post-archive-item" href="{% url 'post-detail' post.id %}">
+                                {% elif view.kwargs.app == "activité(s)" %} <a class="post-archive-item" href="{% url 'activity-detail' post.id %}">
+                                {% elif view.kwargs.app == "information(s)" %} <a class="post-archive-item" href="{% url 'infopost-detail' post.id %}">
+                                {% elif view.kwargs.app == "tâche(s)" %} <a class="post-archive-item" href="{% url 'work-detail' post.id %}">
+                                {% endif %}
                                     <h5>{{ post.title }}</h5>
                                     <p>{{ post.content }}</p>
                                 </a>
@@ -39,7 +43,17 @@
                                         <div class="post-archive-meta-details-name {% if post.author.is_superuser or post.author.is_staff %} text-purple {% endif %}">{{ post.author.surname }} {{ post.author.name }}</div>
                                         <div class="post-archive-meta-details-date">{{ post.date_posted }}</div>
                                     </div>
-                                    <a class="font-weight-700 col-lg-3 ml-auto" style="padding-right: 0;" href="{% url 'post-detail' post.id %}">Voir la discussion</a>
+                                    {% if view.kwargs.app == "discussion(s)" %} <a class="font-weight-700 col-lg-3 ml-auto" style="padding-right: 0;" href="{% url 'post-detail' post.id %}">
+                                    {% elif view.kwargs.app == "activité(s)" %} <a class="font-weight-700 col-lg-3 ml-auto" style="padding-right: 0;" href="{% url 'activity-detail' post.id %}">
+                                    {% elif view.kwargs.app == "information(s)" %} <a class="font-weight-700 col-lg-3 ml-auto" style="padding-right: 0;" href="{% url 'infopost-detail' post.id %}">
+                                    {% elif view.kwargs.app == "tâche(s)" %} <a class="font-weight-700 col-lg-3 ml-auto" style="padding-right: 0;" href="{% url 'work-detail' post.id %}">
+                                    {% endif %}
+                                        {% if view.kwargs.app == "discussion(s)" %}  Voir la discussion
+                                        {% elif view.kwargs.app == "activité(s)" %}  Voir l'activité
+                                        {% elif view.kwargs.app == "information(s)" %}  Voir l'information
+                                        {% elif view.kwargs.app == "tâche(s)" %}  Voir le travail
+                                        {% endif %}
+                                    </a>
                                 </div>
                                 <hr class="my-5" />
                             {% endfor %}

@@ -112,7 +112,7 @@ class UserAppListView(LoginRequiredMixin, ListView):
         elif app == 'activité(s)':
             context["app"] = user.activity_set.all()
         elif app == 'information(s)':
-            context["app"] = user.info_set.all()
+            context["app"] = user.infopost_set.all()
         elif app == 'tâche(s)':
             context["app"] = user.work_set.all()
 

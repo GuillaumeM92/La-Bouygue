@@ -5,7 +5,7 @@
 {% block import %}
     {% include 'blocks/image-resize-imports.html' %}
 {% endblock %}
-<div id="layoutAuthentication_content" class="bg-img-cover bg-gray-900" style="padding-right: 0.5rem; padding-left: 0.5rem; background-image: url({% static 'bouygue/assets/img/backgrounds/montagne/lacs.jpg' %}); height:60rem;">
+<div id="layoutAuthentication_content" class="bg-img-cover bg-gray-900" style="padding-right: 0.5rem; padding-left: 0.5rem; background-image: url({% static 'bouygue/assets/img/backgrounds/montagne/lacs.jpg' %}); height:62rem;">
     <div class="container" style="padding-right: 1rem; padding-left: 1rem">
         <div class="row justify-content-center">
             <div class="col-lg-9 mt-5">
@@ -25,8 +25,8 @@
                                 </div>
                             {% endfor %}
                         {% endif %}
-                        <img class="rounded-circle account-img" id="profile-img" src="{{ user.profile.image.url }}">
-                        <div class="col-lg-5 font-weight-500 ml-auto mr-auto">
+                        <img class="rounded-circle account-img mb-4" id="profile-img" src="{{ clicked_user.profile.image.url }}">
+                        <div class="col-lg-5 font-weight-600 ml-auto mr-auto" style="font-size: large;">
                             <p class="mt-4 mb-4">{{ clicked_user.surname }} {{ clicked_user.name }} a créé : </p>
                             <ul class="mt-3">
                                 <div class="d-flex">
