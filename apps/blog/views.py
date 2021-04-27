@@ -24,22 +24,6 @@ class PostListView(LoginRequiredMixin, ListView):
         return super().dispatch(request, *args, **kwargs)
 
 
-class UserPostListView(LoginRequiredMixin, ListView):
-    model = Post
-    template_name = 'blog/user-posts.html'
-    context_object_name = 'posts'
-    paginate_by = 5
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["clicked_user"] = MyUser.objects.get(id=self.kwargs.get('id'))
-        return context
-
-    def get_queryset(self):
-        posts = MyUser.objects.get(id=self.kwargs.get('id')).post_set.all()
-        return posts
-
-
 @login_required()
 def post_detail(request, pk):
     template_name = 'blog/post-detail.html'

@@ -58,18 +58,6 @@ def activity_detail(request, pk):
         'page_obj': page_obj, 'comment_count': comment_count})
 
 
-class UserActivityListView(LoginRequiredMixin, ListView):
-    model = Activity
-    template_name = 'activities/user-activities.html'
-    context_object_name = 'activities'
-    paginate_by = 5
-
-    def get_queryset(self):
-        user = get_object_or_404(MyUser, name=self.kwargs.get(
-            'name'), surname=self.kwargs.get('surname'))
-        return Activity.objects.filter(author=user).order_by('-date_posted')
-
-
 class ActivityCreateView(LoginRequiredMixin, CreateView):
     model = Activity
     template_name = 'activities/activity-create.html'

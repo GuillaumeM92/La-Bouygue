@@ -47,20 +47,6 @@ class WorkDoneListView(LoginRequiredMixin, ListView):
         return context
 
 
-class UserWorkListView(LoginRequiredMixin, ListView):
-    model = Work
-    template_name = "work/user-work.html"
-    context_object_name = "works"
-    paginate_by = 4
-
-    def get_queryset(self):
-        user = get_object_or_404(
-            MyUser,
-            name=self.kwargs.get("name"),
-            surname=self.kwargs.get("surname"))
-        return Work.objects.filter(author=user).order_by("-date_posted")
-
-
 @login_required()
 def work_detail(request, pk):
     template_name = "work/work-detail.html"

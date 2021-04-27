@@ -25,18 +25,6 @@ class InfoPostListView(LoginRequiredMixin, ListView):
         return super().dispatch(request, *args, **kwargs)
 
 
-class UserInfoPostListView(LoginRequiredMixin, ListView):
-    model = InfoPost
-    template_name = 'info/user-infoposts.html'
-    context_object_name = 'infoposts'
-    paginate_by = 5
-
-    def get_queryset(self):
-        user = get_object_or_404(MyUser, name=self.kwargs.get(
-            'name'), surname=self.kwargs.get('surname'))
-        return InfoPost.objects.filter(author=user).order_by('-date_posted')
-
-
 @login_required()
 def infopost_detail(request, pk):
     template_name = 'info/infopost-detail.html'

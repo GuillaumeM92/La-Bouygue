@@ -1,11 +1,14 @@
+from django.core.mail import send_mail
+from apps.users.models import MyUser
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm, ProfileUpdateForm, UserLoginForm
 from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
-from apps.users.models import MyUser
-from django.core.mail import send_mail
+from django.views.generic import ListView
+from apps.blog.models import Post
 
 
 def register(request):
@@ -81,3 +84,41 @@ def profile(request):
     context = {"p_form": p_form, 'title': 'Profil'}
 
     return render(request, "users/profile.html", context)
+
+
+class UserProfileListView(LoginRequiredMixin, ListView):
+    model = MyUser
+    template_name = 'users/profile-view.html'
+    context_object_name = 'clicked_user'
+
+    def get_queryset(self):
+        clicked_user = MyUser.objects.get(id=self.kwargs.get('id'))
+        return clicked_user
+
+
+class UserAppListView(LoginRequiredMixin, ListView):
+    model = Post
+    template_name = 'users/user-list.html'
+    context_object_name = 'app'
+    paginate_by = 5
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = MyUser.objects.get(id=self.kwargs.get('id'))
+        app = self.kwargs.get('app')
+
+        if app == 'discussion(s)':
+            context["app"] = user.post_set.all()
+        elif app == 'activité(s)':
+            context["app"] = user.activity_set.all()
+        elif app == 'information(s)':
+            context["app"] = user.info_set.all()
+        elif app == 'tâche(s)':
+            context["app"] = user.work_set.all()
+
+        context["clicked_user"] = user
+        return context
+
+    def get_queryset(self):
+        posts = MyUser.objects.get(id=self.kwargs.get('id')).post_set.all()
+        return posts

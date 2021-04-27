@@ -57,7 +57,7 @@
                 {% if work.image %} <img src="{{ work.image.url }}" class="img-fluid"/> {% endif %}
                 <div class="d-flex align-items-center justify-content-between mt-4 mb-5">
                     <div class="post-archive-meta mr-4 ml-auto p-2">
-                        <a href="{% url 'user-work' work.author.surname work.author.name %}"><img class="post-archive-meta-img" src="{{ work.author.profile.image.url }}"/>
+                        <a href="{% url 'profile-view' work.author.id %}"><img class="post-archive-meta-img" src="{{ work.author.profile.image.url }}"/>
                         <div class="post-archive-meta-details">
                             <div class="post-archive-meta-details-name {% if work.author.is_superuser or work.author.is_staff %} text-purple {% endif %}">{{ work.author.surname }} {{ work.author.name }}</div></a>
                             <div class="post-archive-meta-details-date">{{ work.date_posted }}</div>
@@ -109,7 +109,7 @@
                     </form>
                     {% for comment in page_obj.object_list %}
                         <div class="post-archive-meta d-flex">
-                            <a href="{% url 'user-work' comment.author.surname comment.author.name %}"><img class="post-archive-meta-img" src="{{ comment.author.profile.image.url }}" />
+                            <a href="{% url 'profile-view' comment.author.id %}"><img class="post-archive-meta-img" src="{{ comment.author.profile.image.url }}" />
                             <div class="post-archive-meta-details mr-auto p-2">
                                 <div class="post-archive-meta-details-name {% if comment.author.is_superuser or comment.author.is_staff %} text-purple {% endif %}">{{ comment.author.surname }} {{ comment.author.name }}</div></a>
                                 <div class="post-archive-meta-details-date">{{ comment.date_posted }}</div>

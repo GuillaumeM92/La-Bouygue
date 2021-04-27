@@ -12,7 +12,10 @@
                 <!-- Profile -->
                 <div class="card shadow-lg border-0 rounded-lg mt-10 mb-5 animated--fade-in">
                     <div class="card-header justify-content-center" style="background-color: #19273c; opacity: 96%">
-                        <h4 class="font-weight-50 my-4" style="color: white">{{ user.surname }} {{ user.name }} - {{ user }}</h4>
+                        <a onClick="javascript:history.go(-1);" class="col-xs btn btn-outline-white font-weight-bolder" title="retour"><i class="fas fa-chevron-left dropdown-arrow"></i></a>
+                        <div class="col-11 font-weight-700 h4 my-4 mr-2" align="center" style="color: white;">
+                            {{ user.surname }} {{ user.name }} - {{ user }}
+                        </div>
                     </div>
                     <div class="card-body text-center font-weight-500">
                         {% if messages %}
