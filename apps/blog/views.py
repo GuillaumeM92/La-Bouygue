@@ -30,10 +30,14 @@ class UserPostListView(LoginRequiredMixin, ListView):
     context_object_name = 'posts'
     paginate_by = 5
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["clicked_user"] = MyUser.objects.get(id=self.kwargs.get('id'))
+        return context
+
     def get_queryset(self):
-        user = get_object_or_404(MyUser, name=self.kwargs.get(
-            'name'), surname=self.kwargs.get('surname'))
-        return Post.objects.filter(author=user).order_by('-date_posted')
+        posts = MyUser.objects.get(id=self.kwargs.get('id')).post_set.all()
+        return posts
 
 
 @login_required()

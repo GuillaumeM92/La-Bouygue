@@ -7,12 +7,12 @@
     <div id="layoutDefault_content">
         <main>
             <!-- Page Header-->
-            <header class="page-header page-header-dark bg-img-cover overlay overlay-60" style="background-image: {{ post.author.profile.image.url }}; height: 19rem;">
+            <header class="page-header page-header-dark bg-img-cover overlay overlay-60" style="background-image: url({{clicked_user.profile.image.url}}); height: 19rem;">
                 <div class="page-header-content">
                     <div class="container text-center">
                         <div class="row justify-content-center">
                             <div class="col-lg-8">
-                                <h1 class="page-header-title mt-0 mb-3" style="font-size: 185%">{{ view.kwargs.surname }} {{ view.kwargs.name }} a créé {{ page_obj.paginator.count }} discussion(s)</h1>
+                                <h1 class="page-header-title mt-0 mb-3" style="font-size: 185%">{{ clicked_user.surname }} {{ clicked_user.name }} a créé {{ page_obj.paginator.count }} discussion(s)</h1>
                             </div>
                         </div>
                     </div>
