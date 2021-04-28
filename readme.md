@@ -16,11 +16,14 @@ The calendar was built with FullCalendar : https://fullcalendar.io/
 * Make a reservation, modify it or delete it
 * View other people's reservations on the calendar
 * Create new discussions, read other people's discussions, post comments..
-* View the user Profile and change the profile picture
+* Attach a picture to any form
+* View any user Profile and change your profile picture
 * Create and view new activities to do during the holidays
 * Read the latest important informations about the house
 * Create and view what work there is to do inside and outside the house
 * See the budget for each year, watch contributions progress
+* Activate New Users (Admin only)
+* Update Budget and Funding (Admin only)
 * Logout
 
 ## Built With
@@ -34,6 +37,12 @@ The calendar was built with FullCalendar : https://fullcalendar.io/
 * Supervisor
 * Sentry
 * GitHub
+
+### Js modules :
+* FullCalendar
+* Cookies
+* Bootbox
+* Django Client Side Image Cropping
 
 ## Special thanks
 To my Openclassrooms mentor Mikael Briolet for helping me build this project!
