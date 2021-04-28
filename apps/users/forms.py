@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import Profile
-# from captcha.fields import ReCaptchaField
+from captcha.fields import ReCaptchaField
 from client_side_image_cropping import ClientsideCroppingWidget
 
 User = get_user_model()
@@ -26,12 +26,11 @@ class UserLoginForm(AuthenticationForm):
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField(label="Adresse email")
-    # captcha = ReCaptchaField()
+    captcha = ReCaptchaField()
 
     class Meta:
         model = User
-        fields = ["name", "surname", "email", "password1", "password2"]
-        # fields = ["name", "surname", "email", "password1", "password2", "captcha"]
+        fields = ["name", "surname", "email", "password1", "password2", "captcha"]
 
     def clean_email(self):
         data = self.cleaned_data['email']
