@@ -5,118 +5,117 @@
 {% block import %}
     {% include 'blocks/image-resize-imports.html' %}
 {% endblock %}
-<div id="layoutDefault">
-    <div id="layoutDefault_content">
-        <main>
-            <!-- Page Header-->
-            <header class="page-header page-header-dark bg-img-cover overlay overlay-60" style="background-image: url({% static 'bouygue/assets/img/backgrounds/montagne/ordesa.jpg' %}); height: 19rem;">
-                <div class="page-header-content">
-                    <div class="container text-center">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-8">
-                                <h1 class="page-header-title mt-0 mb-3">Discussion</h1>
-                                <p class="page-header-text mb-0">Vous pouvez ajouter un commentaire au bas de la discussion</p>
-                            </div>
-                        </div>
-                    </div>
+<!-- Page Header-->
+<header class="page-header page-header-dark bg-img-cover overlay overlay-60" style="background-image: url({% static 'bouygue/assets/img/backgrounds/montagne/ordesa.jpg' %}); height: 19rem;">
+    <div class="page-header-content">
+        <div class="container text-center">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <h1 class="page-header-title mt-0 mb-3">Discussion</h1>
+                    <p class="page-header-text mb-0">Vous pouvez ajouter un commentaire au bas de la discussion</p>
                 </div>
-                {% block border-wave %}
-                    {% include 'blocks/svg-border-wave.html' %}
-                {% endblock %}
-            </header>
-            <section class="bg-light py-4 mb-5">
-                <div class="container" style="padding-left: 1.5rem; padding-right: 1.5rem;">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-10">
-                            {% if messages %}
-                                {% for message in messages %}
-                                    <div class="alert alert-{{ message.tags }}">
-                                        {{ message }}
-                                    </div>
-                                {% endfor %}
-                            {% endif %}
-                            <div class="post-archive-tag">
-                                <a class="btn btn-outline-primary font-weight-bolder" href="{% url 'blog' %}" title="retour"><i class="fas fa-chevron-left dropdown-arrow"></i></a>
-                                {% if user == post.author %}
-                                <a class="btn btn-outline-primary font-weight-700 ml-1" href="{% url 'post-update' post.id %}" name="update-post">Modifier</a>
-                                {% endif %}
-                                {% if user == post.author or user.is_superuser or user.is_staff %}
-                                <a class="btn btn-outline-danger font-weight-700 ml-1" href="{% url 'post-delete' post.id %}" name="delete-post">Supprimer</a>
-                                {% endif %}
-                            </div>
-                            <div class="post-archive-item">
-                                <h5>{{ post.title }}</h5>
-                                <p>{{ post.content }}</p>
-                                {% if post.image %} <img src="{{post.image.url }}" class="img-fluid"/> {% endif %}
-                            </div>
-                            <div class="post-archive-meta mt-3 mb-7">
-                                <a href="{% url 'profile-view' post.author.id %}"><img class="post-archive-meta-img" src="{{ post.author.profile.image.url }}" />
-                                <div class="post-archive-meta-details">
-                                    <div class="post-archive-meta-details-name {% if post.author.is_superuser or post.author.is_staff %} text-purple {% endif %}">{{ post.author.surname }} {{ post.author.name }}</div></a>
-                                    <div class="post-archive-meta-details-date">{{ post.date_posted }}</div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Comments Section -->
-                        <div class="col-lg-10 bg-gray-200 rounded">
-                            <h1 class="mt-4">Commentaires</h1>
-                            <hr class="my-2" />
-                            <!-- Post Comment form-->
-                            <form method="POST" autocomplete="off">
-                                {% csrf_token %}
-                                <!-- Form Row-->
-                                <fieldset class="form-group mb-5">
-                                    {{ form|crispy }}
-                                    <button class="btn btn-primary font-weight-bolder" type="submit" name="send">PUBLIER</button>
-                                </fieldset>
-                            </form>
-                            {% for comment in page_obj.object_list %}
-                                <div class="post-archive-meta d-flex">
-                                    <a href="{% url 'profile-view' comment.author.id %}"><img class="post-archive-meta-img" src="{{ comment.author.profile.image.url }}" />
-                                    <div class="post-archive-meta-details mr-auto p-2">
-                                        <div class="post-archive-meta-details-name {% if comment.author.is_superuser or comment.author.is_staff %} text-purple {% endif %}">{{ comment.author.surname }} {{ comment.author.name }}</div></a>
-                                        <div class="post-archive-meta-details-date">{{ comment.date_posted }}</div>
-                                    </div>
-                                    {% if user == comment.author %}
-                                        <a class="btn btn-outline-primary font-weight-500" style="padding: 0.6rem;" href="{% url 'comment-update' comment.id %}?next={{ request.path }}" name="update-comment">modifier</a>
-                                    {% endif %}
-                                    {% if user == comment.author or user.is_superuser or user.is_staff %}
-                                        <a class="btn btn-outline-danger font-weight-500 ml-1" style="padding: 0.6rem;" href="{% url 'comment-delete' comment.id %}?next={{ request.path }}" name="delete-comment">supprimer</a>
-                                    {% endif %}
-                                    </div>
-                                <div class="post-archive-item mt-3">
-                                    <p>{{ comment.content }}</p>
-                                    {% if comment.image %} <img src="{{ comment.image.url }}" class="img-fluid"/> {% endif %}
-                                </div>
-                                <hr class="my-5" />
-                            {% endfor %}
-                            <!-- Pagination -->
-                            {% if comment_count > 5 %}
-                            <nav aria-label="Page navigation example">
-                                <ul class="pagination pagination-blog justify-content-center">
-                                {% if page_obj.has_previous %}
-                                    <li class="page-item active"><a class="page-link" href="?page=1">Début</a></li>
-                                    <li class="page-item active"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Préc.</a></li>
-                                {% endif %}
-                                {% for num in page_obj.paginator.page_range %}
-                                    {% if page_obj.number == num %}
-                                        <li class="page-item disabled"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
-                                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                                        <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
-                                    {% endif %}
-                                {% endfor %}
-                                {% if page_obj.has_next %}
-                                    <li class="page-item active"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Suiv.</a></li>
-                                    <li class="page-item active"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Fin</a></li>
-                                {% endif %}
-                                </ul>
-                            </nav>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </main>
+            </div>
+        </div>
     </div>
-</div>
+    {% block border-wave %}
+        {% include 'blocks/svg-border-wave.html' %}
+    {% endblock %}
+</header>
+<section class="bg-light py-4 mb-5">
+    <div class="container" style="padding-left: 1.5rem; padding-right: 1.5rem;">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <div class="post-archive-tag">
+                    <a class="btn btn-outline-primary font-weight-bolder" href="{% url 'blog' %}" title="retour"><i class="fas fa-chevron-left dropdown-arrow"></i></a>
+                    {% if user == post.author %}
+                    <a class="btn btn-outline-primary font-weight-700 ml-1" href="{% url 'post-update' post.id %}" name="update-post">Modifier</a>
+                    {% endif %}
+                    {% if user == post.author or user.is_superuser or user.is_staff %}
+                    <a class="btn btn-outline-danger font-weight-700 ml-1" href="{% url 'post-delete' post.id %}" name="delete-post">Supprimer</a>
+                    {% endif %}
+                </div>
+                <div class="post-archive-item">
+                    <h5>{{ post.title }}</h5>
+                    <p>{{ post.content|linebreaks }}</p>
+                    {% if post.image %} <img src="{{post.image.url }}" class="img-fluid"/> {% endif %}
+                </div>
+                <div class="post-archive-meta mt-3 mb-7">
+                    <a href="{% url 'profile-view' post.author.id %}"><img class="post-archive-meta-img" src="{{ post.author.profile.image.url }}" />
+                    <div class="post-archive-meta-details">
+                        <div class="post-archive-meta-details-name {% if post.author.is_superuser or post.author.is_staff %} text-purple {% endif %}">{{ post.author.surname }} {{ post.author.name }}</div></a>
+                        <div class="post-archive-meta-details-date">{{ post.date_posted }}</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Comments Section -->
+            <div class="col-lg-10 bg-gray-200 rounded">
+                <h1 class="mt-4">Commentaires</h1>
+                <hr class="my-2" />
+                <!-- Post Comment form-->
+                <form method="POST" autocomplete="off">
+                    {% csrf_token %}
+                    <!-- Form Row-->
+                    <fieldset class="form-group mb-5">
+                        {{ form|crispy }}
+                        <button class="btn btn-primary font-weight-bolder" type="submit" name="send">PUBLIER</button>
+                    </fieldset>
+                </form>
+                {% for comment in page_obj.object_list %}
+                    <div class="post-archive-meta d-flex">
+                        <a href="{% url 'profile-view' comment.author.id %}"><img class="post-archive-meta-img" src="{{ comment.author.profile.image.url }}" />
+                        <div class="post-archive-meta-details mr-auto p-2">
+                            <div class="post-archive-meta-details-name {% if comment.author.is_superuser or comment.author.is_staff %} text-purple {% endif %}">{{ comment.author.surname }} {{ comment.author.name }}</div></a>
+                            <div class="post-archive-meta-details-date">{{ comment.date_posted }}</div>
+                        </div>
+                        {% if user == comment.author %}
+                            <a class="btn btn-outline-primary font-weight-500" style="padding: 0.6rem;" href="{% url 'comment-update' comment.id %}?next={{ request.path }}" name="update-comment">modifier</a>
+                        {% endif %}
+                        {% if user == comment.author or user.is_superuser or user.is_staff %}
+                            <a class="btn btn-outline-danger font-weight-500 ml-1" style="padding: 0.6rem;" href="{% url 'comment-delete' comment.id %}?next={{ request.path }}" name="delete-comment">supprimer</a>
+                        {% endif %}
+                        </div>
+                    <div class="post-archive-item mt-3">
+                        <p>{{ comment.content|linebreaks }}</p>
+                        {% if comment.image %} <img src="{{ comment.image.url }}" class="img-fluid"/> {% endif %}
+                    </div>
+                    <hr class="my-5" />
+                {% endfor %}
+                <!-- Pagination -->
+                {% if comment_count > 5 %}
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination pagination-blog justify-content-center">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item active"><a class="page-link" href="?page=1">Début</a></li>
+                        <li class="page-item active"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Préc.</a></li>
+                    {% endif %}
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <li class="page-item disabled"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                        <li class="page-item active"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Suiv.</a></li>
+                        <li class="page-item active"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Fin</a></li>
+                    {% endif %}
+                    </ul>
+                </nav>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+<section>
+    <div class="svg-border-rounded text-light">
+        <!-- Rounded SVG Border--><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144.54 17.34" preserveAspectRatio="none" fill="#1e2c41"><path d="M144.54,17.34H0V0H144.54ZM0,0S32.36,17.34,72.27,17.34,144.54,0,144.54,0"></path></svg>
+    </div>
+</section>
 {% endblock content %}

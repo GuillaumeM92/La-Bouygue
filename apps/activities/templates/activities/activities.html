@@ -3,121 +3,115 @@
 {% load crispy_forms_tags %}
 {% block content %}
 <div hidden>{% block title %} - Activités {% endblock %}</div>
-<div id="layoutDefault">
-    <div id="layoutDefault_content">
-        <main>
-            <!-- Page Header-->
-            <header class="page-header page-header-dark bg-img-cover overlay overlay-60" style="background-image: url({% static 'bouygue/assets/img/backgrounds/montagne/castillou.jpg' %}); height: 19rem;">
-                <div class="page-header-content">
-                    <div class="container text-center">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-8">
-                                <h1 class="page-header-title mb-3">Activités</h1>
-                                <p class="page-header-text mb-0">Consultez les idées d'activités, ou ajoutez la votre !</p>
+<!-- Page Header-->
+<header class="page-header page-header-dark bg-img-cover overlay overlay-60" style="background-image: url({% static 'bouygue/assets/img/backgrounds/montagne/castillou.jpg' %}); height: 19rem;">
+    <div class="page-header-content">
+        <div class="container text-center">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <h1 class="page-header-title mb-3">Activités</h1>
+                    <p class="page-header-text mb-0">Consultez les idées d'activités, ou ajoutez la votre !</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% block border-wave %}
+        {% include 'blocks/svg-border-wave.html' %}
+    {% endblock %}
+</header>
+<section class="bg-light py-4 mb-2">
+    <div class="container" style="padding-left: 1.5rem; padding-right: 1.5rem;">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        <div class="post-archive-tag">
+            <a class="btn btn-primary font-weight-bolder mt-1" href="{% url 'bouygue-home' %}" title="retour" ><i class="fas fa-chevron-left dropdown-arrow"></i></a>
+            <a class="btn btn-primary font-weight-700 mt-1" href="{% url 'activity-create' %}" name="new">Nouvelle Activité</a>
+        </div>
+        {% if activities %}
+        <a class="card post-preview post-preview-featured lift mb-5" href="{% url 'activity-detail' activities.first.id %}">
+            <div class="row no-gutters">
+                {% if activities.first.image %}
+                    <div class="col-lg-5"><div class="post-preview-featured-img" style="background-image: url('{{ activities.first.image.url }}')"></div></div>
+                {% else %}
+                    <div class="col-lg-5"><div class="post-preview-featured-img" style="background-image: url({% static 'bouygue/assets/img/activity_default.jpg' %})"></div></div>
+                {% endif %}
+                <div class="col-lg-7">
+                    <div class="card-body-activities-first">
+                        <div class="py-4 card-body-activities">
+                            <h5 class="card-title" style="font-size: 108%;">{{ activities.first.title }}</h5>
+                            <p class="card-text-2 mt-4">Difficulté : {{ activities.first.get_difficulty_display }}</p>
+                            <p class="card-text-2">Durée : {{ activities.first.duration }}</p>
+                            <p class="card-text-2">Temps de route : {{ activities.first.distance }}</p>
+                        </div>
+                        <hr />
+                        <div class="post-preview-meta">
+                            <img class="post-preview-meta-img" src="{{ activities.first.author.profile.image.url }}" />
+                            <div class="post-preview-meta-details">
+                                <div class="post-preview-meta-details-name {% if activies.first.author.is_superuser or activities.first.author.is_staff %} text-purple {% endif %}">{{ activities.first.author.surname }} {{ activities.first.author.name }}</div>
+                                <div class="post-preview-meta-details-date">{{ activities.first.date_posted }}</div>
                             </div>
                         </div>
                     </div>
                 </div>
-                {% block border-wave %}
-                    {% include 'blocks/svg-border-wave.html' %}
-                {% endblock %}
-            </header>
-            <section class="bg-light py-4 mb-2">
-                <div class="container" style="padding-left: 1.5rem; padding-right: 1.5rem;">
-                    {% if messages %}
-                        {% for message in messages %}
-                            <div class="alert alert-{{ message.tags }}">
-                                {{ message }}
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                    <div class="post-archive-tag">
-                        <a class="btn btn-primary font-weight-bolder mt-1" href="{% url 'bouygue-home' %}" title="retour" ><i class="fas fa-chevron-left dropdown-arrow"></i></a>
-                        <a class="btn btn-primary font-weight-700 mt-1" href="{% url 'activity-create' %}" name="new">Nouvelle Activité</a>
-                    </div>
-                    {% if activities %}
-                    <a class="card post-preview post-preview-featured lift mb-5" href="{% url 'activity-detail' activities.first.id %}">
-                        <div class="row no-gutters">
-                            {% if activities.first.image %}
-                                <div class="col-lg-5"><div class="post-preview-featured-img" style="background-image: url('{{ activities.first.image.url }}')"></div></div>
-                            {% else %}
-                                <div class="col-lg-5"><div class="post-preview-featured-img" style="background-image: url({% static 'bouygue/assets/img/activity_default.jpg' %})"></div></div>
-                            {% endif %}
-                            <div class="col-lg-7">
-                                <div class="card-body-activities-first">
-                                    <div class="py-4 card-body-activities">
-                                        <h5 class="card-title" style="font-size: 108%;">{{ activities.first.title }}</h5>
-                                        <p class="card-text-2 mt-4">Difficulté : {{ activities.first.get_difficulty_display }}</p>
-                                        <p class="card-text-2">Durée : {{ activities.first.duration }}</p>
-                                        <p class="card-text-2">Temps de route : {{ activities.first.distance }}</p>
-                                    </div>
-                                    <hr />
-                                    <div class="post-preview-meta">
-                                        <img class="post-preview-meta-img" src="{{ activities.first.author.profile.image.url }}" />
-                                        <div class="post-preview-meta-details">
-                                            <div class="post-preview-meta-details-name {% if activies.first.author.is_superuser or activities.first.author.is_staff %} text-purple {% endif %}">{{ activities.first.author.surname }} {{ activities.first.author.name }}</div>
-                                            <div class="post-preview-meta-details-date">{{ activities.first.date_posted }}</div>
-                                        </div>
-                                    </div>
+            </div>
+        </a>
+        {% endif %}
+        <div class="row">
+            {% for activity in activities|slice:"1:" %}
+                <div class="col-md-6 col-xl-4 mb-5">
+                    <a class="card post-preview lift h-100" href="{% url 'activity-detail' activity.id %}">
+                        {% if activity.image %}
+                            <img class="card-img-top background-image" src="{{ activity.image.url }}" />
+                        {% else %}
+                            <img class="card-img-top background-image" src="{% static 'bouygue/assets/img/activity_default.jpg' %}" />
+                        {% endif %}
+                        <div class="card-body-activities">
+                            <h5 class="card-title">{{ activity.title }}</h5>
+                            <p class="card-text-2 mt-4">Difficulté : {{ activity.get_difficulty_display }}</p>
+                            <p class="card-text-2">Durée : {{ activity.duration }}</p>
+                            <p class="card-text-2">Distance : {{ activity.distance }}</p>
+                        </div>
+                        <div class="card-footer">
+                            <div class="post-preview-meta">
+                                <img class="post-preview-meta-img" src="{{ activity.author.profile.image.url }}" />
+                                <div class="post-preview-meta-details">
+                                    <div class="post-preview-meta-details-name {% if activity.author.is_superuser or activity.author.is_staff %} text-purple {% endif %}">{{ activity.author.surname }} {{ activity.author.name }}</div>
+                                    <div class="post-preview-meta-details-date">{{ activity.date_posted }}</div>
                                 </div>
                             </div>
                         </div>
                     </a>
-                    {% endif %}
-                    <div class="row">
-                        {% for activity in activities|slice:"1:" %}
-                            <div class="col-md-6 col-xl-4 mb-5">
-                                <a class="card post-preview lift h-100" href="{% url 'activity-detail' activity.id %}">
-                                    {% if activity.image %}
-                                        <img class="card-img-top background-image" src="{{ activity.image.url }}" />
-                                    {% else %}
-                                        <img class="card-img-top background-image" src="{% static 'bouygue/assets/img/activity_default.jpg' %}" />
-                                    {% endif %}
-                                    <div class="card-body-activities">
-                                        <h5 class="card-title">{{ activity.title }}</h5>
-                                        <p class="card-text-2 mt-4">Difficulté : {{ activity.get_difficulty_display }}</p>
-                                        <p class="card-text-2">Durée : {{ activity.duration }} h</p>
-                                        <p class="card-text-2">Distance : {{ activity.distance }} km</p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <div class="post-preview-meta">
-                                            <img class="post-preview-meta-img" src="{{ activity.author.profile.image.url }}" />
-                                            <div class="post-preview-meta-details">
-                                                <div class="post-preview-meta-details-name {% if activity.author.is_superuser or activity.author.is_staff %} text-purple {% endif %}">{{ activity.author.surname }} {{ activity.author.name }}</div>
-                                                <div class="post-preview-meta-details-date">{{ activity.date_posted }}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        {% endfor %}
-                    </div>
-                    {% if is_paginated %}
-                        <nav aria-label="Page navigation example">
-                            <ul class="pagination pagination-blog justify-content-center">
-                            {% if page_obj.has_previous %}
-                                <li class="page-item active"><a class="page-link" href="?page=1">Début</a></li>
-                                <li class="page-item active"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Préc.</a></li>
-                            {% endif %}
-
-                            {% for num in page_obj.paginator.page_range %}
-                                {% if page_obj.number == num %}
-                                    <li class="page-item disabled"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
-                                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                                    <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
-                                {% endif %}
-                            {% endfor %}
-
-                            {% if page_obj.has_next %}
-                                <li class="page-item active"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Suiv.</a></li>
-                                <li class="page-item active"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Fin</a></li>
-                            {% endif %}
-                            </ul>
-                        </nav>
-                    {% endif %}
                 </div>
-            </section>
-        </main>
+            {% endfor %}
+        </div>
+        {% if is_paginated %}
+            <nav aria-label="Page navigation example">
+                <ul class="pagination pagination-blog justify-content-center">
+                {% if page_obj.has_previous %}
+                    <li class="page-item active"><a class="page-link" href="?page=1">Début</a></li>
+                    <li class="page-item active"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Préc.</a></li>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <li class="page-item disabled"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                        <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <li class="page-item active"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Suiv.</a></li>
+                    <li class="page-item active"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Fin</a></li>
+                {% endif %}
+                </ul>
+            </nav>
+        {% endif %}
     </div>
-</div>
+</section>
 {% endblock content %}

@@ -9,6 +9,12 @@ User = get_user_model()
 
 
 class UserLoginForm(AuthenticationForm):
+    captcha = ReCaptchaField()
+
+    class Meta:
+        model = User
+        fields = ["user", "password1", "password2", "captcha"]
+
     def clean(self):
         username = self.cleaned_data.get('username').lower()
         password = self.cleaned_data.get('password')
@@ -48,12 +54,22 @@ class UserUpdateForm(forms.ModelForm):
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ["image"]
+        fields = ["image", "address", "phone"]
         widgets = {
             'image': ClientsideCroppingWidget(
                 width=600,
                 height=600,
                 preview_width=90,
                 preview_height=90,
+            ),
+            'address': forms.TextInput(
+                attrs={
+                    'placeholder': 'Renseignez votre adresse postale pour la partager avec les autres utilisateurs.'
+                }
+            ),
+            'phone': forms.TextInput(
+                attrs={
+                    'placeholder': 'Renseignez votre N° de téléphone pour le partager avec les autres utilisateurs.'
+                }
             )
         }

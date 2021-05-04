@@ -5,126 +5,120 @@
 {% block import %}
     {% include 'blocks/image-resize-imports.html' %}
 {% endblock %}
-<div id="layoutDefault">
-    <div id="layoutDefault_content">
-        <main>
-            <section class="bg-light py-10">
-                <div class="container" style="padding-left: 1.5rem; padding-right: 1.5rem;">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-12 col-xl-10">
-                            {% if messages %}
-                                {% for message in messages %}
-                                    <div class="alert alert-{{ message.tags }}">
-                                        {{ message }}
-                                    </div>
-                                {% endfor %}
-                            {% endif %}
-                            <div class="post-archive-tag d-flex" style="margin-bottom: 2rem;">
-                                <a class="btn btn-outline-primary font-weight-bolder" href="{% url 'activities' %}" title="retour"><i class="fas fa-chevron-left dropdown-arrow"></i></a>
-                                {% if user == activity.author %}
-                                <a class="btn btn-outline-primary font-weight-700 ml-1" href="{% url 'activity-update' activity.id %}" name="update-activity">Modifier</a>
-                                {% endif %}
-                                {% if user == activity.author or user.is_superuser or user.is_staff %}
-                                <a class="btn btn-outline-danger font-weight-700 ml-1" href="{% url 'activity-delete' activity.id %}" name="delete-activity">Supprimer</a>
-                                {% endif %}
-                            </div>
-                            <div class="row d-flex">
-                                <div class="col-lg-6 ml-auto">
-                                    <h1 class="">{{ activity.title }}</h1>
-                                    <div class="post-archive-meta">
-                                        <a href="{% url 'profile-view' activity.author.id %}"><img class="post-archive-meta-img mt-1" src="{{ activity.author.profile.image.url }}" />
-                                        <div class="post-archive-meta-details p-2 mt-1 mb-2">
-                                            <div class="post-archive-meta-details-name {% if activy.author.is_superuser or activity.author.is_staff %} text-purple {% endif %}">{{ activity.author.surname }} {{ activity.author.name }}</div></a>
-                                            <div class="post-archive-meta-details-date">{{ activity.date_posted }}</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-5 ml-auto">
-                                    <ul class="list-group list-group-flush list-group-careers">
-                                        <li class="list-group-item">Difficulté : {{ activity.get_difficulty_display }}<i class="fas fa-hiking fa-fw text-gray-400"></i></li>
-                                        <li class="list-group-item">Durée : {{ activity.duration }}<i class="fas fa-euro-sign fa-clock text-gray-400"></i></li>
-                                        <li class="list-group-item">Temps de route : {{ activity.distance }}<i class="fas fa-car fa-fw text-gray-400"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="single-post">
-                                {% if activity.image %}
-                                <img class="img-fluid rounded mx-auto d-block mb-2" src="{{ activity.image.url }}" />
-                                {% else %}
-                                <img class="img-fluid rounded mx-auto d-block mb-2" src="{% static 'bouygue/assets/img/activity_default.jpg' %}" />
-                                {% endif %}
-                                <div class="single-post-text my-5">
-                                    <h4>Description</h4>
-                                    <p class="mb-5">{{ activity.content }}</p>
-                                    {% if activity.image2 %}
-                                        <img class="img-fluid rounded mx-auto d-block mb-2" src="{{ activity.image2.url }}" />
-                                    {% endif %}
-                                    <h4>Précisions</h4>
-                                    <p class="mb-5">{{ activity.content2 }}</p>
-                                </div>
-                                <hr class="my-4 mb-5" />
-                            </div>
+<section class="bg-light py-10">
+    <div class="container" style="padding-left: 1.5rem; padding-right: 1.5rem;">
+        <div class="row justify-content-center">
+            <div class="col-lg-12 col-xl-10">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                            {{ message }}
                         </div>
-                        <!-- Comment Section -->
-                        <div class="col-lg-10 bg-gray-200 rounded">
-                            <h1 class="mt-4">Commentaires</h1>
-                            <hr class="my-2" />
-                            <!-- Post Comment form-->
-                            <form method="POST" autocomplete="off">
-                                {% csrf_token %}
-                                <!-- Form Row-->
-                                <fieldset class="form-group mb-5">
-                                    {{ form|crispy }}
-                                    <button class="btn btn-primary font-weight-bolder" type="submit" name="send">PUBLIER</button>
-                                </fieldset>
-                            </form>
-                            {% for comment in page_obj.object_list %}
-                                <div class="post-archive-meta d-flex">
-                                    <a href="{% url 'profile-view' comment.author.id %}"><img class="post-archive-meta-img" src="{{ comment.author.profile.image.url }}" />
-                                    <div class="post-archive-meta-details mr-auto p-2">
-                                        <div class="post-archive-meta-details-name {% if comment.author.is_superuser or comment.author.is_staff %} text-purple {% endif %}">{{ comment.author.surname }} {{ comment.author.name }}</div></a>
-                                        <div class="post-archive-meta-details-date">{{ comment.date_posted }}</div>
-                                    </div>
-                                    {% if user == comment.author %}
-                                        <a class="btn btn-outline-primary font-weight-500" style="padding: 0.6rem;" href="{% url 'activitycomment-update' comment.id %}" name="activitycomment-update">modifier</a>
-                                    {% endif %}
-                                    {% if user == comment.author or user.is_superuser or user.is_staff  %}
-                                        <a class="btn btn-outline-danger font-weight-500 ml-1" style="padding: 0.6rem;" href="{% url 'activitycomment-delete' comment.id %}?next={{ request.path }}" name="activitycomment-delete">supprimer</a>
-                                    {% endif %}
-                                </div>
-                                <div class="post-archive-item mt-3">
-                                    <p>{{ comment.content }}</p>
-                                    {% if comment.image %} <img src="{{ comment.image.url }}" class="img-fluid"/> {% endif %}
-                                </div>
-                                <hr class="my-5" />
-                            {% endfor %}
-                            <!-- Pagination -->
-                            {% if comment_count > 5 %}
-                            <nav aria-label="Page navigation example">
-                                <ul class="pagination pagination-blog justify-content-center">
-                                {% if page_obj.has_previous %}
-                                    <li class="page-item active"><a class="page-link" href="?page=1">Début</a></li>
-                                    <li class="page-item active"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Préc.</a></li>
-                                {% endif %}
-                                {% for num in page_obj.paginator.page_range %}
-                                    {% if page_obj.number == num %}
-                                        <li class="page-item disabled"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
-                                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                                        <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
-                                    {% endif %}
-                                {% endfor %}
-                                {% if page_obj.has_next %}
-                                    <li class="page-item active"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Suiv.</a></li>
-                                    <li class="page-item active"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Fin</a></li>
-                                {% endif %}
-                                </ul>
-                            </nav>
-                            {% endif %}
+                    {% endfor %}
+                {% endif %}
+                <div class="post-archive-tag d-flex" style="margin-bottom: 2rem;">
+                    <a class="btn btn-outline-primary font-weight-bolder" href="{% url 'activities' %}" title="retour"><i class="fas fa-chevron-left dropdown-arrow"></i></a>
+                    {% if user == activity.author %}
+                    <a class="btn btn-outline-primary font-weight-700 ml-1" href="{% url 'activity-update' activity.id %}" name="update-activity">Modifier</a>
+                    {% endif %}
+                    {% if user == activity.author or user.is_superuser or user.is_staff %}
+                    <a class="btn btn-outline-danger font-weight-700 ml-1" href="{% url 'activity-delete' activity.id %}" name="delete-activity">Supprimer</a>
+                    {% endif %}
+                </div>
+                <div class="row d-flex">
+                    <div class="col-lg-6 ml-auto">
+                        <h1 class="">{{ activity.title }}</h1>
+                        <div class="post-archive-meta">
+                            <a href="{% url 'profile-view' activity.author.id %}"><img class="post-archive-meta-img mt-1" src="{{ activity.author.profile.image.url }}" />
+                            <div class="post-archive-meta-details p-2 mt-1 mb-2">
+                                <div class="post-archive-meta-details-name {% if activy.author.is_superuser or activity.author.is_staff %} text-purple {% endif %}">{{ activity.author.surname }} {{ activity.author.name }}</div></a>
+                                <div class="post-archive-meta-details-date">{{ activity.date_posted }}</div>
+                            </div>
                         </div>
                     </div>
+                    <div class="col-lg-5 ml-auto">
+                        <ul class="list-group list-group-flush list-group-careers">
+                            <li class="list-group-item">Difficulté : {{ activity.get_difficulty_display }}<i class="fas fa-hiking fa-fw text-gray-400"></i></li>
+                            <li class="list-group-item">Durée : {{ activity.duration }}<i class="fas fa-euro-sign fa-clock text-gray-400"></i></li>
+                            <li class="list-group-item">Temps de route : {{ activity.distance }}<i class="fas fa-car fa-fw text-gray-400"></i></li>
+                        </ul>
+                    </div>
                 </div>
-            </section>
-        </main>
+                <div class="single-post">
+                    {% if activity.image %}
+                    <img class="img-fluid rounded mx-auto d-block mb-2" src="{{ activity.image.url }}" />
+                    {% else %}
+                    <img class="img-fluid rounded mx-auto d-block mb-2" src="{% static 'bouygue/assets/img/activity_default.jpg' %}" />
+                    {% endif %}
+                    <div class="single-post-text my-5">
+                        <h4>Description</h4>
+                        <p class="mb-5">{{ activity.content|linebreaks }}</p>
+                        {% if activity.image2 %}
+                            <img class="img-fluid rounded mx-auto d-block mb-2" src="{{ activity.image2.url }}" />
+                        {% endif %}
+                        <h4>Précisions</h4>
+                        <p class="mb-5">{{ activity.content2|linebreaks }}</p>
+                    </div>
+                    <hr class="my-4 mb-5" />
+                </div>
+            </div>
+            <!-- Comment Section -->
+            <div class="col-lg-10 bg-gray-200 rounded">
+                <h1 class="mt-4">Commentaires</h1>
+                <hr class="my-2" />
+                <!-- Post Comment form-->
+                <form method="POST" autocomplete="off">
+                    {% csrf_token %}
+                    <!-- Form Row-->
+                    <fieldset class="form-group mb-5">
+                        {{ form|crispy }}
+                        <button class="btn btn-primary font-weight-bolder" type="submit" name="send">PUBLIER</button>
+                    </fieldset>
+                </form>
+                {% for comment in page_obj.object_list %}
+                    <div class="post-archive-meta d-flex">
+                        <a href="{% url 'profile-view' comment.author.id %}"><img class="post-archive-meta-img" src="{{ comment.author.profile.image.url }}" />
+                        <div class="post-archive-meta-details mr-auto p-2">
+                            <div class="post-archive-meta-details-name {% if comment.author.is_superuser or comment.author.is_staff %} text-purple {% endif %}">{{ comment.author.surname }} {{ comment.author.name }}</div></a>
+                            <div class="post-archive-meta-details-date">{{ comment.date_posted }}</div>
+                        </div>
+                        {% if user == comment.author %}
+                            <a class="btn btn-outline-primary font-weight-500" style="padding: 0.6rem;" href="{% url 'activitycomment-update' comment.id %}" name="activitycomment-update">modifier</a>
+                        {% endif %}
+                        {% if user == comment.author or user.is_superuser or user.is_staff  %}
+                            <a class="btn btn-outline-danger font-weight-500 ml-1" style="padding: 0.6rem;" href="{% url 'activitycomment-delete' comment.id %}?next={{ request.path }}" name="activitycomment-delete">supprimer</a>
+                        {% endif %}
+                    </div>
+                    <div class="post-archive-item mt-3">
+                        <p>{{ comment.content|linebreaks }}</p>
+                        {% if comment.image %} <img src="{{ comment.image.url }}" class="img-fluid"/> {% endif %}
+                    </div>
+                    <hr class="my-5" />
+                {% endfor %}
+                <!-- Pagination -->
+                {% if comment_count > 5 %}
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination pagination-blog justify-content-center">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item active"><a class="page-link" href="?page=1">Début</a></li>
+                        <li class="page-item active"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Préc.</a></li>
+                    {% endif %}
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <li class="page-item disabled"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                        <li class="page-item active"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Suiv.</a></li>
+                        <li class="page-item active"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Fin</a></li>
+                    {% endif %}
+                    </ul>
+                </nav>
+                {% endif %}
+            </div>
+        </div>
     </div>
-</div>
+</section>
 {% endblock content %}

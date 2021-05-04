@@ -183,8 +183,8 @@ class ActivateUsersListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["active_users"] = MyUser.objects.filter(is_active=True)
-        context["inactive_users"] = MyUser.objects.filter(is_active=False)
+        context["active_users"] = MyUser.objects.filter(is_active=True).order_by("-date_joined")
+        context["inactive_users"] = MyUser.objects.filter(is_active=False).order_by("-date_joined")
         return context
 
     def post(self, request, *args, **kwargs):
@@ -204,3 +204,11 @@ class ActivateUsersListView(LoginRequiredMixin, ListView):
             return super().get(request, *args, **kwargs)
         else:
             return render(request, 'errors/error-403.html', status=403)
+
+
+class AllUsersListView(LoginRequiredMixin, ListView):
+    model = MyUser
+    template_name = 'info/all-users.html'
+    context_object_name = 'users'
+    ordering = ['surname']
+    paginate_by = 10

@@ -65,9 +65,14 @@ class MyUser(AbstractUser):
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     image = models.ImageField(default="profile_default.jpg", upload_to="profile_pics")
+    address = models.CharField(_("Adresse postale"), max_length=100, unique=False, blank=True)
+    phone = models.CharField(_("Téléphone"), max_length=16, unique=False, blank=True)
 
     def __str__(self):
         return f"{self.user.email} Profile"
+
+    def save(self, *args, **kwargs):
+        super(Profile, self).save(*args, **kwargs)
 
 
 @receiver(post_save, sender=MyUser)

@@ -53,7 +53,7 @@
                     {% endfor %}
                 {% endif %}
                 <h5 class="mb-4">Description</h5>
-                <p class="mb-4">{{ work.content }}</p>
+                <p class="mb-4">{{ work.content|linebreaks }}</p>
                 {% if work.image %} <img src="{{ work.image.url }}" class="img-fluid"/> {% endif %}
                 <div class="d-flex align-items-center justify-content-between mt-4 mb-5">
                     <div class="post-archive-meta mr-4 ml-auto p-2">
@@ -122,7 +122,7 @@
                             {% endif %}
                         </div>
                         <div class="post-archive-item mt-3">
-                            <p>{{ comment.content }}</p>
+                            <p>{{ comment.content|linebreaks }}</p>
                             {% if comment.image %} <img src="{{ comment.image.url }}" class="img-fluid"/> {% endif %}
                         </div>
                         <hr class="my-5" />

@@ -19,7 +19,6 @@
         {% include 'blocks/svg-border-wave.html' %}
     {% endblock %}
 </header>
-
 <section class="bg-light py-4">
     <div class="container" style="padding-right: 1.6rem; padding-left: 1.6rem;">
         {% if messages %}
@@ -36,7 +35,6 @@
         </div>
         <div class="row justify-content-center">
             <div class="col-lg-10 mb-5">
-
                 <div class="d-flex align-items-center justify-content-between">
                     <h2 class="mb-0">Bricolage</h2>
                     <div class="badge badge-primary-soft text-primary badge-marketing">{{ handiwork|length }} tâche(s)</div>
@@ -50,7 +48,6 @@
                     </li>
                     {% endfor %}
                 </ul>
-
                 <div class="d-flex align-items-center justify-content-between">
                     <h2 class="mb-0">Jardinage</h2>
                     <div class="badge badge-primary-soft text-primary badge-marketing">{{ gardening|length }} tâche(s)</div>
@@ -64,7 +61,6 @@
                     </li>
                     {% endfor %}
                 </ul>
-
                 <div class="d-flex align-items-center justify-content-between">
                     <h2 class="mb-0">Plomberie</h2>
                     <div class="badge badge-primary-soft text-primary badge-marketing">{{ plumbing|length }} tâche(s)</div>
@@ -78,7 +74,6 @@
                     </li>
                     {% endfor %}
                 </ul>
-
                 <div class="d-flex align-items-center justify-content-between">
                     <h2 class="mb-0">Maçonnerie</h2>
                     <div class="badge badge-primary-soft text-primary badge-marketing">{{ masonry|length }} tâche(s)</div>
@@ -92,7 +87,6 @@
                     </li>
                     {% endfor %}
                 </ul>
-
                 <div class="d-flex align-items-center justify-content-between">
                     <h2 class="mb-0">Autre</h2>
                     <div class="badge badge-primary-soft text-primary badge-marketing">{{ other|length }} tâche(s)</div>
@@ -106,12 +100,8 @@
                     </li>
                     {% endfor %}
                 </ul>
-
             </div>
         </div>
-    </div>
-    <div class="svg-border-rounded text-dark">
-        <!-- Rounded SVG Border--><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144.54 17.34" preserveAspectRatio="none" fill="#1e2c41"><path d="M144.54,17.34H0V0H144.54ZM0,0S32.36,17.34,72.27,17.34,144.54,0,144.54,0"></path></svg>
     </div>
 </section>
 {% endblock content %}

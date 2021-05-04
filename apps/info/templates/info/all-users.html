@@ -1,0 +1,58 @@
+{% extends "bouygue/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div hidden>{% block title %} - Travaux {% endblock %}</div>
+<section class="bg-light py-10">
+    <div class="container" style="padding-right: 1.6rem; padding-left: 1.6rem;">
+        <a href="{% url "bouygue-home"%}" style="cursor: pointer"><i class="fas fa-arrow-left mr-1"></i> Accueil</a>
+        <div class="row justify-content-center">
+            <div class="col-lg-10">                
+                <div class="d-flex align-items-center justify-content-between">
+                    <h2 class="mb-0">Carnet d'adresses</h2>
+                    <div class="badge badge-primary-soft text-primary badge-marketing">{{ users|length }} utilisateur(s)</div>
+                </div>
+                <hr class="mb-0" />
+                <ul class="list-group list-group-flush list-group-careers">
+                    {% for user in users %}
+                        {% if user.is_active %}
+                        <li class="list-group-item">
+                            <div>
+                                <div><i class="fas fa-user ml-4"></i> {{ user.surname }} {{ user.name }} </div>
+                                <div><i class="fas fa-envelope-square mt-1 ml-4"></i> {{ user.email }} </div>
+                                <div><i class="fas fa-phone mt-1 ml-4"></i> {{ user.profile.phone }} </div>
+                                <div><i class="fas fa-home mt-1 ml-4"></i> {{ user.profile.address }} </div>
+                            </div>
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <!-- Pagination -->
+        {% if is_paginated %}
+        <nav aria-label="Page navigation example">
+            <ul class="pagination pagination-blog justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item active"><a class="page-link" href="?page=1">Début</a></li>
+                <li class="page-item active"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Préc.</a></li>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                    <li class="page-item disabled"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <li class="page-item active"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Suiv.</a></li>
+                <li class="page-item active"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Fin</a></li>
+            {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+    </div>
+</section>
+{% endblock content %}

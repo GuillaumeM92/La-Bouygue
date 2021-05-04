@@ -54,7 +54,7 @@
                                                         {% if user.is_superuser %}
                                                             <a class="dropdown-item font-weight-bold" href="{% url 'activate-users' %}">Activations</a>
                                                         {% endif %}
-                                                        <a class="dropdown-item font-weight-bold" href="{% url 'work' %}">Carnet d'adresses</a>
+                                                        <a class="dropdown-item font-weight-bold" href="{% url 'all-users' %}">Carnet d'adresses</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -78,8 +78,10 @@
                 </nav>
             </div>
             <!-- Extended Content-->
-            <div role="main" class="bg-light">
-                {% block content %}{% endblock %}
+            <div id="layoutDefault" class="bg-light">
+                <div id="layoutDefault_content" class="bg-light">
+                    {% block content %}{% endblock %}
+                </div>
             </div>
             <!-- Footer-->
             <div id="layoutDefault_footer">
