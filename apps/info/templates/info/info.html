@@ -39,7 +39,7 @@
                 {% for post in infoposts %}
                     <a class="post-archive-item" href="{% url 'infopost-detail' post.id %}">
                         <h5>{{ post.title }}</h5>
-                        <p>{{ post.content }}</p>
+                        <p>{{ post.content|linebreaks }}</p>
                     </a>
                     <div class="post-archive-meta">
                         <a href="{% url 'profile-view' post.author.id %}"><img class="post-archive-meta-img" src="{{ post.author.profile.image.url }}" />
