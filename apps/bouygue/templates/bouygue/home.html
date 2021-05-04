@@ -7,13 +7,18 @@
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 <div class="text-center mb-5 border-bottom">
-                    <h2>Rubriques</h2>
+                    <h2>Rubriques <button class="btn-sm btn-primary ml-2 text-center font-weight-bolder" type="button" data-toggle="modal" data-target="#staticBackdrop" name="new"><i class="fa fa-question"></i></button></h2>
                 </div>
             </div>
         </div>
+
+        {% block first-connection-info-modal %}
+            {% include 'blocks/first-connection-info-modal.html' %}
+        {% endblock %}
+
         <div class="row text-center">
             <div class="col-lg-4 mb-5">
-                <h6 class="mb-3">Calendrier
+                <h6 class="mb-3">Calendrier / Réservation
                 {% if reservations_length > 0 %}
                     ({{ reservations_length }})
                 {% endif %}
@@ -21,7 +26,7 @@
                 <a class="d-block rounded-lg lift lift-lg" href="{% url 'agenda' %}" name="calendar"><img class="img-fluid rounded-lg" src="{% static 'bouygue/assets/img/preview/calendar_preview.png' %}" /></a>
             </div>
             <div class="col-lg-4 mb-5">
-                <h6 class="mb-3">Discussions
+                <h6 class="mb-3">Discussions Séjour
                 {% if posts_length > 0 %}
                     ({{ posts_length }})
                 {% endif %}
@@ -29,7 +34,7 @@
                 <a class="d-block rounded-lg lift lift-lg" href="{% url 'blog' %}" name="blog"><img class="img-fluid rounded-lg" src="{% static 'bouygue/assets/img/preview/blog_preview.jpg' %}" /></a>
             </div>
             <div class="col-lg-4 mb-5">
-                <h6 class="mb-3">Activités
+                <h6 class="mb-3">Activités / Balades
                 {% if activities_length > 0 %}
                     ({{ activities_length }})
                 {% endif %}
@@ -37,7 +42,7 @@
                 <a class="d-block rounded-lg lift lift-lg" href="{% url 'activities' %}" name="activities"><img class="img-fluid rounded-lg" src="{% static 'bouygue/assets/img/preview/activities_preview.jpg' %}" /></a>
             </div>
             <div class="col-lg-4 mb-5">
-                <h6 class="mb-3">Informations
+                <h6 class="mb-3">Infos Pratiques
                 {% if infoposts_length > 0 %}
                     ({{ infoposts_length }})
                 {% endif %}
@@ -45,7 +50,7 @@
                 <a class="d-block rounded-lg lift lift-lg" href="{% url 'info' %}" name="info"><img class="img-fluid rounded-lg" src="{% static 'bouygue/assets/img/preview/info_preview.jpg' %}" /></a>
             </div>
             <div class="col-lg-4 mb-5">
-                <h6 class="mb-3">Travaux
+                <h6 class="mb-3">Travaux Divers
                 {% if works_length > 0 %}
                     ({{ works_length }})
                 {% endif %}
@@ -53,8 +58,8 @@
                 <a class="d-block rounded-lg lift lift-lg" href="{% url 'work' %}" name="work"><img class="img-fluid rounded-lg" src="{% static 'bouygue/assets/img/preview/work_preview.jpg' %}" /></a>
             </div>
             <div class="col-lg-4 mb-5">
-                <h6 class="mb-3" >Budget</h6>
-                <a class="d-block rounded-lg lift lift-lg" href="{% url 'budget' %}" name="budget"><img class="img-fluid rounded-lg" src="{% static 'bouygue/assets/img/preview/budget_preview.jpg' %}" /></a>
+                <h6 class="mb-3" >Budget -en projet-</h6>
+                <a class="d-block rounded-lg lift lift-lg" style="opacity: 20%;" name="budget"><img class="img-fluid rounded-lg" src="{% static 'bouygue/assets/img/preview/budget_preview.jpg' %}" /></a>
             </div>
         </div>
     </div>
