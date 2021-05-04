@@ -8,7 +8,7 @@ from apps.users.models import MyUser
 class Activity(models.Model):
     title = models.CharField(max_length=100, verbose_name=_("Titre"))
     content = models.TextField(verbose_name=_("Description"))
-    content2 = models.TextField(verbose_name=_("Précisions"))
+    content2 = models.TextField(blank=True, verbose_name=_("Précisions"))
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     difficulty = models.SmallIntegerField(

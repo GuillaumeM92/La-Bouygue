@@ -42,8 +42,8 @@ class ReservationManager(models.Manager):
 class Reservation(models.Model):
     """Reservation model."""
 
-    name = models.CharField(max_length=200, unique=False, default="Mon nom")
-    description = models.TextField(default="Description", blank=True)
+    name = models.CharField(max_length=200, unique=False)
+    description = models.TextField(blank=True)
     color = models.CharField(max_length=50, unique=False, default="blue")
     user = models.ForeignKey(User, on_delete=models.CASCADE,
                              related_name="user_reservation", default=1)
