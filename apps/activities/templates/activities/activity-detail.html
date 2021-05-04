@@ -56,8 +56,10 @@
                         {% if activity.image2 %}
                             <img class="img-fluid rounded mx-auto d-block mb-2" src="{{ activity.image2.url }}" />
                         {% endif %}
+                        {% if activity.content2 %}
                         <h4>Précisions</h4>
                         <p class="mb-5">{{ activity.content2|linebreaks }}</p>
+                        {% endif %}
                     </div>
                     <hr class="my-4 mb-5" />
                 </div>
