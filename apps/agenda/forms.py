@@ -9,7 +9,7 @@ class ReservationForm(forms.ModelForm):
         attrs={'placeholder': 'par exemple : Famille Merle Guillaume'}))
     start_date = forms.DateTimeField(label='Date de début', widget=AdminDateWidget())
     end_date = forms.DateTimeField(label='Date de fin', widget=AdminDateWidget())
-    description = forms.CharField(required=False, label='Description (optionnel)', widget=forms.Textarea(
+    description = forms.CharField(required=False, widget=forms.Textarea(
         attrs={'placeholder': 'par exemple : 10 jours à la Bouygue en famille'}))
 
     class Meta:
