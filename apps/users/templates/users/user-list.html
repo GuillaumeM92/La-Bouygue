@@ -31,7 +31,7 @@
                     {% elif view.kwargs.app == "tâche(s)" %} <a class="post-archive-item" href="{% url 'work-detail' post.id %}">
                     {% endif %}
                         <h5>{{ post.title }}</h5>
-                        <p>{{ post.content }}</p>
+                        <p>{{ post.content|linebreaks }}</p>
                     </a>
                     <div class="post-archive-meta">
                         <img class="post-archive-meta-img" src="{{ post.author.profile.image.url }}" />
