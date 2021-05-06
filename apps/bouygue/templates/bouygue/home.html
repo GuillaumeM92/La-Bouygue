@@ -18,7 +18,7 @@
 
         <div class="row text-center">
             <div class="col-lg-4 mb-5">
-                <h6 class="mb-3">Calendrier / Réservation
+                <h6 class="mb-3">Calendrier
                 {% if reservations_length > 0 %}
                     ({{ reservations_length }})
                 {% endif %}
@@ -34,7 +34,7 @@
                 <a class="d-block rounded-lg lift lift-lg" href="{% url 'info' %}" name="info"><img class="img-fluid rounded-lg" src="{% static 'bouygue/assets/img/preview/info_preview.jpg' %}" /></a>
             </div>
             <div class="col-lg-4 mb-5">
-                <h6 class="mb-3">Activités / Balades
+                <h6 class="mb-3">Activités
                 {% if activities_length > 0 %}
                     ({{ activities_length }})
                 {% endif %}

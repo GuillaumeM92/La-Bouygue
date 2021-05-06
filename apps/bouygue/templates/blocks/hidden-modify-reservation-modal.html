@@ -6,7 +6,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Réservation</h5>
+                <h5 class="modal-title" id="staticBackdropLabel">Séjour</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
             </div>
             <div class="modal-body">
@@ -25,8 +25,8 @@
                     <div class="modal-footer form-group mb-0">
 
                         <!-- Confirmation modal -->
-                        <button class="btn btn-outline-red font-weight-bolder" type="button" data-toggle="modal" data-target="#staticBackdrop4">Supprimer la réservation</button>
-                        <button class="btn btn-outline-teal font-weight-bolder" type="submit">Modifier la réservation</button>
+                        <button class="btn btn-outline-red font-weight-bolder" type="button" data-toggle="modal" data-target="#staticBackdrop4">Supprimer le séjour</button>
+                        <button class="btn btn-outline-teal font-weight-bolder" type="submit">Modifier le séjour</button>
                         <div class="modal fade" id="staticBackdrop4" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                             <div class="modal-dialog modal-md" role="document">
                                 <div class="modal-content bg-dark" style="margin-top: 20rem;">
@@ -35,7 +35,7 @@
                                         <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                     </div>
                                     <div class="modal-body text-white">
-                                        <p>Etes vous sûr de vouloir supprimer cette réservation ?</p>
+                                        <p>Etes vous sûr de vouloir supprimer ce séjour ?</p>
                                     <!-- Registration form-->
                                         <form method="POST"  autocomplete="off">
                                             {% csrf_token %}

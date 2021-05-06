@@ -22,10 +22,10 @@ def show_agenda(request):
                 Reservation.objects.create_or_update_reservation(form, user, id)
                 if id == 0:
                     messages.success(request, str(
-                        "Votre réservation a été créée avec succès !"))
+                        "Votre séjour a été créé avec succès !"))
                 else:
                     messages.success(request, str(
-                        "La réservation a été modifiée avec succès !"))
+                        "Le séjour a été modifié avec succès !"))
                 form = ReservationForm()
             except (IndexError, ValidationError):
                 messages.error(request, str(
@@ -61,7 +61,7 @@ def delete_reservation(request):
     user = request.user
     if user == reservation.first().user or user.is_superuser or user.is_staff:
         reservation.first().delete()
-        messages.success(request, str("La réservation a bien été supprimée !"))
+        messages.success(request, str("Le séjour a bien été supprimé !"))
         return JsonResponse(serializers.serialize('json', reservation), safe=False)
 
 
