@@ -7,14 +7,10 @@
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 <div class="text-center mb-5 border-bottom">
-                    <h2>Rubriques <button class="btn-sm btn-primary ml-2 text-center font-weight-bolder" type="button" data-toggle="modal" data-target="#staticBackdrop" id="info-modal"><i class="fa fa-question"></i></button></h2>
+                    <h2>Rubriques</h2>
                 </div>
             </div>
         </div>
-
-        {% block first-connection-info-modal %}
-            {% include 'blocks/first-connection-info-modal.html' %}
-        {% endblock %}
 
         <div class="row text-center">
             <div class="col-lg-4 mb-5">
@@ -57,10 +53,6 @@
                 </h6>
                 <a class="d-block rounded-lg lift lift-lg" href="{% url 'work' %}" name="work"><img class="img-fluid rounded-lg" src="{% static 'bouygue/assets/img/preview/work_preview.jpg' %}" /></a>
             </div>
-            <div class="col-lg-4 mb-5">
-                <h6 class="mb-3" >Budget -en projet-</h6>
-                <a class="d-block rounded-lg lift lift-lg" style="opacity: 20%;" name="budget"><img class="img-fluid rounded-lg" src="{% static 'bouygue/assets/img/preview/budget_preview.jpg' %}" /></a>
-            </div>
         </div>
     </div>
     <div class="svg-border-rounded text-white">
@@ -74,12 +66,4 @@
     </div>
 </section>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        if (Cookies.get("firstLogin") == null) {
-            document.getElementById("info-modal").click();
-            Cookies.set("firstLogin", 'no');
-        }
-    });
-</script>
 {% endblock content %}
