@@ -48,6 +48,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 dayMaxEvents: true, // allow "more" link when too many events
                 events: reservationsDict,
             });
+            // Show Event Tooltip
+            calendar.on('eventMouseEnter', function (mouseEnterInfo) {
+                if (mouseEnterInfo.event.extendedProps.description) {
+                    mouseEnterInfo.el.innerHTML += "<div style='color:yellow;'>Description : " + mouseEnterInfo.event.extendedProps.description + "</div>";
+                }
+            });
+            calendar.on('eventMouseLeave', function (mouseEnterInfo) {
+                mouseEnterInfo.el.innerHTML = "<div style='color:white'>" + mouseEnterInfo.event.title + "</div>";
+            });
             // Send reservation ID when user clicks on a calendar event
             calendar.on('eventClick', function (clickInfo) {
                 let reservationID = clickInfo.event.extendedProps.reservationID
