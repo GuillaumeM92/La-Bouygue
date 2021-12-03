@@ -51,11 +51,14 @@ document.addEventListener('DOMContentLoaded', function () {
             // Show Event Tooltip
             calendar.on('eventMouseEnter', function (mouseEnterInfo) {
                 if (mouseEnterInfo.event.extendedProps.description) {
+                    mouseEnterInfo.el.innerHTML = null;
+                    calendar.render();
                     mouseEnterInfo.el.innerHTML += "<span style='color:#f2f6fc;'>Description : " + mouseEnterInfo.event.extendedProps.description + "</span>";
                 }
             });
             calendar.on('eventMouseLeave', function (mouseEnterInfo) {
-                mouseEnterInfo.el.innerHTML = "<div style='color:#f2f6fc'>" + mouseEnterInfo.event.title + "</div>";
+                mouseEnterInfo.el.innerHTML = null;
+                calendar.render();
             });
             // Send reservation ID when user clicks on a calendar event
             calendar.on('eventClick', function (clickInfo) {
