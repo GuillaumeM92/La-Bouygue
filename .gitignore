@@ -142,6 +142,9 @@ cython_debug/
 doc/
 media/profile_pics/
 media/activities/
+media/blog/
+media/comments/
+media/info/
 staticfiles/
 apps/food/chromedriver_win32/
 config/chromdriver.exe
