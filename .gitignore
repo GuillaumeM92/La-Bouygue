@@ -141,6 +141,7 @@ cython_debug/
 .vscode
 doc/
 media/profile_pics/
+media/activities/
 staticfiles/
 apps/food/chromedriver_win32/
 config/chromdriver.exe
