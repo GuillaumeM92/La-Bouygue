@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'}
 url = 'https://www.google.fr/search?q=meteo+parthenay+79200'
 
-xls_file_name = 'parthenay_weather_data.xlsx'
+xls_file_name = '/home/guillaume/LaBouygue/apps/side-apps/weather/parthenay_weather_data.xlsx'
 
 month_names = ['', 'janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre' , 'novembre', 'décembre']
 
