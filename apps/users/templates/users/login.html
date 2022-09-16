@@ -45,12 +45,12 @@
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
-<script>
-    let done = false;
-    if ($(location).attr('href').includes('login-as-test-user') && !done) {
-        $('#id_username').val($('#id_username').val() + 'testuser@email.com');
-        $('#id_password').val($('#id_password').val() + 'Test123.');
-        done = true;
-    }
-</script>
+<!-- <script>
+    // let done = false;
+    // if ($(location).attr('href').includes('login-as-test-user') && !done) {
+    //     $('#id_username').val($('#id_username').val() + 'testuser@email.com');
+    //     $('#id_password').val($('#id_password').val() + 'Test123.');
+    //     done = true;
+    // }
+</script> -->
 {% endblock content %}
