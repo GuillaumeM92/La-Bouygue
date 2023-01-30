@@ -18,7 +18,8 @@ def landing(request):
 
 def get_random_image(queryset):
     rand_int = random.randint(0, queryset.count() - 1)
-    return queryset[rand_int]
+    image_url = queryset[0].image.url
+    return image_url
 
 
 @login_required
@@ -46,7 +47,7 @@ def home(request):
         'works_length': works_length,
         'caroussel_img_1': caroussel_img_1,
         'caroussel_img_2': caroussel_img_2,
-        'caroussel_img_3': caroussel_img_3
+        'caroussel_img_3': caroussel_img_3,
     })
     return response
 
