@@ -10,9 +10,12 @@ import random
 
 
 def landing(request):
-    if request.user.is_authenticated:
-        return HttpResponseRedirect('home')
-    else:
+    try:
+        if request.user.is_authenticated:
+            return HttpResponseRedirect('home')
+        else:
+            return render(request, 'bouygue/landing.html')
+    except NotImplementedError:
         return render(request, 'bouygue/landing.html')
 
 
