@@ -32,7 +32,8 @@ def get_all_image_urls():
         img_urls_list.append(post.image.url)
     for comment in comments_with_images:
         img_urls_list.append(comment.image.url)
-    return shuffle(img_urls_list)
+    shuffled_list = shuffle(img_urls_list)
+    return shuffled_list
     
 
 @login_required
