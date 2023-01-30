@@ -35,7 +35,7 @@ def home(request):
     # get 3 random images for the caroussel (and make sure not to pick the same one twice)
     caroussel_img_1 = get_random_image(posts_with_images)
     caroussel_img_2 = get_random_image(posts_with_images)
-    caroussel_img_3 = get_random_image(comments_with_images)
+    caroussel_img_3 = get_random_image(posts_with_images)
 
     response = render(request, 'bouygue/home.html', {
         'title': 'Accueil',
