@@ -23,13 +23,17 @@ def home(request):
     activities_length = len(Activity.objects.all()) - user.activities_viewed
     infoposts_length = len(InfoPost.objects.all()) - user.informations_viewed
     works_length = len(Work.objects.all()) - user.works_viewed
+    post_image_1 = Post.objects.get(id=26)
+    post_image_2 = Post.objects.get(id=27)
     response = render(request, 'bouygue/home.html', {
         'title': 'Accueil',
         'reservations_length': reservations_length,
         'posts_length': posts_length,
         'activities_length': activities_length,
         'infoposts_length': infoposts_length,
-        'works_length': works_length
+        'works_length': works_length,
+        'post_image_1': post_image_1,
+        'post_image_2': post_image_2
     })
     return response
 
