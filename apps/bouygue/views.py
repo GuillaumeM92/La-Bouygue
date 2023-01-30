@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from apps.agenda.models import Reservation
-from apps.blog.models import Post
+from apps.blog.models import Post, Comment
 from apps.activities.models import Activity
 from apps.info.models import InfoPost
 from apps.work.models import Work
