@@ -17,9 +17,8 @@ def landing(request):
 
 
 def get_random_image(queryset):
-    qs_length = queryset.count()
-    rand_int = random.randint(0, qs_length - 1)
-    return queryset[rand_int].image
+    rand_int = random.randint(0, queryset.count() - 1)
+    return queryset[rand_int]
 
 
 @login_required
@@ -35,7 +34,7 @@ def home(request):
     comments_with_images = Comment.objects.filter(image__isnull=False)
     # get 3 random images for the caroussel (and make sure not to pick the same one twice)
     caroussel_img_1 = get_random_image(posts_with_images)
-    caroussel_img_2 = get_random_image(posts_with_images.exclude(image=caroussel_img_1))
+    caroussel_img_2 = get_random_image(posts_with_images)
     caroussel_img_3 = get_random_image(comments_with_images)
 
     response = render(request, 'bouygue/home.html', {
