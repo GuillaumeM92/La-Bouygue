@@ -2,7 +2,7 @@ asgiref==3.3.1
 autopep8==1.5.6
 cachetools==4.2.1
 certifi==2020.12.5
-cffi==1.14.5
+cffi
 chardet==4.0.0
 coverage==5.5
 Django==3.1.6
@@ -21,9 +21,9 @@ googleapis-common-protos==1.53.0
 idna==2.10
 mccabe==0.6.1
 packaging==20.9
-Pillow==8.1.0
+Pillow
 protobuf==3.15.8
-psycopg2==2.8.6
+psycopg2
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 pycodestyle==2.7.0
