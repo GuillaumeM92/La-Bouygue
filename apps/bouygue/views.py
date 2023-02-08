@@ -6,6 +6,7 @@ from apps.blog.models import Post, Comment
 from apps.activities.models import Activity
 from apps.info.models import InfoPost
 from apps.work.models import Work
+from apps.users.models import MyUser
 import random
 
 
@@ -35,6 +36,7 @@ def home(request):
     activities_length = len(Activity.objects.all()) - user.activities_viewed
     infoposts_length = len(InfoPost.objects.all()) - user.informations_viewed
     works_length = len(Work.objects.all()) - user.works_viewed
+    users_length = len(MyUser.objects.all()) - user.users_viewed
     # get posts and comments that contain images
     posts_with_images = Post.objects.exclude(image='')
     comments_with_images = Comment.objects.exclude(image='')
@@ -52,6 +54,7 @@ def home(request):
         'activities_length': activities_length,
         'infoposts_length': infoposts_length,
         'works_length': works_length,
+        'users_length': users_length,
         'caroussel_img_1': caroussel_img_1,
         'caroussel_img_2': caroussel_img_2,
         'caroussel_img_3': caroussel_img_3,

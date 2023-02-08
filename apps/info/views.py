@@ -217,3 +217,9 @@ class AllUsersListView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context["all_users"] = MyUser.objects.all()
         return context
+
+    def dispatch(self, request, *args, **kwargs):
+        user = request.user
+        user.users_viewed = len(MyUser.objects.all())
+        user.save()
+        return super().dispatch(request, *args, **kwargs)

@@ -54,6 +54,14 @@
                 </h6>
                 <a class="d-block rounded-lg lift lift-lg" href="{% url 'work' %}" name="work"><img class="img-fluid rounded-lg" src="{% static 'bouygue/assets/img/preview/work_preview.jpg' %}" /></a>
             </div>
+            <div class="col-lg-4 mb-5">
+                <h6 class="mb-3">Carnet d'adresses
+                {% if users_length > 0 %}
+                    <span class="badge badge-pill badge-danger ml-1" style="padding-bottom: 2px">{{ users_length }}</span>
+                {% endif %}
+                </h6>
+                <a class="d-block rounded-lg lift lift-lg" href="{% url 'all-users' %}" name="all-users"><img class="img-fluid rounded-lg" src="{% static 'bouygue/assets/img/preview/address_preview.png' %}" /></a>
+            </div>
         </div>
 
         <div class="row justify-content-center">

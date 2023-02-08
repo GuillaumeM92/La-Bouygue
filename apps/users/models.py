@@ -52,6 +52,7 @@ class MyUser(AbstractUser):
     activities_viewed = models.SmallIntegerField(default=0)
     informations_viewed = models.SmallIntegerField(default=0)
     works_viewed = models.SmallIntegerField(default=0)
+    users_viewed = models.SmallIntegerField(default=0)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
