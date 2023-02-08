@@ -28,7 +28,8 @@ class WorkListView(LoginRequiredMixin, ListView):
     def dispatch(self, request, *args, **kwargs):
         user = request.user
         user.works_viewed = len(Work.objects.all())
-        user.save()
+        if user.is_authenticated and user.is_active:
+            user.save()
         return super().dispatch(request, *args, **kwargs)
 
 

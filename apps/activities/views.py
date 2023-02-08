@@ -20,7 +20,8 @@ class ActivityListView(LoginRequiredMixin, ListView):
     def dispatch(self, request, *args, **kwargs):
         user = request.user
         user.activities_viewed = len(Activity.objects.all())
-        user.save()
+        if user.is_authenticated and user.is_active:
+            user.save()
         return super().dispatch(request, *args, **kwargs)
 
 

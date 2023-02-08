@@ -21,7 +21,8 @@ class InfoPostListView(LoginRequiredMixin, ListView):
     def dispatch(self, request, *args, **kwargs):
         user = request.user
         user.informations_viewed = len(InfoPost.objects.all())
-        user.save()
+        if user.is_authenticated and user.is_active:
+            user.save()
         return super().dispatch(request, *args, **kwargs)
 
 
@@ -221,5 +222,6 @@ class AllUsersListView(LoginRequiredMixin, ListView):
     def dispatch(self, request, *args, **kwargs):
         user = request.user
         user.users_viewed = len(MyUser.objects.all())
-        user.save()
+        if user.is_authenticated and user.is_active:
+            user.save()
         return super().dispatch(request, *args, **kwargs)
