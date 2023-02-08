@@ -20,8 +20,11 @@ def landing(request):
 
 
 def get_random_image(queryset):
-    rand_int = random.randint(0, queryset.count() - 1)
-    return queryset[rand_int].image
+    try:
+        rand_int = random.randint(0, queryset.count() - 1)
+        return queryset[rand_int].image
+    except ValueError as e:
+        print(e)
 
 
 @login_required

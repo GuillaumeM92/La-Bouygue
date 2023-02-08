@@ -1,3 +1,4 @@
+import os
 from django import forms
 from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -9,7 +10,8 @@ User = get_user_model()
 
 
 class UserLoginForm(AuthenticationForm):
-    captcha = ReCaptchaField()
+    if os.getenv("ENV") == "prod":
+        captcha = ReCaptchaField()
 
     class Meta:
         model = User
