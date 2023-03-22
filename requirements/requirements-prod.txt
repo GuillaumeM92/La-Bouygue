@@ -18,6 +18,7 @@ google-cloud-storage==1.37.1
 google-crc32c==1.1.2
 google-resumable-media==1.2.0
 googleapis-common-protos==1.53.0
+gunicorn
 idna==2.10
 mccabe==0.6.1
 packaging==20.9
