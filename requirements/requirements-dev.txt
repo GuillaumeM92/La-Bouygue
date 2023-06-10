@@ -23,7 +23,6 @@ mccabe==0.6.1
 packaging==20.9
 Pillow
 protobuf==3.15.8
-psycopg2
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 pycodestyle==2.7.0
@@ -35,7 +34,6 @@ pytz==2021.1
 requests==2.25.1
 rsa==4.7.2
 selenium==3.141.0
-sentry-sdk==1.0.0
 six==1.15.0
 sqlparse==0.4.1
 toml==0.10.2

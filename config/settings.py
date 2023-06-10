@@ -14,14 +14,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = False
+ALLOWED_HOSTS = [os.getenv("HOST")]
+
 if os.getenv("ENV") == 'dev':
     DEBUG = True
-    # DEBUG_PROPAGATE_EXCEPTIONS = True
-else:
-    DEBUG = False
-    DEBUG_PROPAGATE_EXCEPTIONS = False
-
-ALLOWED_HOSTS = [os.getenv("HOST")]
+    ALLOWED_HOSTS = ["localhost", "127.0.0.1", '0.0.0.0']
 
 # Application definition
 INSTALLED_APPS = [
@@ -76,7 +74,9 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-if os.getenv("ENV") == 'prod':
+
+# Database
+if not DEBUG:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
@@ -89,11 +89,11 @@ if os.getenv("ENV") == 'prod':
     }
 else:
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': f"{BASE_DIR}/db.sqlite3",
-        }
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
