@@ -1,7 +1,7 @@
 # La-Bouygue
 Repository for a family website project named after the vacation house : La Bouygue.
 
-Website address : https://labouygue.com
+Website address : https://labouygue.fr
 
 ## Project Description
 Website for our family's vacation house.

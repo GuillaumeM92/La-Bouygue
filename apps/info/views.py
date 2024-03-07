@@ -199,7 +199,7 @@ class ActivateUsersListView(LoginRequiredMixin, ListView):
                 send_mail("La Bouygue - Compte Activé",
                           ("Votre compte La Bouygue vient d'être activé. "
                            "Vous pouvez désormais vous connecter en cliquant "
-                           "sur le lien suivant : https://labouygue.com/login/"),
+                           "sur le lien suivant : https://labouygue.fr/login/"),
                           None, [user_email], fail_silently=True, )
                 messages.success(self.request, str("Utilisateur activé !"))
             return super().get(request, *args, **kwargs)
