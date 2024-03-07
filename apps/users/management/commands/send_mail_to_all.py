@@ -4,7 +4,7 @@ from django.core.mail import send_mail
 from apps.users.models import MyUser
 
 
-class SendMailToAll(BaseCommand):
+class Command(BaseCommand):
     help = 'Send an email to all registered users.'
 
     def handle(self, *args, **options):
