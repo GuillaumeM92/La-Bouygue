@@ -1,8 +1,6 @@
 import os
-import sentry_sdk
 from dotenv import load_dotenv
 from django.contrib.messages import constants as messages
-from sentry_sdk.integrations.django import DjangoIntegration
 
 # Environment variables
 load_dotenv()
@@ -139,15 +137,6 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = 'bouygue-home'
 
 LOGIN_URL = 'users-login'
-
-if os.getenv("ENV") == "prod":
-    # Sentry
-    sentry_sdk.init(
-        dsn="https://0b74ff2d74614c48946109cc17e75d66@o523221.ingest.sentry.io/5635710",
-        integrations=[DjangoIntegration()],
-        traces_sample_rate=1.0,
-        send_default_pii=True,
-    )
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
