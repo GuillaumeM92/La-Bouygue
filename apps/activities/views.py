@@ -6,7 +6,6 @@ from django.contrib import messages
 from apps.bouygue.utils import safe_next
 from django.core.paginator import Paginator
 from client_side_image_cropping import ClientsideCroppingWidget
-from apps.users.models import MyUser
 from .models import Activity, ActivityComment
 from .forms import ActivityCommentForm
 

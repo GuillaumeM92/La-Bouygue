@@ -453,6 +453,7 @@ small, .small   { font-size: .875rem; }
     color: var(--b-laine);
     padding: .38rem .6rem;
 }
+.navbar-toggler .fa-bars { font-size: .95rem; }
 .navbar-toggler:focus-visible { outline: 2px solid var(--b-miel); outline-offset: 2px; }
 
 /* --- Le menu des rubriques : une porte d'armoire qui s'ouvre --------------- */
@@ -1909,7 +1910,6 @@ input.berg-date { min-height: 2.9rem; }
 
 .chart-area { min-height: 18rem; }
 .card-header-actions .card-header { justify-content: space-between; }
-.feather-xl { width: 2.1rem; height: 2.1rem; }
 .text-lg { font-size: 1.28rem; }
 
 

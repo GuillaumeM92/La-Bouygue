@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views.generic import CreateView, ListView, UpdateView
+from django.views.generic import CreateView, ListView
 from django.http import JsonResponse
 from .models import Budget, Funding
 

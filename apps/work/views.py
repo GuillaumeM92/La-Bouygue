@@ -4,7 +4,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib import messages
 from apps.bouygue.utils import safe_next
-from apps.users.models import MyUser
 from .models import Work, WorkComment
 from .forms import WorkCommentForm
 from django.core.paginator import Paginator

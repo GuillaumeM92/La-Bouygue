@@ -56,14 +56,6 @@ class UserRegisterForm(HumanCheckMixin, UserCreationForm):
         return data.lower()
 
 
-class UserUpdateForm(forms.ModelForm):
-    email = forms.EmailField()
-
-    class Meta:
-        model = User
-        fields = ["email"]
-
-
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile

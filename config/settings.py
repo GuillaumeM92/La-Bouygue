@@ -87,6 +87,8 @@ if not DEBUG:
             "PASSWORD": os.getenv("DB_PASSWORD"),
             "HOST": "localhost",
             "PORT": "5432",
+            # Keep the connection open between requests instead of reopening it
+            "CONN_MAX_AGE": 60,
         }
     }
 else:
@@ -130,8 +132,10 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+# STATIC_ROOT can be pointed elsewhere to collect into a fresh folder, then swap
+STATIC_ROOT = os.getenv("STATIC_ROOT", os.path.join(BASE_DIR, "staticfiles"))
 STATIC_URL = "/static/"
+STATICFILES_STORAGE = "config.storage.StaticStorage"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"

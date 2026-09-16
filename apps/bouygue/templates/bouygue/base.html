@@ -22,20 +22,21 @@
              formulaires avec photo) et, selon la page, le calendrier. -->
         <link href="{% static 'client_side_image_cropping/croppie.css' %}" rel="stylesheet" />
         <link href="{% static 'client_side_image_cropping/cropping_widget.css' %}" rel="stylesheet" />
+        <link href="{% static 'vendor/fontawesome-5.15.1/css/fontawesome.min.css' %}" rel="stylesheet" />
+        <link href="{% static 'vendor/fontawesome-5.15.1/css/solid-woff2.css' %}" rel="stylesheet" />
         {% block vendor_css %}{% endblock %}
 
         <!-- Charte « Bergerie » : chargée après le thème, elle le recouvre.
              Ses polices sont hébergées sur le site (voir bergerie.css). -->
         <link rel="preload" href="{% static 'bouygue/assets/fonts/bergerie/alegreya-sans-400-latin.woff2' %}" as="font" type="font/woff2" crossorigin />
         <link rel="preload" href="{% static 'bouygue/assets/fonts/bergerie/fraunces-latin.woff2' %}" as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href="{% static 'vendor/fontawesome-5.15.1/webfonts/fa-solid-900.woff2' %}" as="font" type="font/woff2" crossorigin />
         <link href="{% static 'bouygue/css/bergerie.css' %}" rel="stylesheet" />
 
         <link rel="icon" type="image/x-icon" href="{% static 'bouygue/assets/img/favicon.jpg' %}" />
         <!-- Bibliothèques hébergées sur le site (voir static/vendor/README.md).
              jQuery est chargé ici, et non en bas de page : le widget de recadrage
              d'image s'en sert dès qu'il apparaît dans un formulaire. -->
-        <script data-search-pseudo-elements defer src="{% static 'vendor/fontawesome-5.15.1/all.min.js' %}"></script>
-        <script src="{% static 'vendor/feather-4.24.1/feather.min.js' %}"></script>
         <script src="{% static 'vendor/jquery-3.5.1/jquery.min.js' %}"></script>
         {% block head_extra %}{% endblock %}
     </head>
@@ -53,7 +54,7 @@
                             La Bouygue
                         </a>
                         <button class="navbar-toggler" {% if user.is_authenticated %}id="navbar-button"{% endif %} type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Ouvrir le menu">
-                            <i data-feather="menu"></i>
+                            <i class="fas fa-bars"></i>
                         </button>
 
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -96,9 +97,9 @@
                                     <a class="btn btn-outline-white btn-sm" id="admin" href="{% url 'activate-users' %}">Admin</a>
                                 {% endif %}
                                 <a class="btn btn-outline-white btn-sm ml-lg-2" href="{% url 'users-profile' %}" name="profile">Profil</a>
-                                <a class="btn btn-outline-white btn-sm ml-lg-2" id="logout-icon" href="{% url 'users-logout' %}">Déconnexion<i class="ml-2" data-feather="arrow-right"></i></a>
+                                <a class="btn btn-outline-white btn-sm ml-lg-2" id="logout-icon" href="{% url 'users-logout' %}">Déconnexion<i class="fas fa-arrow-right ml-2"></i></a>
                             {% else %}
-                                <a class="btn btn-outline-white btn-sm ml-lg-4" href="{% url 'users-login' %}">Connexion<i class="ml-2" data-feather="arrow-right"></i></a>
+                                <a class="btn btn-outline-white btn-sm ml-lg-4" href="{% url 'users-login' %}">Connexion<i class="fas fa-arrow-right ml-2"></i></a>
                             {% endif %}
                         </div>
                     </div>
