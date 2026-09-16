@@ -30,9 +30,9 @@ else:
     # Nginx says which scheme the visitor used (it overwrites any value the
     # visitor sends), so Django builds https:// links, e.g. in password e-mails.
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-    # Browsers that have seen the site once refuse plain HTTP for it. Started
-    # short on purpose; raise to a year (31536000) once it has run for a while.
-    SECURE_HSTS_SECONDS = 60 * 60 * 24
+    # Browsers that have seen the site once refuse plain HTTP for it, for a
+    # year. Subdomains are left out: they are not all served over HTTPS.
+    SECURE_HSTS_SECONDS = 60 * 60 * 24 * 365
 
 # Application definition
 INSTALLED_APPS = [
