@@ -23,7 +23,7 @@ class ActivityListView(posts.CountsVisit, LoginRequiredMixin, ListView):
 def activity_detail(request, pk):
     activity = get_object_or_404(Activity, pk=pk)
     context, posted = posts.comment_thread(request, activity.activitycomment_set.all(),
-                                           posts.comment_form(ActivityComment), activity=activity)
+                                           posts.comment_form(ActivityComment), activity, activity=activity)
     if posted:
         return redirect("activity-detail", pk=pk)
     return render(request, "activities/activity-detail.html",

@@ -52,7 +52,7 @@ def work_detail(request, pk):
         messages.success(request, "Travail terminé. Merci !")
         return redirect("work-detail", pk=pk)
     context, posted = posts.comment_thread(request, work.workcomment_set.all(),
-                                           posts.comment_form(WorkComment), work=work)
+                                           posts.comment_form(WorkComment), work, work=work)
     if posted:
         return redirect("work-detail", pk=pk)
     return render(request, "work/work-detail.html", dict(context, title="Tâche", work=work))

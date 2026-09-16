@@ -67,6 +67,8 @@ class Profile(models.Model):
     image = models.ImageField(default="profile_default.jpg", upload_to="profile_pics")
     address = models.CharField(_("Adresse postale"), max_length=100, unique=False, blank=True)
     phone = models.CharField(_("Téléphone"), max_length=16, unique=False, blank=True)
+    notify_comments = models.BooleanField(
+        "Me prévenir par e-mail quand quelqu'un commente mes publications", default=True)
 
     def __str__(self):
         return f"{self.user.email} Profile"

@@ -11,6 +11,7 @@ from django.core.paginator import Paginator
 from django.forms import modelform_factory
 from django.views.generic import CreateView, DeleteView, UpdateView
 
+from apps.users.emails import send_quietly
 from .utils import safe_next
 
 COMMENTS_PER_PAGE = 5
@@ -107,7 +108,29 @@ class CommentDeleteView(AuthorOrAdminRequired, DeleteView):
         return safe_next(self.request, self.list_url)
 
 
-def comment_thread(request, comments, form_class, **attach):
+def comment_email(who, title, text, with_photo, link):
+    """(subject, body) of the e-mail telling an author about a new comment."""
+    excerpt = text if len(text) <= 300 else text[:300].rstrip() + "…"
+    return f"La Bouygue - {who} a commenté « {title} »", (
+        f"Bonjour,\n\n{who} a commenté votre publication « {title} » :\n\n{excerpt}\n"
+        + ("\n(avec une photo)\n" if with_photo else "")
+        + f"\nPour lire et répondre : {link}\n\n"
+        "Pour ne plus recevoir ces e-mails, décochez l'option dans votre profil sur le site.\n")
+
+
+def notify_author(request, post, comment):
+    """Tell the author of a post that someone commented it, unless they opted out."""
+    author = post.author
+    profile = getattr(author, "profile", None)
+    if (author is None or author == comment.author or not author.is_active
+            or (profile is not None and not profile.notify_comments)):
+        return
+    who = f"{comment.author.surname} {comment.author.name}".strip() or comment.author.email
+    send_quietly(*comment_email(who, post.title, comment.content, bool(comment.image),
+                                request.build_absolute_uri(post.get_absolute_url())), author.email)
+
+
+def comment_thread(request, comments, form_class, post, **attach):
     """The comment form and one page of comments; posts a comment when one is sent.
 
     Returns (context, posted): after a posted comment the view redirects, so a
@@ -123,6 +146,7 @@ def comment_thread(request, comments, form_class, **attach):
             for name, value in attach.items():
                 setattr(comment, name, value)
             comment.save()
+            notify_author(request, post, comment)
             messages.success(request, "Commentaire publié.")
             posted = True
         else:

@@ -28,7 +28,7 @@ class InfoPostListView(posts.CountsVisit, LoginRequiredMixin, ListView):
 def infopost_detail(request, pk):
     infopost = get_object_or_404(InfoPost, pk=pk)
     context, posted = posts.comment_thread(request, infopost.infocomment_set.all(),
-                                           posts.comment_form(InfoComment), infopost=infopost)
+                                           posts.comment_form(InfoComment), infopost, infopost=infopost)
     if posted:
         return redirect("infopost-detail", pk=pk)
     return render(request, "info/infopost-detail.html",

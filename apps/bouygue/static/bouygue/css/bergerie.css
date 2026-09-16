@@ -2113,6 +2113,16 @@ input[type="file"] {
 .berg-reconduire-etat { flex: 0 0 auto; }
 .berg-reconduire-pied { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1.5rem; margin-top: 1.25rem; }
 
+/* Une case a cocher se lit comme une phrase, pas comme un titre de champ. */
+.form-check-label {
+    font-family: var(--b-texte);
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: normal;
+    text-transform: none;
+    color: var(--b-encre);
+}
+
 /* Activations : refuser et activer, cote a cote. */
 .berg-activation-actions { display: flex; flex-wrap: wrap; gap: .4rem; justify-content: flex-end; }
 #sejour-fenetre [data-temps] > .modal-footer { flex-wrap: wrap; gap: .5rem; }

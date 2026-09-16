@@ -59,7 +59,7 @@ class UserRegisterForm(HumanCheckMixin, UserCreationForm):
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ["image", "address", "phone"]
+        fields = ["image", "address", "phone", "notify_comments"]
         widgets = {
             'image': ClientsideCroppingWidget(
                 width=600,
