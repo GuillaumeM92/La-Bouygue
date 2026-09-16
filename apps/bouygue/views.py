@@ -47,7 +47,7 @@ def home(request):
     # Administrators see pending registrations here, even if the notice e-mail was lost
     pending_accounts = 0
     if user.is_staff or user.is_superuser:
-        pending_accounts = MyUser.objects.filter(is_active=False).count()
+        pending_accounts = MyUser.objects.filter(is_active=False, last_login__isnull=True).count()
     # get posts and comments that contain images
     posts_with_images = Post.objects.exclude(image='')
     comments_with_images = Comment.objects.exclude(image='')

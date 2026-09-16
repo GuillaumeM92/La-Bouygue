@@ -26,10 +26,18 @@
                             <div>
                                 <div class="font-weight-700">{{ membre.surname }} {{ membre.name }}</div>
                                 <div class="small">{{ membre.email }}</div>
+                                <div class="small text-muted">
+                                    {% if membre.last_login %}Compte désactivé (dernière connexion le {{ membre.last_login|date:"d/m/Y" }})
+                                    {% else %}Inscrit le {{ membre.date_joined|date:"d/m/Y" }}{% endif %}
+                                </div>
                             </div>
-                            <form method="POST" class="ml-auto mb-0">
+                            <form method="POST" class="ml-auto mb-0 berg-activation-actions">
                                 {% csrf_token %}
-                                <button class="btn btn-primary btn-sm" id="confirm-done" type="submit" name="action" value="{{ membre.id }}">Activer ce compte</button>
+                                {% if not membre.last_login %}
+                                    <button class="btn btn-outline-danger btn-sm" type="submit" name="refuse" value="{{ membre.id }}"
+                                            onclick="return confirm('Refuser la demande de {{ membre.surname|escapejs }} {{ membre.name|escapejs }} ? Le compte sera supprimé.');">Refuser</button>
+                                {% endif %}
+                                <button class="btn btn-primary btn-sm" type="submit" name="action" value="{{ membre.id }}">Activer ce compte</button>
                             </form>
                         </li>
                     {% empty %}

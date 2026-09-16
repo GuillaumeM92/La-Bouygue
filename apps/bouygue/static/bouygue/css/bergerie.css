@@ -1917,6 +1917,9 @@ input[type="file"] {
 .berg-sejour-nuits { color: var(--b-encre-3); font-weight: 400; }
 #sejour-fenetre input[type="date"] { min-height: 2.9rem; }
 #sejour-duree:empty { display: none; }
+
+/* Activations : refuser et activer, cote a cote. */
+.berg-activation-actions { display: flex; flex-wrap: wrap; gap: .4rem; justify-content: flex-end; }
 #sejour-fenetre [data-temps] > .modal-footer { flex-wrap: wrap; gap: .5rem; }
 #sejour-fenetre [data-temps] > .modal-footer > * { margin: 0; }
 

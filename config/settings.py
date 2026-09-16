@@ -168,6 +168,9 @@ EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 # Give up on a slow mail server well before Gunicorn gives up on the request
 EMAIL_TIMEOUT = 10
+if DEBUG:
+    # In development, e-mails are printed, never sent
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # Server errors and failed e-mails go to stderr, which Supervisor keeps in
 # /var/log/supervisor/la_bouygue-gunicorn-stderr---*.log

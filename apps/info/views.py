@@ -2,7 +2,7 @@ import unicodedata
 from urllib.parse import urlencode
 
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib import messages
@@ -197,7 +197,18 @@ class ActivateUsersListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
         return user.is_superuser or user.is_staff
 
     def post(self, request, *args, **kwargs):
-        user = get_object_or_404(MyUser, id=request.POST.get('action'), is_active=False)
+        refused = request.POST.get('refuse')
+        if refused:
+            # Only a registration that was never used: an account that has
+            # logged in before owns stays and messages, deleted with it.
+            user = get_object_or_404(MyUser, id=refused if refused.isdigit() else 0,
+                                     is_active=False, last_login__isnull=True)
+            label = f"{user.surname} {user.name}".strip() or user.email
+            user.delete()
+            messages.success(self.request, f"Demande de {label} refusée : le compte a été supprimé.")
+            return redirect('activate-users')
+        activated = request.POST.get('action', '')
+        user = get_object_or_404(MyUser, id=activated if activated.isdigit() else 0, is_active=False)
         user.is_active = True
         user.save()
         send_quietly("La Bouygue - Compte Activé",
@@ -206,7 +217,7 @@ class ActivateUsersListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
                       "sur le lien suivant : https://labouygue.fr/login/"),
                      user.email)
         messages.success(self.request, str("Utilisateur activé !"))
-        return super().get(request, *args, **kwargs)
+        return redirect('activate-users')
 
 
 def _folded(text):
