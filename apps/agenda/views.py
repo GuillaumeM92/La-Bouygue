@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
-from .models import Reservation, stay_color
+from .models import Exchange, Reservation, stay_color
 from .forms import ReservationForm
 
 
@@ -58,6 +58,7 @@ def show_agenda(request):
         "title": "Calendrier",
         "form": form,
         "stay_id": request.POST.get("id", "") if reopen else "",
+        "exchanges_waiting": Exchange.objects.pending().filter(requested__user=user).count(),
         "calendar_config": {
             "userId": user.id,
             "isAdmin": user.is_staff or user.is_superuser,

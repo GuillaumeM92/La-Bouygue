@@ -30,6 +30,15 @@
                 <a class="ml-auto" href="{% url 'activate-users' %}">Voir les inscriptions<i class="fas fa-arrow-right ml-2"></i></a>
             </div>
         {% endif %}
+        {% if exchanges_waiting %}
+            <div class="alert alert-warning d-flex flex-wrap align-items-center" role="status">
+                <span class="mr-3">
+                    <i class="fas fa-exchange-alt mr-2"></i>
+                    {{ exchanges_waiting }} demande{{ exchanges_waiting|pluralize }} d'échange de séjour attend{{ exchanges_waiting|pluralize:"ent" }} votre réponse.
+                </span>
+                <a class="ml-auto" href="{% url 'exchanges' %}">Répondre<i class="fas fa-arrow-right ml-2"></i></a>
+            </div>
+        {% endif %}
         {% for annonce in announcements %}
             <article class="berg-annonce berg-annonce--accueil">
                 <div class="berg-surtitre"><i class="fas fa-bullhorn mr-2"></i>Annonce</div>

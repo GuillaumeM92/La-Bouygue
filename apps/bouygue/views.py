@@ -6,7 +6,7 @@ from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
 from django.utils import timezone
 from django.views.decorators.http import require_POST
-from apps.agenda.models import Reservation
+from apps.agenda.models import Exchange, Reservation
 from apps.activities.models import Activity
 from apps.info.models import InfoPost
 from apps.work.models import Work
@@ -46,6 +46,7 @@ def home(request):
         'works_length': Work.objects.count() - user.works_viewed,
         'users_length': MyUser.objects.filter(is_active=True).count() - user.users_viewed,
         'pending_accounts': pending_accounts,
+        'exchanges_waiting': Exchange.objects.pending().filter(requested__user=user).count(),
         'announcements': Announcement.objects.current().select_related('author'),
         'stays_now': [stay for stay in stays if stay.start_date <= today],
         'stays_next': [stay for stay in stays if stay.start_date > today][:4],

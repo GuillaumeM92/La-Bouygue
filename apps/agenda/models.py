@@ -57,3 +57,66 @@ class Reservation(models.Model):
 
     def can_be_changed_by(self, user):
         return user == self.user or user.is_superuser or user.is_staff
+
+
+class ExchangeQuerySet(models.QuerySet):
+    def pending(self):
+        return self.filter(status=Exchange.PENDING)
+
+    def involving(self, stay):
+        return self.filter(models.Q(offered=stay) | models.Q(requested=stay))
+
+
+class Exchange(models.Model):
+    """A member offers one of their stays for the dates of someone else's."""
+
+    PENDING, ACCEPTED, DECLINED, CANCELLED, OUTDATED = "pending", "accepted", "declined", "cancelled", "outdated"
+    STATUSES = [
+        (PENDING, "En attente"),
+        (ACCEPTED, "Accepté"),
+        (DECLINED, "Refusé"),
+        (CANCELLED, "Annulé"),
+        (OUTDATED, "Plus d'actualité"),
+    ]
+
+    requester = models.ForeignKey(User, on_delete=models.CASCADE, related_name="exchanges_sent")
+    offered = models.ForeignKey(Reservation, on_delete=models.CASCADE, related_name="+")
+    requested = models.ForeignKey(Reservation, on_delete=models.CASCADE, related_name="+")
+    message = models.TextField("message", blank=True)
+    status = models.CharField(max_length=10, choices=STATUSES, default=PENDING)
+    # The dates as they were when asked: a stay moved since cannot be swapped
+    offered_start = models.DateField()
+    offered_end = models.DateField()
+    requested_start = models.DateField()
+    requested_end = models.DateField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    answered_at = models.DateTimeField(null=True, blank=True)
+
+    objects = ExchangeQuerySet.as_manager()
+
+    class Meta:
+        ordering = ["-created_at"]
+        verbose_name = "échange de séjour"
+        verbose_name_plural = "échanges de séjours"
+
+    def __str__(self):
+        return f"{self.offered} ⇄ {self.requested} ({self.get_status_display()})"
+
+    @property
+    def owner(self):
+        """Who has to answer."""
+        return self.requested.user
+
+    def still_valid(self):
+        return ((self.offered.start_date, self.offered.end_date) == (self.offered_start, self.offered_end)
+                and (self.requested.start_date, self.requested.end_date) == (self.requested_start, self.requested_end)
+                and self.offered.user_id == self.requester_id
+                and self.requested.user_id != self.requester_id)
+
+    def swap(self):
+        """Each stay takes the other's dates."""
+        offered, requested = self.offered, self.requested
+        offered.start_date, requested.start_date = self.requested_start, self.offered_start
+        offered.end_date, requested.end_date = self.requested_end, self.offered_end
+        offered.save(update_fields=["start_date", "end_date"])
+        requested.save(update_fields=["start_date", "end_date"])

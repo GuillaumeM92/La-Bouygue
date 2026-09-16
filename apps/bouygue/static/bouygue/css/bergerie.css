@@ -2033,6 +2033,37 @@ input[type="file"] {
 .berg-fiche-epinglee-titre { display: block; font-family: var(--b-titre); font-size: 1.1rem; font-weight: 600; margin-bottom: .3rem; }
 .berg-fiche-epinglee-extrait { display: block; font-size: .9rem; color: var(--b-encre-2); }
 
+/* Calendrier : les boutons de l'en-tete. */
+.berg-agenda-boutons { display: flex; flex-wrap: wrap; gap: .5rem; margin-left: auto; }
+.berg-agenda-boutons .berg-agenda-ajout { margin-left: 0; }
+.berg-agenda-boutons .berg-pastille { margin-left: .35rem; }
+
+/* Echanges de sejours. */
+.berg-echange {
+    background-color: var(--b-papier);
+    border: var(--b-filet);
+    border-radius: var(--b-r-lg);
+    box-shadow: var(--b-ombre-1);
+    padding: 1.1rem 1.25rem;
+    margin-bottom: 1rem;
+}
+.berg-echange-qui { margin-bottom: .75rem; }
+.berg-echange-paire { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem; }
+.berg-echange-sejour {
+    flex: 1 1 14rem;
+    padding: .55rem .8rem;
+    border-left: 5px solid var(--b-tomette);
+    border-radius: var(--b-r-xs);
+    background-color: var(--b-chaux);
+}
+.berg-echange-libelle { display: block; font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--b-bois); }
+.berg-echange-nom { display: block; font-weight: 700; }
+.berg-echange-dates { display: block; font-size: .9rem; color: var(--b-encre-2); }
+.berg-echange-fleche { color: var(--b-bois); font-size: 1.2rem; }
+.berg-echange-message { margin: .8rem 0 0; font-style: italic; color: var(--b-encre-2); }
+.berg-echange-alerte { margin: .8rem 0 0; font-weight: 700; color: var(--b-rouge); }
+.berg-echange-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .5rem; margin-top: .9rem; }
+
 /* Activations : refuser et activer, cote a cote. */
 .berg-activation-actions { display: flex; flex-wrap: wrap; gap: .4rem; justify-content: flex-end; }
 #sejour-fenetre [data-temps] > .modal-footer { flex-wrap: wrap; gap: .5rem; }
@@ -2457,6 +2488,8 @@ input[type="file"] {
     .berg-sortie-une-vue { min-height: 0; aspect-ratio: 16 / 9; }
     .berg-sortie-une-corps { border-left: 0; border-top: 3px solid var(--b-bois); padding: 1.35rem 1.4rem; }
     .berg-agenda-ajout { margin-left: 0; width: 100%; }
+    .berg-agenda-boutons { width: 100%; }
+    .berg-agenda-boutons > * { flex: 1 1 auto; }
 }
 
 @media (max-width: 767.98px) {

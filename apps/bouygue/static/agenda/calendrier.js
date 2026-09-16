@@ -117,7 +117,28 @@ document.addEventListener('DOMContentLoaded', function () {
         title.textContent = 'Le séjour';
         fill('consulter', stay);
         modal.find('[data-action="modifier"], [data-action="demander-suppression"]').prop('hidden', !canChange(stay));
+        modal.find('[data-action="proposer-echange"]').prop('hidden', !canAskExchange(stay));
         show('consulter');
+    };
+
+    // An exchange: someone else's stay still to come, for one of mine still to come
+    const myComingStays = () => stays.filter(s => s.user_id === config.userId && s.end_date >= toIso(new Date()));
+    const canAskExchange = stay => stay.user_id !== config.userId && stay.end_date >= toIso(new Date())
+        && myComingStays().length > 0;
+    const exchangeForm = modal.find('form[data-temps="echanger"]')[0];
+    const askExchange = function (stay) {
+        title.textContent = 'Demander un échange';
+        fill('echanger', stay);
+        exchangeForm.elements.requested.value = stay.id;
+        const select = exchangeForm.elements.offered;
+        select.textContent = '';
+        myComingStays().forEach(function (mine) {
+            const option = document.createElement('option');
+            option.value = mine.id;
+            option.textContent = mine.name + ' — ' + stayDates(mine.start_date, mine.end_date);
+            select.appendChild(option);
+        });
+        show('echanger');
     };
 
     const clearErrors = function () {
@@ -168,6 +189,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const action = this.dataset.action;
         if (action === 'modifier') { edit(current); }
         if (action === 'consulter') { consult(current); }
+        if (action === 'proposer-echange') { askExchange(current); }
         if (action === 'demander-suppression') {
             title.textContent = 'Supprimer le séjour';
             fill('supprimer', current);

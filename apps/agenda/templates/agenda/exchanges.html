@@ -1,0 +1,79 @@
+{% extends "bouygue/base.html" %}
+{% block content %}
+<div hidden>{% block title %} — Échanges de séjours {% endblock %}</div>
+
+{% include 'blocks/berg-entete.html' with surtitre="Le calendrier" titre="Échanges de séjours" chapeau="Proposer ses dates contre celles d'un autre : si l'autre accepte, les deux séjours échangent leurs dates." image="bouygue/assets/img/backgrounds/montagne/cirque_lescun.jpg" %}
+
+<section class="berg-section berg-section--serree">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                {% include 'blocks/berg-messages.html' %}
+
+                <div class="berg-actions">
+                    <a class="berg-retour" href="{% url 'agenda' %}">Calendrier</a>
+                </div>
+
+                <div class="berg-groupe-tete">
+                    <h2><i class="fas fa-inbox fa-fw berg-groupe-glyphe"></i>Demandes reçues</h2>
+                    <span class="berg-etiquette{% if received %} berg-etiquette--tomette{% endif %}">{{ received|length }}</span>
+                </div>
+                {% for exchange in received %}
+                    <article class="berg-echange">
+                        <p class="berg-echange-qui"><strong>{{ exchange.requester.surname }} {{ exchange.requester.name }}</strong> vous propose :</p>
+                        {% include 'agenda/exchange-pair.html' with left_label="Votre séjour" left=exchange.requested right_label="contre le sien" right=exchange.offered %}
+                        {% if exchange.message %}<p class="berg-echange-message">« {{ exchange.message|linebreaksbr }} »</p>{% endif %}
+                        {% if not exchange.still_valid %}
+                            <p class="berg-echange-alerte">L'un des deux séjours a changé depuis la demande : l'échange n'est plus possible.</p>
+                        {% endif %}
+                        <form method="POST" action="{% url 'exchange-answer' exchange.pk %}" class="berg-echange-actions">
+                            {% csrf_token %}
+                            <button class="btn btn-outline-danger btn-sm" type="submit" name="answer" value="decline">Refuser</button>
+                            {% if exchange.still_valid %}
+                                <button class="btn btn-primary btn-sm" type="submit" name="answer" value="accept"
+                                        onclick="return confirm('Échanger les dates des deux séjours ?');">Accepter l'échange</button>
+                            {% endif %}
+                        </form>
+                    </article>
+                {% empty %}
+                    <p class="berg-vide">Aucune demande en attente.</p>
+                {% endfor %}
+
+                <div class="berg-groupe-tete">
+                    <h2><i class="fas fa-paper-plane fa-fw berg-groupe-glyphe"></i>Vos demandes en cours</h2>
+                    <span class="berg-etiquette">{{ sent|length }}</span>
+                </div>
+                {% for exchange in sent %}
+                    <article class="berg-echange">
+                        <p class="berg-echange-qui">En attente de <strong>{{ exchange.requested.user.surname }} {{ exchange.requested.user.name }}</strong> :</p>
+                        {% include 'agenda/exchange-pair.html' with left_label="Votre séjour" left=exchange.offered right_label="contre le sien" right=exchange.requested %}
+                        <form method="POST" action="{% url 'exchange-cancel' exchange.pk %}" class="berg-echange-actions">
+                            {% csrf_token %}
+                            <button class="btn btn-outline-primary btn-sm" type="submit">Annuler la demande</button>
+                        </form>
+                    </article>
+                {% empty %}
+                    <p class="berg-vide">Pour proposer un échange, ouvrez le séjour qui vous intéresse sur le calendrier.</p>
+                {% endfor %}
+
+                {% if history %}
+                    <div class="berg-groupe-tete">
+                        <h2><i class="fas fa-history fa-fw berg-groupe-glyphe"></i>Historique</h2>
+                    </div>
+                    <ul class="list-group">
+                        {% for exchange in history %}
+                            <li class="list-group-item">
+                                <div>
+                                    <div class="font-weight-700">« {{ exchange.offered.name }} » ⇄ « {{ exchange.requested.name }} »</div>
+                                    <div class="small">Demandé par {{ exchange.requester.surname }} {{ exchange.requester.name }} le {{ exchange.created_at|date:"j F Y" }}</div>
+                                </div>
+                                <span class="berg-etiquette ml-auto">{{ exchange.get_status_display }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

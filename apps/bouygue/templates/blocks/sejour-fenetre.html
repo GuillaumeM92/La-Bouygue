@@ -23,6 +23,7 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-outline-danger mr-auto" type="button" data-action="demander-suppression">Supprimer</button>
+                    <button class="btn btn-outline-primary" type="button" data-action="proposer-echange"><i class="fas fa-exchange-alt mr-2"></i>Demander un échange</button>
                     <button class="btn btn-outline-primary" type="button" data-dismiss="modal">Fermer</button>
                     <button class="btn btn-primary" type="button" data-action="modifier">Modifier</button>
                 </div>
@@ -45,6 +46,28 @@
                 <div class="modal-footer">
                     <button class="btn btn-outline-primary" type="button" data-dismiss="modal">Annuler</button>
                     <button class="btn btn-primary" type="submit" name="save">Enregistrer</button>
+                </div>
+            </form>
+
+            <form data-temps="echanger" method="POST" action="{% url 'exchange-request' %}" hidden>
+                {% csrf_token %}
+                <input type="hidden" name="requested" value="" />
+                <div class="modal-body">
+                    <p>Vous proposez à <strong data-champ="auteur"></strong> de prendre ses dates, <span data-champ="dates"></span>,
+                        en échange de celles d'un de vos séjours. S'il accepte, les deux séjours échangent leurs dates.</p>
+                    <div class="form-group">
+                        <label for="echange-offert">Votre séjour proposé en échange</label>
+                        <select class="form-control custom-select" id="echange-offert" name="offered" required></select>
+                    </div>
+                    <div class="form-group mb-0">
+                        <label for="echange-message">Un mot pour expliquer (facultatif)</label>
+                        <textarea class="form-control" id="echange-message" name="message" rows="3" maxlength="2000"
+                                  placeholder="par exemple : les enfants ont leurs vacances à cette date, ça nous arrangerait beaucoup"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-outline-primary" type="button" data-action="consulter">Retour</button>
+                    <button class="btn btn-primary" type="submit">Envoyer la demande</button>
                 </div>
             </form>
 

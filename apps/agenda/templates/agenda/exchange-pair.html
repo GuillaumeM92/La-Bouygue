@@ -1,0 +1,13 @@
+<div class="berg-echange-paire">
+    <div class="berg-echange-sejour" style="border-left-color: {{ left.color_for_display }}">
+        <span class="berg-echange-libelle">{{ left_label }}</span>
+        <span class="berg-echange-nom">{{ left.name }}</span>
+        <span class="berg-echange-dates">du {{ left.start_date|date:"j F" }} au {{ left.end_date|date:"j F Y" }}</span>
+    </div>
+    <i class="fas fa-exchange-alt berg-echange-fleche" aria-hidden="true"></i>
+    <div class="berg-echange-sejour" style="border-left-color: {{ right.color_for_display }}">
+        <span class="berg-echange-libelle">{{ right_label }}</span>
+        <span class="berg-echange-nom">{{ right.name }}</span>
+        <span class="berg-echange-dates">du {{ right.start_date|date:"j F" }} au {{ right.end_date|date:"j F Y" }}</span>
+    </div>
+</div>

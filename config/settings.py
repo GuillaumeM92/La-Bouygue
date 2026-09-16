@@ -164,6 +164,9 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+if EMAIL_HOST_USER:
+    # Gmail sends from the account it logs in with; the name is ours
+    DEFAULT_FROM_EMAIL = f"La Bouygue <{EMAIL_HOST_USER}>"
 # Give up on a slow mail server well before Gunicorn gives up on the request
 EMAIL_TIMEOUT = 10
 if DEBUG:
