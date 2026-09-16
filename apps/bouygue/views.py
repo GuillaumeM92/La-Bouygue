@@ -1,12 +1,19 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
+from django.utils import timezone
+from django.views.decorators.http import require_POST
 from apps.agenda.models import Reservation
 from apps.blog.models import Post, Comment
 from apps.activities.models import Activity
 from apps.info.models import InfoPost
 from apps.work.models import Work
 from apps.users.models import MyUser
+from .forms import AnnouncementForm
+from .models import Announcement
+from .utils import safe_next
 import random
 
 
@@ -60,6 +67,7 @@ def home(request):
         'works_length': works_length,
         'users_length': users_length,
         'pending_accounts': pending_accounts,
+        'announcements': Announcement.objects.current().select_related('author'),
         'caroussel_img_1': caroussel_img_1,
         'caroussel_img_2': caroussel_img_2,
         'caroussel_img_3': caroussel_img_3,
@@ -67,6 +75,49 @@ def home(request):
         'caroussel_img_5': caroussel_img_5
     })
     return response
+
+
+def _check_admin(user):
+    if not (user.is_staff or user.is_superuser):
+        raise PermissionDenied
+
+
+@login_required
+def announcements(request):
+    """Administrators publish announcements and take them down."""
+    _check_admin(request.user)
+    form = AnnouncementForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid():
+        form.save(author=request.user)
+        messages.success(request, "Annonce publiée : chaque membre la verra à sa prochaine visite.")
+        return redirect('announcements')
+    return render(request, 'bouygue/announcements.html', {
+        'title': 'Annonces',
+        'form': form,
+        'current': Announcement.objects.current().select_related('author'),
+        'past': Announcement.objects.filter(expires_at__lte=timezone.now()).select_related('author')[:10],
+    })
+
+
+@login_required
+@require_POST
+def announcement_end(request, pk):
+    _check_admin(request.user)
+    announcement = get_object_or_404(Announcement.objects.current(), pk=pk)
+    announcement.expires_at = timezone.now()
+    announcement.save()
+    messages.success(request, "Annonce retirée.")
+    return redirect('announcements')
+
+
+@login_required
+@require_POST
+def announcements_read(request):
+    """The member closes the pop-up with "J'ai lu": it stops showing up."""
+    ids = request.POST.getlist('announcement')
+    for announcement in Announcement.objects.current().filter(pk__in=ids):
+        announcement.read_by.add(request.user)
+    return redirect(safe_next(request, 'bouygue-home'))
 
 
 def data_policy(request):

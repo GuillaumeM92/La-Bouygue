@@ -1,0 +1,40 @@
+{% comment %}
+    Annonces non lues : la fenêtre s'ouvre à chaque page tant que le membre n'a
+    pas cliqué « J'ai lu ». unread_announcements vient de
+    apps/bouygue/context_processors.py.
+{% endcomment %}
+{% if unread_announcements %}
+<div class="modal fade" id="annonces-fenetre" tabindex="-1" role="dialog" aria-labelledby="annonces-fenetre-titre" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="annonces-fenetre-titre">
+                    <i class="fas fa-bullhorn mr-2"></i>{% if unread_announcements|length > 1 %}Annonces importantes{% else %}Annonce importante{% endif %}
+                </h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Fermer"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <form method="post" action="{% url 'announcements-read' %}?next={{ request.get_full_path|urlencode }}">
+                {% csrf_token %}
+                <div class="modal-body">
+                    {% for annonce in unread_announcements %}
+                        <article class="berg-annonce">
+                            <h3 class="berg-annonce-titre">{{ annonce.title }}</h3>
+                            <div class="berg-annonce-texte">{{ annonce.message|urlize|linebreaksbr }}</div>
+                            <p class="berg-annonce-signe">
+                                {% if annonce.author %}{{ annonce.author.surname }} {{ annonce.author.name }}, {% endif %}le {{ annonce.created_at|date:"j F Y" }}
+                            </p>
+                            <input type="hidden" name="announcement" value="{{ annonce.pk }}" />
+                        </article>
+                    {% endfor %}
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="submit">J'ai lu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    jQuery(function ($) { $('#annonces-fenetre').modal('show'); });
+</script>
+{% endif %}

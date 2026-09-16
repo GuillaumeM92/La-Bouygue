@@ -661,6 +661,23 @@ small, .small   { font-size: .875rem; }
 .berg-recherche .btn { flex: 0 0 auto; border-top-left-radius: 0; border-bottom-left-radius: 0; align-self: stretch; }
 .berg-recherche-effacer { margin-left: .75rem; white-space: nowrap; font-size: .9rem; }
 
+/* Annonces importantes : fenetre a l'arrivee, accueil, page de gestion. */
+.berg-annonce {
+    padding: 1.1rem 1.25rem;
+    margin-bottom: 1rem;
+    background-color: var(--b-papier);
+    border: 1px solid var(--b-pierre-2);
+    border-left: 4px solid var(--b-miel);
+    border-radius: var(--b-r);
+}
+.berg-annonce:last-child { margin-bottom: 0; }
+.berg-annonce--accueil { margin-bottom: 1.5rem; box-shadow: var(--b-ombre-1); }
+.berg-annonce--passee { border-left-color: var(--b-pierre); opacity: .75; }
+.berg-annonce-titre { font-size: 1.2rem; margin: 0 0 .5rem; }
+.berg-annonce-texte { color: var(--b-encre); line-height: 1.6; overflow-wrap: anywhere; }
+.berg-annonce-signe { margin: .6rem 0 0; font-size: .85rem; color: var(--b-encre-2); }
+.berg-annonce form { margin-top: .75rem; }
+
 
 /* =============================================================================
    6. EN-TETES DE PAGE — la photo, chauffee, et une crete de montagne

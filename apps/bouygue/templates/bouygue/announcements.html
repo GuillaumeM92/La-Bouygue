@@ -1,0 +1,53 @@
+{% extends "bouygue/base-volet.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %} — Annonces {% endblock %}
+{% block volet_image %}{% static 'bouygue/assets/img/backgrounds/montagne/balaitous.jpg' %}{% endblock %}
+{% block volet_largeur %}col-lg-8{% endblock %}
+{% block volet_titre %}Annonces{% endblock %}
+{% block volet_corps %}
+    <p class="text-muted mb-4">
+        Un message important pour toute la famille&nbsp;: chaque membre le verra dans une fenêtre
+        à sa prochaine visite, jusqu'à ce qu'il clique «&nbsp;J'ai lu&nbsp;». Il reste affiché sur
+        la page d'accueil jusqu'à la fin de la durée choisie.
+    </p>
+    <form method="POST" autocomplete="off">
+        {% csrf_token %}
+        <fieldset class="form-group">{{ form|crispy }}</fieldset>
+        <div class="berg-form-pied">
+            <button class="btn btn-primary" type="submit" name="publish">Publier l'annonce</button>
+            <a class="btn btn-outline-primary" href="{% url 'bouygue-home' %}">Annuler</a>
+        </div>
+    </form>
+
+    <h2 class="h4 mt-5">En cours</h2>
+    {% for annonce in current %}
+        <article class="berg-annonce">
+            <h3 class="berg-annonce-titre">{{ annonce.title }}</h3>
+            <div class="berg-annonce-texte">{{ annonce.message|urlize|linebreaksbr }}</div>
+            <p class="berg-annonce-signe">
+                {% if annonce.author %}{{ annonce.author.surname }} {{ annonce.author.name }}, {% endif %}le {{ annonce.created_at|date:"j F Y" }}
+                — visible jusqu'au {{ annonce.expires_at|date:"j F Y" }}
+                — lue par {{ annonce.read_by.count }} membre{{ annonce.read_by.count|pluralize }}
+            </p>
+            <form method="POST" action="{% url 'announcement-end' annonce.pk %}">
+                {% csrf_token %}
+                <button class="btn btn-outline-primary btn-sm" type="submit">Retirer maintenant</button>
+            </form>
+        </article>
+    {% empty %}
+        <p class="berg-vide">Aucune annonce en cours.</p>
+    {% endfor %}
+
+    {% if past %}
+        <h2 class="h4 mt-5">Terminées</h2>
+        {% for annonce in past %}
+            <article class="berg-annonce berg-annonce--passee">
+                <h3 class="berg-annonce-titre">{{ annonce.title }}</h3>
+                <p class="berg-annonce-signe">
+                    {% if annonce.author %}{{ annonce.author.surname }} {{ annonce.author.name }}, {% endif %}du {{ annonce.created_at|date:"j F Y" }} au {{ annonce.expires_at|date:"j F Y" }}
+                </p>
+            </article>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

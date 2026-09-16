@@ -30,6 +30,16 @@
                 <a class="ml-auto" href="{% url 'activate-users' %}">Voir les inscriptions<i class="fas fa-arrow-right ml-2"></i></a>
             </div>
         {% endif %}
+        {% for annonce in announcements %}
+            <article class="berg-annonce berg-annonce--accueil">
+                <div class="berg-surtitre"><i class="fas fa-bullhorn mr-2"></i>Annonce</div>
+                <h3 class="berg-annonce-titre">{{ annonce.title }}</h3>
+                <div class="berg-annonce-texte">{{ annonce.message|urlize|linebreaksbr }}</div>
+                <p class="berg-annonce-signe">
+                    {% if annonce.author %}{{ annonce.author.surname }} {{ annonce.author.name }}, {% endif %}le {{ annonce.created_at|date:"j F Y" }}
+                </p>
+            </article>
+        {% endfor %}
         <div class="berg-titre-section">
             <div class="berg-surtitre">Les rubriques</div>
             <h2>Par où voulez-vous commencer&nbsp;?</h2>

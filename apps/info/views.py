@@ -221,7 +221,7 @@ class AllUsersListView(LoginRequiredMixin, ListView):
     template_name = 'info/all-users.html'
     context_object_name = 'users'
     ordering = ['surname']
-    paginate_by = 10
+    paginate_by = 20
 
     def get_queryset(self):
         queryset = super().get_queryset()

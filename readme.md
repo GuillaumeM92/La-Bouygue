@@ -12,8 +12,10 @@ budget of the house. New accounts must be validated by an administrator.
   phones); add, edit or delete your own stays
 * Discussions, practical information, activities and repairs, with comments
   and photos (cropped in the browser before upload)
-* Address book and member profiles
+* Address book (searchable) and member profiles
 * Budget of the house, with its history chart
+* Announcements: administrators publish an important message, shown to every
+  member in a pop-up until read and on the home page until it expires
 * Administration: account activation, budget and funding updates, Django admin
 
 ## Stack
