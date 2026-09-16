@@ -17,6 +17,13 @@
         <!-- Thème d'origine : on n'en garde que la grille et les plugins Bootstrap. -->
         <link href="{% static 'bouygue/css/styles.min.css' %}" rel="stylesheet" />
 
+        <!-- Feuilles des composants tiers, avant la charte pour qu'elle puisse les
+             rhabiller : widget de recadrage d'image (présent sur tous les
+             formulaires avec photo) et, selon la page, le calendrier. -->
+        <link href="{% static 'client_side_image_cropping/croppie.css' %}" rel="stylesheet" />
+        <link href="{% static 'client_side_image_cropping/cropping_widget.css' %}" rel="stylesheet" />
+        {% block vendor_css %}{% endblock %}
+
         <!-- Charte « Bergerie » : chargée après le thème, elle le recouvre.
              Ses polices sont hébergées sur le site (voir bergerie.css). -->
         <link rel="preload" href="{% static 'bouygue/assets/fonts/bergerie/alegreya-sans-400-latin.woff2' %}" as="font" type="font/woff2" crossorigin />

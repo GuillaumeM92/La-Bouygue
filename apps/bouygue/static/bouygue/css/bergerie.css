@@ -1769,6 +1769,12 @@ input[type="file"] {
     font-family: var(--b-titre);
     font-weight: 600;
 }
+/* Bootstrap place les <caption> sous les tableaux : le mois passait sous la
+   grille, et les fleches du mois, restees en haut, masquaient lundi et dimanche. */
+.calendar caption { caption-side: top; }
+.calendarbox .calendarnav-previous,
+.calendarbox .calendarnav-next { filter: brightness(0) invert(.94); }
+.datetimeshortcuts .date-icon { filter: grayscale(1) sepia(.9) brightness(.8); }
 .calendar td a { color: var(--b-bois); }
 .calendar td.selected a { background-color: var(--b-tomette); color: #fff; }
 .calendar-shortcuts {
@@ -1778,6 +1784,115 @@ input[type="file"] {
 }
 .calendar-cancel { background-color: var(--b-chaux-2); }
 .calendar-cancel a { color: var(--b-rouge); }
+
+/* La description d'un sejour, deroulee sous son nom au survol de la souris. */
+.berg-fc-description {
+    display: block;
+    font-weight: 400;
+    white-space: normal;
+    color: #fff;
+    padding: 0 .1rem .1rem;
+}
+
+/* Le theme d'origine fixait le calendrier a 850px sous cette largeur, ce qui
+   faisait defiler toute la page de cote sur un telephone.                   */
+@media (max-width: 850px) {
+    #responsive-calendar { width: auto; }
+}
+
+/* --- Calendrier / A venir ------------------------------------------------- */
+.berg-agenda-vues {
+    display: inline-flex;
+    margin-bottom: 1.25rem;
+    border: var(--b-filet);
+    border-radius: var(--b-r);
+    background-color: var(--b-papier);
+    box-shadow: var(--b-ombre-1);
+    overflow: hidden;
+}
+.berg-agenda-vues button {
+    border: 0;
+    background: none;
+    padding: .5rem 1.15rem;
+    font-family: var(--b-texte);
+    font-size: .9rem;
+    font-weight: 700;
+    letter-spacing: .04em;
+    color: var(--b-bois);
+    cursor: pointer;
+}
+.berg-agenda-vues button + button { border-left: var(--b-filet); }
+.berg-agenda-vues button:hover { background-color: var(--b-laine); color: var(--b-tomette); }
+.berg-agenda-vues button.active { background-color: var(--b-sapin); color: var(--b-chaux); }
+
+#upcoming-stays { max-width: 46rem; }
+.berg-sejours-mois {
+    font-family: var(--b-texte);
+    font-size: .8rem;
+    font-weight: 700;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--b-bois);
+    margin: 1.6rem 0 .6rem;
+}
+.berg-sejours-mois:first-child { margin-top: .25rem; }
+.berg-sejours { list-style: none; margin: 0; padding: 0; }
+.berg-sejours li + li { margin-top: .6rem; }
+.berg-sejour {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background-color: var(--b-papier);
+    border: var(--b-filet);
+    border-left: 6px solid var(--b-tomette);
+    border-radius: var(--b-r);
+    box-shadow: var(--b-ombre-1);
+    padding: .75rem 1rem .8rem;
+    color: var(--b-encre);
+    font-family: var(--b-texte);
+    cursor: pointer;
+}
+.berg-sejour:hover { background-color: var(--b-chaux-2); }
+.berg-sejour-nom {
+    display: block;
+    font-family: var(--b-titre);
+    font-size: 1.12rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+.berg-sejour-dates {
+    display: block;
+    margin-top: .15rem;
+    font-weight: 700;
+    color: var(--b-encre-2);
+}
+.berg-sejour-desc {
+    margin-top: .3rem;
+    font-size: .95rem;
+    color: var(--b-encre-2);
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+.berg-sejour-marque {
+    display: inline-block;
+    margin-top: .45rem;
+    padding: .05rem .5rem;
+    border-radius: var(--b-r-xs);
+    background-color: var(--b-laine);
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--b-sapin);
+}
+
+/* Telephones et tablettes : le selecteur de date du systeme remplace celui de
+   l'admin, dont on masque les raccourcis et les calendriers.                */
+.berg-dates-natives .datetimeshortcuts,
+.berg-dates-natives .calendarbox { display: none !important; }
+input.berg-date { min-height: 2.9rem; }
 
 
 /* =============================================================================
@@ -2193,8 +2308,17 @@ input[type="file"] {
 @media (max-width: 767.98px) {
     .berg-groupe-tete { flex-direction: column; align-items: flex-start; gap: .4rem; }
     .berg-actions .btn { flex: 1 1 auto; }
-    .fc .fc-toolbar.fc-header-toolbar { flex-direction: column; align-items: stretch; }
-    .fc .fc-toolbar-chunk { display: flex; justify-content: center; flex-wrap: wrap; gap: .3rem; }
+    .berg-agenda-vues { display: flex; }
+    .berg-agenda-vues button { flex: 1 1 0; padding: .65rem .5rem; }
+    #responsive-calendar .container-fluid { padding-left: .75rem; padding-right: .75rem; }
+    .fc .fc-toolbar.fc-header-toolbar { flex-wrap: nowrap; gap: .5rem; margin-bottom: .75rem; }
+    .fc .fc-toolbar-title { font-size: 1.25rem; text-align: center; }
+    .fc .fc-button, .fc .fc-button-primary { padding: .45rem .8rem; }
+    .fc .fc-col-header-cell { padding: .2rem 0; }
+    .fc .fc-col-header-cell-cushion { font-size: .62rem; letter-spacing: .06em; padding: .2rem 0; }
+    .fc .fc-daygrid-day-number { font-size: .8rem; padding: .15rem .3rem; }
+    .fc-event, .fc-daygrid-event { font-size: .7rem; padding: .05rem .2rem; margin: 1px 0; }
+    .fc .fc-daygrid-more-link { font-size: .7rem; }
 }
 
 @media (max-width: 575.98px) {

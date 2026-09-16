@@ -1,17 +1,21 @@
 {% extends "bouygue/base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
+
+{% block vendor_css %}
+    <link href="{% static 'agenda/fullcalendar/main.css' %}" rel="stylesheet" />
+    <link href="{% static 'admin/css/widgets.css' %}" rel="stylesheet" />
+{% endblock %}
+
 {% block content %}
 <div hidden>{% block title %} — Calendrier {% endblock %}</div>
 
 <!-- Imports propres au calendrier -->
-<link href="{% static 'agenda/fullcalendar/main.css' %}" rel="stylesheet" />
 <script src="{% static 'agenda/fullcalendar/main.min.js' %}"></script>
 <script src="{% static 'agenda/fullcalendar/calendar-custom.js' %}"></script>
 
-<!-- Sélecteur de date de l'admin Django : requis par le formulaire de séjour.
-     Le script du calendrier déplace ces widgets dans les fenêtres modales. -->
-<link rel="stylesheet" type="text/css" href="{% static 'admin/css/widgets.css' %}" />
+<!-- Sélecteur de date de l'admin Django : requis par le formulaire de séjour,
+     sur ordinateur. Le script du calendrier le déplace dans les modales. -->
 <script type="text/javascript" src="/jsi18n/"></script>
 <script type="text/javascript" src="{% static 'admin/js/core.js' %}"></script>
 
@@ -28,7 +32,7 @@
             <div>
                 <div class="berg-surtitre">Le calendrier des séjours</div>
                 <h1>Qui vient, et quand</h1>
-                <p class="calendar-hint mb-0">Cliquez sur un séjour pour l'ouvrir. Le vôtre s'ajoute avec le bouton ci-contre.</p>
+                <p class="calendar-hint mb-0">Touchez un séjour pour l'ouvrir, ou ajoutez le vôtre.</p>
             </div>
 
             {% block reservation-modal %}
@@ -44,8 +48,16 @@
             {% include 'blocks/hidden-modify-reservation-modal.html' %}
         {% endblock %}
 
-        <!-- L'agenda -->
-        <div id="calendar"></div>
+        <!-- Deux façons de voir les séjours : la grille du mois, ou la liste de
+             ceux à venir (affichée d'office sur téléphone). -->
+        <div class="berg-agenda-vues" role="tablist" aria-label="Affichage des séjours">
+            <button type="button" role="tab" data-vue="calendrier" aria-controls="calendar">Calendrier</button>
+            <button type="button" role="tab" data-vue="liste" aria-controls="upcoming-stays">À venir</button>
+        </div>
+        <div id="calendar" role="tabpanel"></div>
+        <div id="upcoming-stays" role="tabpanel" hidden>
+            <p class="berg-vide">Chargement des séjours…</p>
+        </div>
     </div>
 </section>
 

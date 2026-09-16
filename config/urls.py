@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
@@ -12,6 +14,9 @@ urlpatterns = [
     path('', include('apps.work.urls')),
     path('', include('apps.budget.urls')),
 ]
+
+# Uploaded images, in development only: in production Nginx serves /media/
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler400 = 'apps.bouygue.views.bad_request'
 handler403 = 'apps.bouygue.views.permission_denied'
