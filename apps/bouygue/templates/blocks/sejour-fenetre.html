@@ -30,7 +30,7 @@
 
             <form data-temps="saisir" method="POST" action="{% url 'agenda' %}" autocomplete="off" hidden>
                 {% csrf_token %}
-                <input type="hidden" name="id" value="{{ request.POST.id }}" />
+                <input type="hidden" name="id" value="{{ stay_id }}" />
                 <div class="modal-body">
                     {{ form.non_field_errors }}
                     {{ form.name|as_crispy_field }}

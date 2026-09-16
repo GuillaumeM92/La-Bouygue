@@ -57,6 +57,7 @@ def show_agenda(request):
     return render(request, "agenda/agenda.html", {
         "title": "Calendrier",
         "form": form,
+        "stay_id": request.POST.get("id", "") if reopen else "",
         "calendar_config": {
             "userId": user.id,
             "isAdmin": user.is_staff or user.is_superuser,
