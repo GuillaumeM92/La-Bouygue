@@ -1,0 +1,81 @@
+{% extends "bouygue/base.html" %}
+{% block content %}
+<div hidden>{% block title %} — Reconduire les séjours {% endblock %}</div>
+
+{% include 'blocks/berg-entete.html' with surtitre="Administration" titre="Reconduire les séjours" chapeau="Les semaines que certains prennent chaque année : cochez-les, elles sont reposées l'année suivante, aux mêmes jours de la semaine et à la même période." image="bouygue/assets/img/backgrounds/montagne/piejau.jpg" %}
+
+<section class="berg-section berg-section--serree">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                {% include 'blocks/berg-messages.html' %}
+
+                <div class="berg-actions">
+                    <a class="berg-retour" href="{% url 'agenda' %}">Calendrier</a>
+                    <form method="GET" class="berg-reconduire-annee ml-auto">
+                        <label for="annee" class="mb-0 mr-2">Séjours de</label>
+                        <select class="custom-select" id="annee" name="annee" onchange="this.form.submit()">
+                            {% for y in years %}<option value="{{ y }}"{% if y == year %} selected{% endif %}>{{ y }}</option>{% endfor %}
+                        </select>
+                        <noscript><button class="btn btn-outline-primary btn-sm ml-2" type="submit">Afficher</button></noscript>
+                    </form>
+                </div>
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="annee" value="{{ year }}" />
+                    <div class="berg-groupe-tete">
+                        <h2><i class="fas fa-redo fa-fw berg-groupe-glyphe"></i>{{ year }} → {{ next_year }}</h2>
+                        <span class="berg-etiquette">{{ proposals|length }} séjour{{ proposals|length|pluralize }}</span>
+                    </div>
+
+                    <ul class="berg-reconduire">
+                        {% for p in proposals %}
+                            <li class="berg-reconduire-ligne{% if p.done %} berg-reconduire-ligne--fait{% endif %}">
+                                <label class="berg-reconduire-choix">
+                                    <input type="checkbox" name="stay" value="{{ p.stay.pk }}"{% if p.done %} disabled{% endif %} />
+                                    <span class="berg-reconduire-pastille" style="background-color: {{ p.stay.color_for_display }}"></span>
+                                    <span>
+                                        <span class="berg-reconduire-nom">{{ p.stay.name }}</span>
+                                        <span class="berg-reconduire-qui">{{ p.stay.user.surname }} {{ p.stay.user.name }}</span>
+                                    </span>
+                                </label>
+                                <div class="berg-reconduire-dates">
+                                    <span class="text-muted">{{ p.stay.start_date|date:"D j M" }} → {{ p.stay.end_date|date:"D j M" }}</span>
+                                    <i class="fas fa-arrow-right mx-2"></i>
+                                    <strong>{{ p.start|date:"D j M Y" }} → {{ p.end|date:"D j M Y" }}</strong>
+                                </div>
+                                <div class="berg-reconduire-etat">
+                                    {% if p.done %}<span class="berg-etiquette">Déjà reconduit</span>
+                                    {% elif p.clashes %}<span class="berg-etiquette berg-etiquette--tomette" title="{% for c in p.clashes %}{{ c.name }} ({{ c.start_date|date:'j M' }} → {{ c.end_date|date:'j M' }}){% if not forloop.last %}, {% endif %}{% endfor %}">En même temps que {{ p.clashes.0.name }}{% if p.clashes|length > 1 %} et {{ p.clashes|length|add:"-1" }} autre{{ p.clashes|length|add:"-1"|pluralize }}{% endif %}</span>
+                                    {% else %}<span class="berg-etiquette">Libre</span>{% endif %}
+                                </div>
+                            </li>
+                        {% empty %}
+                            <li class="berg-vide">Aucun séjour en {{ year }}.</li>
+                        {% endfor %}
+                    </ul>
+
+                    {% if proposals %}
+                        <div class="berg-reconduire-pied">
+                            <label class="mb-0"><input type="checkbox" id="tout-cocher" /> Tout cocher</label>
+                            <label class="mb-0"><input type="checkbox" name="notify" value="1" checked /> Prévenir chaque propriétaire par e-mail</label>
+                            <button class="btn btn-primary ml-auto" type="submit"
+                                    onclick="return confirm('Poser les séjours cochés sur le calendrier {{ next_year }} ?');">Reconduire les séjours cochés</button>
+                        </div>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const all = document.getElementById('tout-cocher');
+        if (!all) { return; }
+        all.addEventListener('change', function () {
+            document.querySelectorAll('input[name=stay]:not(:disabled)').forEach(box => { box.checked = all.checked; });
+        });
+    });
+</script>
+{% endblock content %}

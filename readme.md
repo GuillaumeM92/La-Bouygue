@@ -11,14 +11,15 @@ budget of the house. New accounts must be validated by an administrator.
 * Home page: who is at the house now, the next stays, a photo slideshow
 * Calendar of stays: month grid, and a list of upcoming stays (the default on
   phones); add, edit or delete your own stays, with a warning when stays
-  share a night
+  share a night; members can ask each other to swap their stays' dates
 * Practical information, activities and repairs, with comments and photos
   (cropped in the browser before upload)
 * Photo album gathering every photo of the site
 * Address book (searchable) and member profiles
 * Announcements: administrators publish an important message, shown to every
   member in a pop-up until read and on the home page until it expires
-* Administration: account activation or refusal, Django admin
+* Administration: account activation or refusal, announcements, renewing
+  the yearly stays a year later, Django admin
 
 ## Stack
 * Python 3.12, Django 5.2, PostgreSQL in production (SQLite locally)

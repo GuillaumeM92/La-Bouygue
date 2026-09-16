@@ -22,6 +22,9 @@
                 <p class="calendar-hint mb-0">Touchez un séjour pour l'ouvrir. Pour ajouter le vôtre : le bouton, ou un glisser sur les jours de la grille.</p>
             </div>
             <div class="berg-agenda-boutons">
+                {% if user.is_staff or user.is_superuser %}
+                    <a class="btn btn-outline-primary" href="{% url 'renew-year' %}"><i class="fas fa-redo mr-2"></i>Reconduire</a>
+                {% endif %}
                 <a class="btn btn-outline-primary" href="{% url 'exchanges' %}">
                     <i class="fas fa-exchange-alt mr-2"></i>Échanges{% if exchanges_waiting %} <span class="berg-pastille">{{ exchanges_waiting }}</span>{% endif %}
                 </a>

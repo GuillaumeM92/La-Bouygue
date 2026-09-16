@@ -40,6 +40,9 @@ class Reservation(models.Model):
                              related_name="user_reservation", default=1)
     start_date = models.DateField(default=timezone.now)
     end_date = models.DateField(default=timezone.now)
+    # For a stay renewed every year: the start date of the first one, so the
+    # renewed dates keep to the same period instead of drifting
+    anchor_date = models.DateField("date de référence", null=True, blank=True)
 
     objects = ReservationQuerySet.as_manager()
 
@@ -118,5 +121,8 @@ class Exchange(models.Model):
         offered, requested = self.offered, self.requested
         offered.start_date, requested.start_date = self.requested_start, self.offered_start
         offered.end_date, requested.end_date = self.requested_end, self.offered_end
-        offered.save(update_fields=["start_date", "end_date"])
-        requested.save(update_fields=["start_date", "end_date"])
+        # A yearly stay's reference date belongs to its period, which moves too
+        offered.anchor_date, requested.anchor_date = requested.anchor_date, offered.anchor_date
+        fields = ["start_date", "end_date", "anchor_date"]
+        offered.save(update_fields=fields)
+        requested.save(update_fields=fields)

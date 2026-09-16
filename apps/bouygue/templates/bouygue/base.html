@@ -87,6 +87,7 @@
                                                 {% if user.is_superuser or user.is_staff %}
                                                     <h6 class="dropdown-header">Administration</h6>
                                                     <a class="dropdown-item" href="{% url 'announcements' %}">Annonces</a>
+                                                    <a class="dropdown-item" href="{% url 'renew-year' %}">Reconduire les séjours</a>
                                                     <a class="dropdown-item" href="{% url 'activate-users' %}">Activations</a>
                                                 {% endif %}
                                             </div>

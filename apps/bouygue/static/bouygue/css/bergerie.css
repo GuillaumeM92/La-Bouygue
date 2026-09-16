@@ -2064,6 +2064,39 @@ input[type="file"] {
 .berg-echange-alerte { margin: .8rem 0 0; font-weight: 700; color: var(--b-rouge); }
 .berg-echange-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .5rem; margin-top: .9rem; }
 
+/* Reconduire les sejours d'une annee. */
+.berg-reconduire-annee { display: flex; align-items: center; }
+.berg-reconduire-annee .custom-select { width: auto; }
+.berg-reconduire { list-style: none; margin: 0; padding: 0; }
+.berg-reconduire-ligne {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .5rem 1rem;
+    padding: .75rem 1rem;
+    margin-bottom: .5rem;
+    background-color: var(--b-papier);
+    border: var(--b-filet);
+    border-radius: var(--b-r);
+}
+.berg-reconduire-ligne--fait { opacity: .6; }
+.berg-reconduire-choix { display: flex; align-items: center; gap: .6rem; margin: 0; flex: 1 1 14rem; cursor: pointer; }
+.berg-reconduire-choix, .berg-reconduire-pied label {
+    font-family: var(--b-texte);
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: normal;
+    text-transform: none;
+    color: var(--b-encre);
+}
+.berg-reconduire-choix input { width: 1.1rem; height: 1.1rem; }
+.berg-reconduire-pastille { flex: 0 0 auto; width: .8rem; height: .8rem; border-radius: 50%; }
+.berg-reconduire-nom { display: block; font-weight: 700; }
+.berg-reconduire-qui { display: block; font-size: .85rem; color: var(--b-encre-2); }
+.berg-reconduire-dates { flex: 2 1 18rem; font-size: .92rem; }
+.berg-reconduire-etat { flex: 0 0 auto; }
+.berg-reconduire-pied { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1.5rem; margin-top: 1.25rem; }
+
 /* Activations : refuser et activer, cote a cote. */
 .berg-activation-actions { display: flex; flex-wrap: wrap; gap: .4rem; justify-content: flex-end; }
 #sejour-fenetre [data-temps] > .modal-footer { flex-wrap: wrap; gap: .5rem; }
