@@ -52,7 +52,7 @@ Django 3.1 needs Python 3.9 or older.
 python3 -m venv venv
 venv/bin/pip install -r requirements/requirements-dev.txt
 ```
-Create a `.env` with `ENV=dev` (SQLite, DEBUG), a `SECRET_KEY`, and Google's reCAPTCHA test keys in `RECAPTCHA_PUBLIC` / `RECAPTCHA_PRIVATE`.
+Create a `.env` with `ENV=dev` (SQLite, DEBUG) and a `SECRET_KEY`.
 `migrations/` folders are not versioned: run `makemigrations` then `migrate` on a fresh clone, then `venv/bin/python manage.py runserver`.
 
 ## Deployment (VPS: Nginx, Gunicorn under Supervisor, PostgreSQL)

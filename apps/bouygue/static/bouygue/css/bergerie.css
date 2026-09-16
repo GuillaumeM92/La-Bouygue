@@ -1205,7 +1205,15 @@ input[type="file"] {
 }
 
 /* reCAPTCHA : on le laisse respirer. */
-.g-recaptcha, div[class*="recaptcha"] { margin: .5rem 0 1.25rem; }
+/* Champ piege anti-robots des formulaires publics (apps/users/antispam.py) :
+   hors de l'ecran, jamais vu ni rempli par une personne. */
+#div_id_site_web {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
 
 /* Barre d'envoi d'un formulaire. */
 .berg-form-pied {
@@ -2339,7 +2347,6 @@ input.berg-date { min-height: 2.9rem; }
        gouttiere de la grille.                                                 */
     .container { padding-left: 1.5rem; padding-right: 1.5rem; }
     .berg-volet-fond { padding-left: 0; padding-right: 0; }
-    .g-recaptcha { transform: scale(.9); transform-origin: left top; margin-bottom: .5rem; }
     .dcsic_delete_image { margin-left: 0; }
 
     body { font-size: 1.02rem; }

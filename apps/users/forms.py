@@ -1,44 +1,55 @@
-import os
 from django import forms
+from django.contrib.admin.forms import AdminAuthenticationForm
 from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from .antispam import HumanCheckMixin, LoginThrottleMixin
 from .models import Profile
-from captcha.fields import ReCaptchaField
 from client_side_image_cropping import ClientsideCroppingWidget
 
 User = get_user_model()
 
+INACTIVE_ACCOUNT = (
+    "Désolé, votre compte est inactif pour le moment. Vous pourrez vous "
+    "connecter lorsqu'un administrateur aura vérifié votre identité et "
+    "activé votre compte.")
 
-class UserLoginForm(AuthenticationForm):
-    if os.getenv("ENV") == "prod":
-        captcha = ReCaptchaField()
 
-    class Meta:
-        model = User
-        fields = ["user", "password1", "password2", "captcha"]
+class EmailAuthenticationForm(AuthenticationForm):
+    """Log in with an email address, whatever its case."""
 
     def clean(self):
-        username = self.cleaned_data.get('username').lower()
+        username = (self.cleaned_data.get('username') or '').lower()
         password = self.cleaned_data.get('password')
 
-        if username is not None and password:
+        if username and password:
             self.user_cache = authenticate(
                 self.request, username=username, password=password)
             if self.user_cache is None:
+                # Say the account awaits validation only to someone who knows
+                # its password; anyone else gets the generic error.
+                pending = User.objects.filter(email=username, is_active=False).first()
+                if pending and pending.check_password(password):
+                    raise forms.ValidationError(INACTIVE_ACCOUNT, code='inactive')
                 raise self.get_invalid_login_error()
-            else:
-                self.confirm_login_allowed(self.user_cache)
+            self.confirm_login_allowed(self.user_cache)
 
         return self.cleaned_data
 
 
-class UserRegisterForm(UserCreationForm):
+class UserLoginForm(LoginThrottleMixin, EmailAuthenticationForm):
+    pass
+
+
+class AdminLoginForm(LoginThrottleMixin, AdminAuthenticationForm):
+    pass
+
+
+class UserRegisterForm(HumanCheckMixin, UserCreationForm):
     email = forms.EmailField(label="Adresse email")
-    captcha = ReCaptchaField()
 
     class Meta:
         model = User
-        fields = ["name", "surname", "email", "password1", "password2", "captcha"]
+        fields = ["name", "surname", "email", "password1", "password2"]
 
     def clean_email(self):
         data = self.cleaned_data['email']

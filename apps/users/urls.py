@@ -6,8 +6,8 @@ from .views import UserProfileListView, UserAppListView
 urlpatterns = [
     path('register/', views.register, name='users-register'),
     path('profile/', views.profile, name='users-profile'),
-    path('profile/user/<str:id>/', UserProfileListView.as_view(), name='profile-view'),
-    path('profile/user/<str:id>/<str:app>/',
+    path('profile/user/<int:id>/', UserProfileListView.as_view(), name='profile-view'),
+    path('profile/user/<int:id>/<str:app>/',
          UserAppListView.as_view(), name='user-app'),
     path('login/', views.MyLoginView.as_view(template_name='users/login.html'),
          name='users-login'),

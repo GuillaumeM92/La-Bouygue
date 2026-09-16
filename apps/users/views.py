@@ -3,6 +3,8 @@ from apps.users.models import MyUser
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
+from . import antispam
 from .forms import UserRegisterForm, ProfileUpdateForm, UserLoginForm
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -14,14 +16,18 @@ from apps.blog.models import Post
 def register(request):
     if request.method == "POST":
         form = UserRegisterForm(request.POST)
-        if form.is_valid():
+        if form.is_valid() and not antispam.registration_allowed():
+            messages.error(request, str(
+                "Trop d'inscriptions en peu de temps. Merci de réessayer d'ici une heure."))
+        elif form.is_valid():
+            antispam.count_registration()
             user = form.save()
             # Make user not active by default
             user.is_active = False
             user.save()
-            user_email = form.data['email']
-            user_name = form.data['name']
-            user_surname = form.data['surname']
+            user_email = form.cleaned_data['email']
+            user_name = form.cleaned_data['name']
+            user_surname = form.cleaned_data['surname']
             send_mail("La Bouygue - Bienvenue",
                       ("Bonjour {} {}, merci d'avoir créé un compte sur le site de La Bouygue. "
                        "Vous pourrez vous connecter lorsqu'un administrateur aura vérifié votre "
@@ -39,9 +45,6 @@ def register(request):
                 "être envoyé. Vous pourrez vous connecter dès qu'un administrateur aura "
                 "validé votre compte."))
             return redirect("users-login")
-        else:
-            if "captcha" in form.errors:
-                messages.error(request, str("N'oubliez pas de remplir le captcha."))
     else:
         form = UserRegisterForm()
     return render(request, "users/register.html", {'title': 'S\'enregistrer', "form": form})
@@ -49,20 +52,6 @@ def register(request):
 
 class MyLoginView(SuccessMessageMixin, LoginView):
     form_class = UserLoginForm
-
-    def form_invalid(self, form):
-        user_email = form.data['username']
-        print(user_email)
-        try:
-            user = MyUser.objects.get(email=user_email)
-            if not user.is_active:
-                form._errors["__all__"] = form.error_class(
-                    [(u"Désolé, votre compte est inactif pour le moment. Vous pourrez vous "
-                      "connecter lorsqu'un administrateur aura vérifié votre "
-                      "identité et activé votre compte.")])
-        except MyUser.DoesNotExist:
-            pass
-        return super().form_invalid(form)
 
 
 @login_required
@@ -92,7 +81,7 @@ class UserProfileListView(LoginRequiredMixin, ListView):
     context_object_name = 'clicked_user'
 
     def get_queryset(self):
-        clicked_user = MyUser.objects.get(id=self.kwargs.get('id'))
+        clicked_user = get_object_or_404(MyUser, id=self.kwargs.get('id'))
         return clicked_user
 
 
@@ -104,7 +93,7 @@ class UserAppListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        user = MyUser.objects.get(id=self.kwargs.get('id'))
+        user = get_object_or_404(MyUser, id=self.kwargs.get('id'))
         app = self.kwargs.get('app')
 
         if app == 'discussion(s)':
@@ -120,5 +109,5 @@ class UserAppListView(LoginRequiredMixin, ListView):
         return context
 
     def get_queryset(self):
-        posts = MyUser.objects.get(id=self.kwargs.get('id')).post_set.all()
+        posts = get_object_or_404(MyUser, id=self.kwargs.get('id')).post_set.all()
         return posts

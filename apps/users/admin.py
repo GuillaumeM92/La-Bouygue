@@ -1,7 +1,11 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from .forms import AdminLoginForm
 from .models import MyUser
 from .models import Profile
+
+# The admin login shares the site's lock after repeated failures.
+admin.site.login_form = AdminLoginForm
 
 
 class MyUserAdmin(UserAdmin):

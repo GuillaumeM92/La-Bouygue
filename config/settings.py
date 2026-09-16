@@ -18,8 +18,11 @@ ALLOWED_HOSTS = [os.getenv("HOST")]
 if os.getenv("ENV") == 'dev':
     DEBUG = True
     ALLOWED_HOSTS = ["localhost", "127.0.0.1", '0.0.0.0']
-    # Local dev uses Google's reCAPTCHA test keys, which always validate
-    SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
+else:
+    # Production is only served over HTTPS (Nginx redirects plain HTTP), so the
+    # session and CSRF cookies never need to travel in clear.
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
 
 # Application definition
 INSTALLED_APPS = [
@@ -32,7 +35,6 @@ INSTALLED_APPS = [
     'apps.work',
     'apps.budget',
     'crispy_forms',
-    'captcha',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -150,8 +152,5 @@ EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 MESSAGE_TAGS = {
     messages.ERROR: 'danger',
 }
-
-RECAPTCHA_PUBLIC_KEY = os.getenv("RECAPTCHA_PUBLIC")
-RECAPTCHA_PRIVATE_KEY = os.getenv("RECAPTCHA_PRIVATE")
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
