@@ -9,6 +9,7 @@ DB=la_bouygue
 DIR=/var/backups/la_bouygue
 FILE="$DIR/$DB-$(date +%Y-%m-%d).dump"
 
+cd /  # pg_dump runs as postgres, which cannot enter root's home
 mkdir -p "$DIR"
 chmod 700 "$DIR"
 
