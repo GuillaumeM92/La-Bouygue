@@ -1792,37 +1792,6 @@ input[type="file"] {
     text-align: center;
 }
 
-/* Le selecteur de date de l'admin Django, deplace dans les modales par le JS
-   du calendrier. On le rhabille pour qu'il n'arrive pas en bleu Django.      */
-.calendarbox, .clockbox {
-    background-color: var(--b-papier);
-    border: var(--b-filet);
-    border-radius: var(--b-r);
-    box-shadow: var(--b-ombre-3);
-    z-index: 1060;
-}
-.calendarbox h2, .calendar caption {
-    background-color: var(--b-sapin) !important;
-    color: var(--b-chaux) !important;
-    font-family: var(--b-titre);
-    font-weight: 600;
-}
-/* Bootstrap place les <caption> sous les tableaux : le mois passait sous la
-   grille, et les fleches du mois, restees en haut, masquaient lundi et dimanche. */
-.calendar caption { caption-side: top; }
-.calendarbox .calendarnav-previous,
-.calendarbox .calendarnav-next { filter: brightness(0) invert(.94); }
-.datetimeshortcuts .date-icon { filter: grayscale(1) sepia(.9) brightness(.8); }
-.calendar td a { color: var(--b-bois); }
-.calendar td.selected a { background-color: var(--b-tomette); color: #fff; }
-.calendar-shortcuts {
-    background-color: var(--b-laine) !important;
-    color: var(--b-encre);
-    font-size: .85rem;
-}
-.calendar-cancel { background-color: var(--b-chaux-2); }
-.calendar-cancel a { color: var(--b-rouge); }
-
 /* La description d'un sejour, deroulee sous son nom au survol de la souris. */
 .berg-fc-description {
     display: block;
@@ -1913,24 +1882,43 @@ input[type="file"] {
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
 }
-.berg-sejour-marque {
-    display: inline-block;
-    margin-top: .45rem;
-    padding: .05rem .5rem;
-    border-radius: var(--b-r-xs);
-    background-color: var(--b-laine);
-    font-size: .75rem;
-    font-weight: 700;
-    letter-spacing: .06em;
-    text-transform: uppercase;
-    color: var(--b-sapin);
+.berg-sejour-auteur {
+    display: block;
+    margin-top: .35rem;
+    font-size: .85rem;
+    color: var(--b-encre-3);
 }
 
-/* Telephones et tablettes : le selecteur de date du systeme remplace celui de
-   l'admin, dont on masque les raccourcis et les calendriers.                */
-.berg-dates-natives .datetimeshortcuts,
-.berg-dates-natives .calendarbox { display: none !important; }
-input.berg-date { min-height: 2.9rem; }
+/* La fenetre d'un sejour : fiche, saisie, suppression. */
+.berg-sejour-fiche p { margin: 0 0 .55rem; color: var(--b-encre-2); }
+.berg-sejour-fiche .berg-sejour-fiche-nom {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    font-family: var(--b-titre);
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--b-encre);
+}
+.berg-sejour-couleur {
+    flex: 0 0 auto;
+    width: .9rem;
+    height: .9rem;
+    border-radius: 50%;
+}
+.berg-sejour-fiche-dates { font-weight: 700; }
+.berg-sejour-fiche .berg-sejour-fiche-desc {
+    margin-top: .9rem;
+    padding-top: .9rem;
+    border-top: var(--b-filet);
+    color: var(--b-encre);
+    white-space: pre-line;
+}
+.berg-sejour-nuits { color: var(--b-encre-3); font-weight: 400; }
+#sejour-fenetre input[type="date"] { min-height: 2.9rem; }
+#sejour-duree:empty { display: none; }
+#sejour-fenetre [data-temps] > .modal-footer { flex-wrap: wrap; gap: .5rem; }
+#sejour-fenetre [data-temps] > .modal-footer > * { margin: 0; }
 
 
 /* =============================================================================

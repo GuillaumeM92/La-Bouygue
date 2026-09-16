@@ -1,43 +1,25 @@
 """Agenda models."""
+from datetime import timedelta
+
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth import get_user_model
-import random
 
 User = get_user_model()
 
 
-class ReservationManager(models.Manager):
-    """Reservation manager."""
+class ReservationQuerySet(models.QuerySet):
+    def overlapping(self, stay):
+        """Other stays that share a night with `stay`, in date order.
 
-    def format_date(self, date):
-        """Format the form input date to fit the requirements"""
-        date = date.split('/')
-        date = '{}-{}-{}'.format(date[2], date[1], date[0])
-        return date
-
-    def randomColor(self):
-        """Pick a random color for the calendar events"""
-        colors = ['#122f5c', '#102340', '#1f4278',
-                  '#184a96', '#1f1354', '#1f0d6e', '#361f9c']
-        randint = random.randint(0, 6)
-        return colors[randint]
-
-    def create_or_update_reservation(self, form, user, id):
-        start_date = self.format_date(form.data['start_date'])
-        end_date = self.format_date(form.data['end_date'])
-        if id == 0:
-            random_color = self.randomColor()
-            return Reservation.objects.get_or_create(
-                name=form.data['name'], start_date=start_date, end_date=end_date,
-                description=form.data['description'], color=random_color, user=user)
-        else:
-            reservation = Reservation.objects.filter(id=id)
-            existing = reservation.first()
-            if existing and (user == existing.user or user.is_superuser or user.is_staff):
-                reservation.update(name=form.data['name'], start_date=start_date,
-                                   end_date=end_date, description=form.data['description'])
-                return reservation
+        A departure and an arrival on the same day is a hand-over, not a
+        clash. A stay that starts and ends the same day counts as that day.
+        """
+        candidates = (self.filter(start_date__lte=stay.end_date, end_date__gte=stay.start_date)
+                      .exclude(pk=stay.pk).select_related("user").order_by("start_date"))
+        start, end = stay.occupied_days()
+        return [other for other in candidates
+                if other.occupied_days()[0] < end and start < other.occupied_days()[1]]
 
 
 class Reservation(models.Model):
@@ -51,8 +33,15 @@ class Reservation(models.Model):
     start_date = models.DateField(default=timezone.now)
     end_date = models.DateField(default=timezone.now)
 
-    objects = ReservationManager()
+    objects = ReservationQuerySet.as_manager()
 
     def __str__(self):
         """Return the name."""
         return self.name
+
+    def occupied_days(self):
+        """[first day, day after the last night), a one-day visit being one day."""
+        return self.start_date, max(self.end_date, self.start_date + timedelta(days=1))
+
+    def can_be_changed_by(self, user):
+        return user == self.user or user.is_superuser or user.is_staff

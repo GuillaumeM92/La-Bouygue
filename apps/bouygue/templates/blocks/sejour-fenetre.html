@@ -1,0 +1,63 @@
+{% load crispy_forms_tags %}
+{% comment %}
+    La fenêtre d'un séjour, en trois temps : le consulter, le saisir (ajout ou
+    modification), confirmer sa suppression. agenda/calendrier.js choisit le
+    temps affiché et remplit les champs.
+{% endcomment %}
+<div class="modal fade" id="sejour-fenetre" tabindex="-1" role="dialog" aria-labelledby="sejour-titre" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="sejour-titre">Séjour</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Fermer"><span aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div data-temps="consulter" hidden>
+                <div class="modal-body">
+                    <div class="berg-sejour-fiche">
+                        <p class="berg-sejour-fiche-nom"><span class="berg-sejour-couleur" aria-hidden="true"></span><span data-champ="nom"></span></p>
+                        <p class="berg-sejour-fiche-dates"><i class="fas fa-calendar-alt fa-fw mr-2"></i><span data-champ="dates"></span> <span class="berg-sejour-nuits" data-champ="nuits"></span></p>
+                        <p class="berg-sejour-fiche-auteur"><i class="fas fa-user fa-fw mr-2"></i>Posé par <span data-champ="auteur"></span></p>
+                        <p class="berg-sejour-fiche-desc" data-champ="description"></p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-outline-danger mr-auto" type="button" data-action="demander-suppression">Supprimer</button>
+                    <button class="btn btn-outline-primary" type="button" data-dismiss="modal">Fermer</button>
+                    <button class="btn btn-primary" type="button" data-action="modifier">Modifier</button>
+                </div>
+            </div>
+
+            <form data-temps="saisir" method="POST" action="{% url 'agenda' %}" autocomplete="off" hidden>
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{ request.POST.id }}" />
+                <div class="modal-body">
+                    {{ form.non_field_errors }}
+                    {{ form.name|as_crispy_field }}
+                    <div class="form-row">
+                        <div class="col-sm-6">{{ form.start_date|as_crispy_field }}</div>
+                        <div class="col-sm-6">{{ form.end_date|as_crispy_field }}</div>
+                    </div>
+                    <p class="berg-sejour-nuits mb-3" id="sejour-duree" aria-live="polite"></p>
+                    <div class="alert alert-warning" id="sejour-chevauchement" role="status" hidden></div>
+                    {{ form.description|as_crispy_field }}
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-outline-primary" type="button" data-dismiss="modal">Annuler</button>
+                    <button class="btn btn-primary" type="submit" name="save">Enregistrer</button>
+                </div>
+            </form>
+
+            <div data-temps="supprimer" hidden>
+                <div class="modal-body">
+                    <p class="mb-0">Supprimer le séjour «&nbsp;<strong data-champ="nom"></strong>&nbsp;», <span data-champ="dates"></span>&nbsp;?
+                        Il disparaîtra du calendrier de tout le monde.</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-outline-primary" type="button" data-action="consulter">Annuler</button>
+                    <button class="btn btn-danger" type="button" data-action="supprimer">Oui, supprimer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
