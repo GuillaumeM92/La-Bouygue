@@ -75,3 +75,12 @@ venv/bin/python manage.py migrate --plan
 sudo supervisorctl restart <program>
 ```
 To roll back: `git checkout <previous commit>`, then steps 3 and 5 again.
+
+The site no longer uses reCAPTCHA: `RECAPTCHA_PUBLIC` / `RECAPTCHA_PRIVATE` can be removed from the server's `.env`.
+
+## Database backups
+A daily dump, kept 30 days (`crontab -e` as the site's user; `pg_dump` reads the password from `~/.pgpass`):
+```
+30 3 * * * pg_dump -h localhost -U <DB_USER> <DB_NAME> | gzip > <SITE_DIR>/db_backups/labouygue-$(date +\%F).sql.gz && find <SITE_DIR>/db_backups -name 'labouygue-*.sql.gz' -mtime +30 -delete
+```
+Restore with `gunzip -c <file>.sql.gz | psql -h localhost -U <DB_USER> <DB_NAME>` (into an empty database). Copy the dumps off the server from time to time: a backup on the same disk does not survive the disk.
