@@ -32,3 +32,21 @@ class Announcement(models.Model):
     @property
     def is_current(self):
         return self.expires_at > timezone.now()
+
+
+class AlbumPhoto(models.Model):
+    """A photo kept for the album whose section no longer exists (Discussions)."""
+
+    image = models.ImageField("photo", upload_to="album")
+    caption = models.CharField("légende", max_length=200, blank=True)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL,
+                               null=True, blank=True, related_name="album_photos")
+    date_posted = models.DateTimeField("date", default=timezone.now)
+
+    class Meta:
+        ordering = ["-date_posted"]
+        verbose_name = "photo de l'album"
+        verbose_name_plural = "photos de l'album"
+
+    def __str__(self):
+        return self.caption or self.image.name

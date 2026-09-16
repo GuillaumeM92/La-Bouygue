@@ -8,21 +8,23 @@ budget of the house. New accounts must be validated by an administrator.
 
 ## Features
 * Register, log in, reset a forgotten password
+* Home page: who is at the house now, the next stays, a photo slideshow
 * Calendar of stays: month grid, and a list of upcoming stays (the default on
-  phones); add, edit or delete your own stays
-* Discussions, practical information, activities and repairs, with comments
-  and photos (cropped in the browser before upload)
+  phones); add, edit or delete your own stays, with a warning when stays
+  share a night
+* Practical information, activities and repairs, with comments and photos
+  (cropped in the browser before upload)
+* Photo album gathering every photo of the site
 * Address book (searchable) and member profiles
-* Budget of the house, with its history chart
 * Announcements: administrators publish an important message, shown to every
   member in a pop-up until read and on the home page until it expires
-* Administration: account activation, budget and funding updates, Django admin
+* Administration: account activation or refusal, Django admin
 
 ## Stack
 * Python 3.12, Django 5.2, PostgreSQL in production (SQLite locally)
 * Gunicorn under Supervisor, behind Nginx, on an Ubuntu VPS
 * Front end: Bootstrap 4 and the "Bergerie" design (`apps/bouygue/static/bouygue/css/bergerie.css`),
-  FullCalendar, Chart.js, django-client-side-image-cropping
+  FullCalendar, django-client-side-image-cropping
 * Everything is served by the site itself: fonts, icons and JavaScript
   libraries live under `static/` (see `apps/bouygue/static/vendor/README.md`),
   and no page calls a third-party service

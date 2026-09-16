@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
-from .models import Reservation
+from .models import Reservation, stay_color
 from .forms import ReservationForm
 
 
@@ -100,4 +100,6 @@ def reservations(request):
     data = list(Reservation.objects.order_by("start_date").values(
         "id", "name", "description", "start_date", "end_date", "user_id",
         owner_surname=F("user__surname"), owner_name=F("user__name")))
+    for stay in data:
+        stay["color"] = stay_color(stay["user_id"])
     return JsonResponse(data, safe=False)

@@ -48,7 +48,6 @@ class MyUser(AbstractUser):
 
     # Notifications
     reservations_viewed = models.SmallIntegerField(default=0)
-    discussions_viewed = models.SmallIntegerField(default=0)
     activities_viewed = models.SmallIntegerField(default=0)
     informations_viewed = models.SmallIntegerField(default=0)
     works_viewed = models.SmallIntegerField(default=0)

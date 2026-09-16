@@ -12,17 +12,15 @@
 
                 <div class="berg-actions">
                     <a class="berg-retour" onClick="javascript:history.go(-1);">Retour</a>
-                    <span class="berg-etiquette ml-auto">{{ app|length }}
-                        {% if view.kwargs.app == "discussion(s)" %}discussion{{ app|length|pluralize }}
-                        {% elif view.kwargs.app == "activité(s)" %}sortie{{ app|length|pluralize }}
-                        {% elif view.kwargs.app == "information(s)" %}info{{ app|length|pluralize }}
-                        {% else %}tâche{{ app|length|pluralize }}{% endif %}
+                    <span class="berg-etiquette ml-auto">{{ paginator.count }}
+                        {% if view.kwargs.app == "activité(s)" %}sortie{{ paginator.count|pluralize }}
+                        {% elif view.kwargs.app == "information(s)" %}info{{ paginator.count|pluralize }}
+                        {% else %}tâche{{ paginator.count|pluralize }}{% endif %}
                     </span>
                 </div>
 
                 <div class="berg-liste">
                     {% for post in app %}
-                        {% if view.kwargs.app == "discussion(s)" %}{% url 'post-detail' post.id as lien %}{% endif %}
                         {% if view.kwargs.app == "activité(s)" %}{% url 'activity-detail' post.id as lien %}{% endif %}
                         {% if view.kwargs.app == "information(s)" %}{% url 'infopost-detail' post.id as lien %}{% endif %}
                         {% if view.kwargs.app == "tâche(s)" %}{% url 'work-detail' post.id as lien %}{% endif %}

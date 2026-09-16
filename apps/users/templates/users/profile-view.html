@@ -18,12 +18,6 @@
     <div class="berg-surtitre">Publié par {{ clicked_user.surname }}</div>
     <ul class="list-group mt-2">
         <li class="list-group-item">
-            <span>{{ clicked_user.post_set.all|length }} discussion{{ clicked_user.post_set.all|length|pluralize }}</span>
-            {% if clicked_user.post_set.all|length > 0 %}
-                <a class="btn btn-outline-primary btn-sm ml-auto" href="{% url 'user-app' clicked_user.id 'discussion(s)' %}">Voir</a>
-            {% endif %}
-        </li>
-        <li class="list-group-item">
             <span>{{ clicked_user.activity_set.all|length }} sortie{{ clicked_user.activity_set.all|length|pluralize }}</span>
             {% if clicked_user.activity_set.all|length > 0 %}
                 <a class="btn btn-outline-primary btn-sm ml-auto" href="{% url 'user-app' clicked_user.id 'activité(s)' %}">Voir</a>
@@ -35,7 +29,7 @@
                 <a class="btn btn-outline-primary btn-sm ml-auto" href="{% url 'user-app' clicked_user.id 'tâche(s)' %}">Voir</a>
             {% endif %}
         </li>
-        {% if clicked_user.is_admin or clicked_user.is_superuser %}
+        {% if clicked_user.is_staff or clicked_user.is_superuser %}
         <li class="list-group-item">
             <span>{{ clicked_user.infopost_set.all|length }} information{{ clicked_user.infopost_set.all|length|pluralize }}</span>
             {% if clicked_user.infopost_set.all|length > 0 %}

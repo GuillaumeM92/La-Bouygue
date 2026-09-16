@@ -82,8 +82,7 @@ document.addEventListener('DOMContentLoaded', function () {
     /* One colour per person                                               */
     /* ------------------------------------------------------------------ */
 
-    const palette = ['#ae5029', '#3e5540', '#2f5d7c', '#8a5a38', '#7b3f6e', '#56704f', '#9d3626', '#5b5a8c', '#7a6a2a', '#35686a'];
-    const colorOf = userId => palette[userId % palette.length];
+    // The colour comes with each stay (agenda/models.py, STAY_COLORS)
     const canChange = stay => config.isAdmin || stay.user_id === config.userId;
     const ownerOf = stay => ((stay.owner_surname || '') + ' ' + (stay.owner_name || '')).trim() || 'un membre';
 
@@ -110,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function () {
         part.find('[data-champ="nuits"]').text('(' + nightsLabel(stay.start_date, stay.end_date) + ')');
         part.find('[data-champ="auteur"]').text(stay.user_id === config.userId ? 'vous' : ownerOf(stay));
         part.find('[data-champ="description"]').text(stay.description || '').prop('hidden', !stay.description);
-        part.find('.berg-sejour-couleur').css('background-color', colorOf(stay.user_id));
+        part.find('.berg-sejour-couleur').css('background-color', stay.color);
     };
 
     const consult = function (stay) {
@@ -218,8 +217,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 // FullCalendar's all-day end is the day after the last one
                 end: addDays(stay.end_date, 1),
                 allDay: true,
-                backgroundColor: colorOf(stay.user_id),
-                borderColor: colorOf(stay.user_id),
+                backgroundColor: stay.color,
+                borderColor: stay.color,
                 extendedProps: { stay: stay },
             })),
             eventClick: function (info) { consult(info.event.extendedProps.stay); },
@@ -273,7 +272,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             const card = element('button', 'berg-sejour');
             card.type = 'button';
-            card.style.borderLeftColor = colorOf(stay.user_id);
+            card.style.borderLeftColor = stay.color;
             card.appendChild(element('span', 'berg-sejour-nom', stay.name));
             card.appendChild(element('span', 'berg-sejour-dates',
                 stayDates(stay.start_date, stay.end_date) + ' · ' + nightsLabel(stay.start_date, stay.end_date)));

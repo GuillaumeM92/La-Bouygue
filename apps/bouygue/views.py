@@ -3,14 +3,15 @@ from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
+from django.core.paginator import Paginator
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 from apps.agenda.models import Reservation
-from apps.blog.models import Post, Comment
 from apps.activities.models import Activity
 from apps.info.models import InfoPost
 from apps.work.models import Work
 from apps.users.models import MyUser
+from . import album
 from .forms import AnnouncementForm
 from .models import Announcement
 from .utils import safe_next
@@ -27,54 +28,41 @@ def landing(request):
         return render(request, 'bouygue/landing.html')
 
 
-def get_random_image(queryset):
-    try:
-        rand_int = random.randint(0, queryset.count() - 1)
-        return queryset[rand_int].image
-    except ValueError as e:
-        print(e)
-
-
 @login_required
 def home(request):
     user = request.user
-    reservations_length = len(Reservation.objects.all()) - user.reservations_viewed
-    posts_length = len(Post.objects.all()) - user.discussions_viewed
-    activities_length = len(Activity.objects.all()) - user.activities_viewed
-    infoposts_length = len(InfoPost.objects.all()) - user.informations_viewed
-    works_length = len(Work.objects.all()) - user.works_viewed
-    users_length = MyUser.objects.filter(is_active=True).count() - user.users_viewed
+    today = timezone.localdate()
     # Administrators see pending registrations here, even if the notice e-mail was lost
     pending_accounts = 0
     if user.is_staff or user.is_superuser:
         pending_accounts = MyUser.objects.filter(is_active=False, last_login__isnull=True).count()
-    # get posts and comments that contain images
-    posts_with_images = Post.objects.exclude(image='')
-    comments_with_images = Comment.objects.exclude(image='')
-    # get 5 random images for the caroussel (and make sure not to pick the same one twice)
-    caroussel_img_1 = get_random_image(posts_with_images)
-    caroussel_img_2 = get_random_image(comments_with_images)
-    caroussel_img_3 = get_random_image(posts_with_images.exclude(image=caroussel_img_1))
-    caroussel_img_4 = get_random_image(comments_with_images.exclude(image=caroussel_img_2))
-    caroussel_img_5 = get_random_image(comments_with_images.exclude(image=caroussel_img_2).exclude(image=caroussel_img_4))
-    
-    response = render(request, 'bouygue/home.html', {
+    stays = Reservation.objects.filter(end_date__gte=today).select_related('user').order_by('start_date', 'end_date')
+    photos = album.all_photos()
+    return render(request, 'bouygue/home.html', {
         'title': 'Accueil',
-        'reservations_length': reservations_length,
-        'posts_length': posts_length,
-        'activities_length': activities_length,
-        'infoposts_length': infoposts_length,
-        'works_length': works_length,
-        'users_length': users_length,
+        'reservations_length': Reservation.objects.count() - user.reservations_viewed,
+        'activities_length': Activity.objects.count() - user.activities_viewed,
+        'infoposts_length': InfoPost.objects.count() - user.informations_viewed,
+        'works_length': Work.objects.count() - user.works_viewed,
+        'users_length': MyUser.objects.filter(is_active=True).count() - user.users_viewed,
         'pending_accounts': pending_accounts,
         'announcements': Announcement.objects.current().select_related('author'),
-        'caroussel_img_1': caroussel_img_1,
-        'caroussel_img_2': caroussel_img_2,
-        'caroussel_img_3': caroussel_img_3,
-        'caroussel_img_4': caroussel_img_4,
-        'caroussel_img_5': caroussel_img_5
+        'stays_now': [stay for stay in stays if stay.start_date <= today],
+        'stays_next': [stay for stay in stays if stay.start_date > today][:4],
+        'slideshow': random.sample(photos, min(5, len(photos))),
+        'photo_count': len(photos),
     })
-    return response
+
+
+@login_required
+def photo_album(request):
+    page = Paginator(album.all_photos(), 24).get_page(request.GET.get('page'))
+    return render(request, 'bouygue/album.html', {
+        'title': 'Album photos',
+        'page_obj': page,
+        'paginator': page.paginator,
+        'is_paginated': page.has_other_pages(),
+    })
 
 
 def _check_admin(user):

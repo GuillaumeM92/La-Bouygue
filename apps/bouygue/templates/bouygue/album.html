@@ -1,0 +1,83 @@
+{% extends "bouygue/base.html" %}
+{% load static %}
+{% block content %}
+<div hidden>{% block title %} — Album photos {% endblock %}</div>
+
+{% include 'blocks/berg-entete.html' with surtitre="Souvenirs" titre="Album photos" chapeau="Toutes les photos déposées sur le site, des plus récentes aux plus anciennes." image="bouygue/assets/img/backgrounds/montagne/ossau.jpg" %}
+
+<section class="berg-section berg-section--serree">
+    <div class="container">
+        <div class="berg-actions">
+            <a class="berg-retour" href="{% url 'bouygue-home' %}">Accueil</a>
+            <span class="berg-etiquette ml-auto">{{ paginator.count }} photo{{ paginator.count|pluralize }}</span>
+        </div>
+
+        <div class="berg-album">
+            {% for photo in page_obj %}
+                <button class="berg-album-vignette" type="button"
+                        data-src="{{ photo.url }}"
+                        data-legende="{{ photo.caption }}"
+                        data-signe="{% if photo.author %}{{ photo.author.surname }} {{ photo.author.name }}, {% endif %}le {{ photo.date|date:'j F Y' }}"
+                        data-lien="{{ photo.link }}"
+                        aria-label="Agrandir la photo{% if photo.caption %} : {{ photo.caption }}{% endif %}">
+                    <img src="{{ photo.url }}" alt="" loading="lazy" />
+                </button>
+            {% empty %}
+                <p class="berg-vide">Aucune photo pour l'instant.</p>
+            {% endfor %}
+        </div>
+
+        {% if is_paginated %}{% include 'blocks/berg-pagination.html' %}{% endif %}
+    </div>
+</section>
+
+<!-- La visionneuse : une photo en grand, précédente et suivante -->
+<div class="modal fade" id="album-visionneuse" tabindex="-1" role="dialog" aria-label="Photo" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content berg-visionneuse">
+            <div class="berg-visionneuse-image">
+                <img src="" alt="" />
+                <button class="berg-visionneuse-fleche berg-visionneuse-fleche--prec" type="button" data-pas="-1" aria-label="Photo précédente"><i class="fas fa-chevron-left"></i></button>
+                <button class="berg-visionneuse-fleche berg-visionneuse-fleche--suiv" type="button" data-pas="1" aria-label="Photo suivante"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div class="berg-visionneuse-pied">
+                <div>
+                    <div class="berg-visionneuse-legende"></div>
+                    <div class="berg-visionneuse-signe"></div>
+                </div>
+                <a class="berg-visionneuse-lien" href="">Voir la publication</a>
+                <button class="btn btn-outline-primary btn-sm" type="button" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const vignettes = Array.from(document.querySelectorAll('.berg-album-vignette'));
+        const fenetre = $('#album-visionneuse');
+        const image = fenetre.find('img')[0];
+        const lien = fenetre.find('.berg-visionneuse-lien')[0];
+        let courante = 0;
+        const montrer = function (index) {
+            courante = (index + vignettes.length) % vignettes.length;
+            const v = vignettes[courante].dataset;
+            image.src = v.src;
+            image.alt = v.legende || 'Photo de la famille à la Bouygue';
+            fenetre.find('.berg-visionneuse-legende').text(v.legende);
+            fenetre.find('.berg-visionneuse-signe').text(v.signe);
+            lien.hidden = !v.lien;
+            lien.href = v.lien || '#';
+        };
+        vignettes.forEach(function (vignette, index) {
+            vignette.addEventListener('click', function () { montrer(index); fenetre.modal('show'); });
+        });
+        fenetre.find('[data-pas]').on('click', function () { montrer(courante + Number(this.dataset.pas)); });
+        document.addEventListener('keydown', function (e) {
+            if (!fenetre.hasClass('show')) { return; }
+            if (e.key === 'ArrowLeft') { montrer(courante - 1); }
+            if (e.key === 'ArrowRight') { montrer(courante + 1); }
+        });
+    });
+</script>
+{% endblock content %}

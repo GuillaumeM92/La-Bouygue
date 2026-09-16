@@ -1,0 +1,8 @@
+{% comment %} Un séjour sur l'accueil : sa couleur, qui, et quand. {% endcomment %}
+<a class="berg-maison-sejour" href="{% url 'agenda' %}" style="border-left-color: {{ stay.color_for_display }}">
+    <span class="berg-maison-sejour-nom">{{ stay.name }}</span>
+    <span class="berg-maison-sejour-dates">
+        {% if stay.start_date == stay.end_date %}le {{ stay.start_date|date:"l j F" }}
+        {% else %}du {{ stay.start_date|date:"j F" }} au {{ stay.end_date|date:"j F" }}{% endif %}
+    </span>
+</a>

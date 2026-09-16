@@ -7,6 +7,14 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+# One colour per member, the same on the calendar and the home page
+STAY_COLORS = ['#ae5029', '#3e5540', '#2f5d7c', '#8a5a38', '#7b3f6e',
+               '#56704f', '#9d3626', '#5b5a8c', '#7a6a2a', '#35686a']
+
+
+def stay_color(user_id):
+    return STAY_COLORS[(user_id or 0) % len(STAY_COLORS)]
+
 
 class ReservationQuerySet(models.QuerySet):
     def overlapping(self, stay):
@@ -38,6 +46,10 @@ class Reservation(models.Model):
     def __str__(self):
         """Return the name."""
         return self.name
+
+    @property
+    def color_for_display(self):
+        return stay_color(self.user_id)
 
     def occupied_days(self):
         """[first day, day after the last night), a one-day visit being one day."""

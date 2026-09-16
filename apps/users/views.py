@@ -1,5 +1,6 @@
 from django.db.models import Q
 from apps.users.models import MyUser
+from django.http import Http404
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -11,7 +12,6 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.views.generic import ListView
-from apps.blog.models import Post
 
 
 def register(request):
@@ -93,28 +93,24 @@ class UserProfileListView(LoginRequiredMixin, ListView):
 
 
 class UserAppListView(LoginRequiredMixin, ListView):
-    model = Post
+    """What one member published in one section."""
     template_name = 'users/user-list.html'
     context_object_name = 'app'
     paginate_by = 5
+    SECTIONS = {
+        'activité(s)': 'activity_set',
+        'information(s)': 'infopost_set',
+        'tâche(s)': 'work_set',
+    }
+
+    def get_queryset(self):
+        self.clicked_user = get_object_or_404(MyUser, id=self.kwargs.get('id'))
+        related = self.SECTIONS.get(self.kwargs.get('app'))
+        if related is None:
+            raise Http404
+        return getattr(self.clicked_user, related).order_by('-date_posted')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        user = get_object_or_404(MyUser, id=self.kwargs.get('id'))
-        app = self.kwargs.get('app')
-
-        if app == 'discussion(s)':
-            context["app"] = user.post_set.all()
-        elif app == 'activité(s)':
-            context["app"] = user.activity_set.all()
-        elif app == 'information(s)':
-            context["app"] = user.infopost_set.all()
-        elif app == 'tâche(s)':
-            context["app"] = user.work_set.all()
-
-        context["clicked_user"] = user
+        context["clicked_user"] = self.clicked_user
         return context
-
-    def get_queryset(self):
-        posts = get_object_or_404(MyUser, id=self.kwargs.get('id')).post_set.all()
-        return posts
