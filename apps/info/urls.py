@@ -1,8 +1,7 @@
 from . import views
 from django.urls import path
 from .views import (InfoPostListView, InfoPostCreateView, InfoPostUpdateView, InfoPostDeleteView,
-                    InfoCommentUpdateView, InfoCommentDeleteView, ActivateUsersListView,
-                    AllUsersListView)
+                    InfoCommentUpdateView, InfoCommentDeleteView)
 
 urlpatterns = [
     path('info/', InfoPostListView.as_view(), name='info'),
@@ -14,6 +13,4 @@ urlpatterns = [
          InfoCommentUpdateView.as_view(), name='infocomment-update'),
     path('info/comment/<int:pk>/delete/',
          InfoCommentDeleteView.as_view(), name='infocomment-delete'),
-    path('info/admin/activate/', ActivateUsersListView.as_view(), name='activate-users'),
-    path('info/users/all/', AllUsersListView.as_view(), name='all-users'),
 ]

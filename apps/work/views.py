@@ -1,36 +1,29 @@
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib import messages
-from apps.bouygue.utils import safe_next
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404, redirect, render
+from django.views.generic import ListView
+
+from apps.bouygue import posts
 from .models import Work, WorkComment
-from .forms import WorkCommentForm
-from django.core.paginator import Paginator
-from client_side_image_cropping import ClientsideCroppingWidget
+
+FIELDS = ["title", "content", "image", "categories", "state", "status", "cost"]
+DONE = 2
+CATEGORIES = ["handiwork", "gardening", "plumbing", "masonry", "other"]
 
 
-class WorkListView(LoginRequiredMixin, ListView):
+class WorkListView(posts.CountsVisit, LoginRequiredMixin, ListView):
     model = Work
+    seen_field = "works_viewed"
     template_name = "work/work.html"
     context_object_name = "works"
-    ordering = ['-date_posted']
+    ordering = ["-date_posted"]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["handiwork"] = Work.objects.filter(categories=0).exclude(state=2)
-        context["gardening"] = Work.objects.filter(categories=1).exclude(state=2)
-        context["plumbing"] = Work.objects.filter(categories=2).exclude(state=2)
-        context["masonry"] = Work.objects.filter(categories=3).exclude(state=2)
-        context["other"] = Work.objects.filter(categories=4).exclude(state=2)
+        for number, name in enumerate(CATEGORIES):
+            context[name] = Work.objects.filter(categories=number).exclude(state=DONE)
         return context
-
-    def dispatch(self, request, *args, **kwargs):
-        user = request.user
-        user.works_viewed = len(Work.objects.all())
-        if user.is_authenticated and user.is_active:
-            user.save()
-        return super().dispatch(request, *args, **kwargs)
 
 
 class WorkDoneListView(LoginRequiredMixin, ListView):
@@ -40,173 +33,59 @@ class WorkDoneListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["handiwork_done"] = Work.objects.filter(categories=0).filter(state=2)
-        context["gardening_done"] = Work.objects.filter(categories=1).filter(state=2)
-        context["plumbing_done"] = Work.objects.filter(categories=2).filter(state=2)
-        context["masonry_done"] = Work.objects.filter(categories=3).filter(state=2)
-        context["other_done"] = Work.objects.filter(categories=4).filter(state=2)
+        for number, name in enumerate(CATEGORIES):
+            context[name + "_done"] = Work.objects.filter(categories=number, state=DONE)
         return context
 
 
-@login_required()
+@login_required
 def work_detail(request, pk):
-    template_name = "work/work-detail.html"
     work = get_object_or_404(Work, pk=pk)
-    author = request.user
-    new_comment = None
-    form = WorkCommentForm()
-
-    if request.method == 'POST':
-        if request.POST.get('action') == 'comment':
-            form = WorkCommentForm(data=request.POST)
-            if form.is_valid():
-                # Create Comment object but don't save to database yet
-                new_comment = form.save(commit=False)
-                # Assign the current post and author to the comment
-                new_comment.work = work
-                new_comment.author = author
-                # Save the comment to the database
-                new_comment.save()
-                messages.success(request, str("Commentaire publié."))
-            form = WorkCommentForm()
-
-        elif request.POST.get('action') == 'done':
-            work.state = 2
-            work.save()
-            # Post comment saying who completed the work
-            new_comment = form.save(commit=False)
-            new_comment.work = work
-            new_comment.author = author
-            new_comment.content = "{} {} vient de signaler qu'il a terminé ce travail.".format(
-                author.surname, author.name)
-            messages.success(request, str("Travail terminé. Merci !"))
-            new_comment.save()
-
-    # Paginator
-    comments = work.workcomment_set.all()
-    comment_count = len(comments)
-    paginator = Paginator(comments, 5)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-
-    return render(request,
-                  template_name,
-                  {'title': 'Tâche',
-                   'work': work,
-                   'form': form,
-                   'page_obj': page_obj,
-                   'comment_count': comment_count})
+    if request.method == "POST" and request.POST.get("action") == "done":
+        work.state = DONE
+        work.save()
+        # A comment says who completed the work
+        WorkComment.objects.create(
+            work=work, author=request.user,
+            content="{} {} vient de signaler qu'il a terminé ce travail.".format(
+                request.user.surname, request.user.name))
+        messages.success(request, "Travail terminé. Merci !")
+        return redirect("work-detail", pk=pk)
+    context, posted = posts.comment_thread(request, work.workcomment_set.all(),
+                                           posts.comment_form(WorkComment), work=work)
+    if posted:
+        return redirect("work-detail", pk=pk)
+    return render(request, "work/work-detail.html", dict(context, title="Tâche", work=work))
 
 
-class WorkCreateView(LoginRequiredMixin, CreateView):
+class WorkCreateView(posts.PostCreateView):
     model = Work
-    template_name = 'work/work-create.html'
-    fields = ['title', 'content', 'image', 'categories', 'state', 'status', 'cost', ]
-
-    def get_form(self, form_class=None):
-        form = super().get_form(form_class)
-        form.request = self.request
-        form.fields['image'].widget = ClientsideCroppingWidget(
-            width=1000,
-            height=600,
-            preview_width=120,
-            preview_height=72,
-        )
-        return form
-
-    def form_valid(self, form):
-        form.instance.author = self.request.user
-        return super().form_valid(form)
+    template_name = "work/work-create.html"
+    fields = FIELDS
 
 
-class WorkUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class WorkUpdateView(posts.PostUpdateView):
     model = Work
     template_name = "work/work-update.html"
-    fields = ["title", "content", "image", "categories", "state", "status", "cost"]
-
-    def get_form(self, form_class=None):
-        form = super().get_form(form_class)
-        form.request = self.request
-        form.fields['image'].widget = ClientsideCroppingWidget(
-            width=1000,
-            height=600,
-            preview_width=120,
-            preview_height=72,
-        )
-        return form
-
-    def form_valid(self, form):
-        messages.success(self.request, str("Le travail a bien été modifié."))
-        return super().form_valid(form)
-
-    def test_func(self):
-        work = self.get_object()
-        user = self.request.user
-        if user == work.author or user.is_superuser or user.is_staff:
-            return True
-        return False
+    fields = FIELDS
+    success_message = "Le travail a été modifié."
 
 
-class WorkDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+class WorkDeleteView(posts.PostDeleteView):
     model = Work
     template_name = "work/work-delete.html"
     context_object_name = "work"
-
-    def get_success_url(self):
-        messages.success(self.request, str("Le travail a bien été supprimé."))
-        return "/work/"
+    list_url = "/work/"
+    success_message = "Le travail a été supprimé."
 
     def test_func(self):
-        work = self.get_object()
-        if (
-            self.request.user == work.author
-            or self.request.user.is_superuser
-            or self.request.user.is_staff
-            or self.request.user.has_perm("work.delete_work")
-        ):
-            return True
-        return False
+        return super().test_func() or self.request.user.has_perm("work.delete_work")
 
 
-class WorkCommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class WorkCommentUpdateView(posts.CommentUpdateView):
     model = WorkComment
-    template_name = 'work/workcomment-update.html'
-    fields = ['content', 'image']
-
-    def get_form(self, form_class=None):
-        form = super().get_form(form_class)
-        form.request = self.request
-        form.fields['image'].widget = ClientsideCroppingWidget(
-            width=1000,
-            height=600,
-            preview_width=120,
-            preview_height=72,
-        )
-        return form
-
-    def form_valid(self, form):
-        messages.success(self.request, str("Le commentaire a bien été modifié."))
-        return super().form_valid(form)
-
-    def test_func(self):
-        work = self.get_object()
-        if self.request.user == work.author:
-            return True
-        return False
 
 
-class WorkCommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+class WorkCommentDeleteView(posts.CommentDeleteView):
     model = WorkComment
-    template_name = 'work/workcomment-delete.html'
-    context_object_name = 'comment'
-
-    def get_success_url(self):
-        messages.success(self.request, str("Le commentaire a bien été supprimé."))
-        return safe_next(self.request, '/work/')
-
-    def test_func(self):
-        work = self.get_object()
-        user = self.request.user
-        if user == work.author or user.is_superuser or user.is_staff:
-            return True
-        return False
+    list_url = "/work/"

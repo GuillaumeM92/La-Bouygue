@@ -1,10 +1,13 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from . import views
-from .views import UserProfileListView, UserAppListView
+from .views import UserProfileListView, UserAppListView, ActivateUsersListView, AllUsersListView
 
 urlpatterns = [
     path('register/', views.register, name='users-register'),
+    # Kept under /info/ where they have always been
+    path('info/admin/activate/', ActivateUsersListView.as_view(), name='activate-users'),
+    path('info/users/all/', AllUsersListView.as_view(), name='all-users'),
     path('profile/', views.profile, name='users-profile'),
     path('profile/user/<int:id>/', UserProfileListView.as_view(), name='profile-view'),
     path('profile/user/<int:id>/<str:app>/',
