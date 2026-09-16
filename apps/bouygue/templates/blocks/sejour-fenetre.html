@@ -23,6 +23,7 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-outline-danger mr-auto" type="button" data-action="demander-suppression">Supprimer</button>
+                    <button class="btn btn-outline-primary" type="button" data-action="ecrire"><i class="fas fa-envelope mr-2"></i>Écrire</button>
                     <button class="btn btn-outline-primary" type="button" data-action="proposer-echange"><i class="fas fa-exchange-alt mr-2"></i>Demander un échange</button>
                     <button class="btn btn-outline-primary" type="button" data-dismiss="modal">Fermer</button>
                     <button class="btn btn-primary" type="button" data-action="modifier">Modifier</button>
@@ -68,6 +69,24 @@
                 <div class="modal-footer">
                     <button class="btn btn-outline-primary" type="button" data-action="consulter">Retour</button>
                     <button class="btn btn-primary" type="submit">Envoyer la demande</button>
+                </div>
+            </form>
+
+            <form data-temps="ecrire" method="POST" action="" hidden>
+                {% csrf_token %}
+                <div class="modal-body">
+                    <p>Votre message partira par e-mail à <strong data-champ="auteur"></strong>, au sujet de son séjour
+                        « <span data-champ="nom"></span> » (<span data-champ="dates"></span>).
+                        Sa réponse arrivera directement dans votre boîte e-mail.</p>
+                    <div class="form-group mb-0">
+                        <label for="ecrire-message">Votre message</label>
+                        <textarea class="form-control" id="ecrire-message" name="message" rows="5" maxlength="2000" required
+                                  placeholder="par exemple : vous serez combien ? On pensait passer deux jours pendant votre séjour."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-outline-primary" type="button" data-action="consulter">Retour</button>
+                    <button class="btn btn-primary" type="submit">Envoyer</button>
                 </div>
             </form>
 

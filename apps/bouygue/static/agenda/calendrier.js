@@ -118,6 +118,7 @@ document.addEventListener('DOMContentLoaded', function () {
         fill('consulter', stay);
         modal.find('[data-action="modifier"], [data-action="demander-suppression"]').prop('hidden', !canChange(stay));
         modal.find('[data-action="proposer-echange"]').prop('hidden', !canAskExchange(stay));
+        modal.find('[data-action="ecrire"]').prop('hidden', stay.user_id === config.userId);
         show('consulter');
     };
 
@@ -190,6 +191,14 @@ document.addEventListener('DOMContentLoaded', function () {
         if (action === 'modifier') { edit(current); }
         if (action === 'consulter') { consult(current); }
         if (action === 'proposer-echange') { askExchange(current); }
+        if (action === 'ecrire') {
+            title.textContent = 'Écrire à ' + ownerOf(current);
+            fill('ecrire', current);
+            const writeForm = modal.find('form[data-temps="ecrire"]')[0];
+            writeForm.action = '/reservation/' + current.id + '/ecrire/';
+            show('ecrire');
+            if (!phone) { setTimeout(() => writeForm.elements.message.focus(), 300); }
+        }
         if (action === 'demander-suppression') {
             title.textContent = 'Supprimer le séjour';
             fill('supprimer', current);

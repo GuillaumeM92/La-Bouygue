@@ -1,6 +1,7 @@
 """Exchange requests: a member offers one of their stays for someone else's dates."""
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.cache import cache
 from django.db import transaction
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
@@ -27,6 +28,36 @@ def _page_link(request):
     return request.build_absolute_uri(reverse("exchanges"))
 
 
+# The e-mails, as (subject, body)
+
+def request_email(requester, offered, requested, message, link):
+    return "La Bouygue - Demande d'échange de séjour", (
+        f"Bonjour,\n\n{_person(requester)} vous propose d'échanger vos dates sur le calendrier de La Bouygue :\n\n"
+        f"- votre séjour « {requested.name} », {_dates(requested.start_date, requested.end_date)}\n"
+        f"- contre son séjour « {offered.name} », {_dates(offered.start_date, offered.end_date)}\n\n"
+        + (f"Son message : {message}\n\n" if message else "")
+        + f"Pour accepter ou refuser : {link}\n")
+
+
+def answer_email(accepted, answerer, offered, requested, link):
+    """To the requester; `offered` is their stay, already moved when accepted."""
+    if accepted:
+        return "La Bouygue - Échange de séjour accepté", (
+            f"Bonjour,\n\n{_person(answerer)} a accepté l'échange : votre séjour « {offered.name} » "
+            f"est désormais {_dates(offered.start_date, offered.end_date)}, et le sien "
+            f"{_dates(requested.start_date, requested.end_date)}.\n\nLe calendrier est à jour : {link}\n")
+    return "La Bouygue - Échange de séjour refusé", (
+        f"Bonjour,\n\n{_person(answerer)} n'a pas accepté l'échange de votre séjour « {offered.name} » "
+        f"contre « {requested.name} ». Vos dates restent inchangées.\n")
+
+
+def contact_email(sender, stay, text):
+    return f"La Bouygue - Message de {_person(sender)} au sujet de votre séjour", (
+        f"Bonjour,\n\n{_person(sender)} vous écrit au sujet de votre séjour « {stay.name} », "
+        f"{_dates(stay.start_date, stay.end_date)} :\n\n{text}\n\n"
+        f"Pour lui répondre, répondez simplement à cet e-mail ({sender.email}).\n")
+
+
 @login_required
 @require_POST
 def exchange_request(request):
@@ -49,14 +80,8 @@ def exchange_request(request):
         message=request.POST.get("message", "").strip()[:2000],
         offered_start=offered.start_date, offered_end=offered.end_date,
         requested_start=requested.start_date, requested_end=requested.end_date)
-    body = (
-        f"Bonjour,\n\n{_person(user)} vous propose d'échanger vos dates sur le calendrier de La Bouygue :\n\n"
-        f"- votre séjour « {requested.name} », {_dates(requested.start_date, requested.end_date)}\n"
-        f"- contre son séjour « {offered.name} », {_dates(offered.start_date, offered.end_date)}\n\n"
-        + (f"Son message : {exchange.message}\n\n" if exchange.message else "")
-        + f"Pour accepter ou refuser : {_page_link(request)}\n"
-    )
-    send_quietly("La Bouygue - Demande d'échange de séjour", body, requested.user.email)
+    send_quietly(*request_email(user, offered, requested, exchange.message, _page_link(request)),
+                 requested.user.email)
     messages.success(request, f"Demande envoyée à {_person(requested.user)}. Vous serez prévenu de sa réponse par e-mail.")
     return redirect("exchanges")
 
@@ -103,20 +128,39 @@ def exchange_answer(request, pk):
             exchange.status = Exchange.DECLINED
             exchange.save()
 
+    send_quietly(*answer_email(accept, request.user, exchange.offered, exchange.requested,
+                               request.build_absolute_uri(reverse("agenda"))), requester.email)
     if accept:
-        body = (f"Bonjour,\n\n{_person(request.user)} a accepté l'échange : votre séjour « {exchange.offered.name} » "
-                f"est désormais {_dates(exchange.offered.start_date, exchange.offered.end_date)}, et le sien "
-                f"{_dates(exchange.requested.start_date, exchange.requested.end_date)}.\n\n"
-                f"Le calendrier est à jour : {request.build_absolute_uri(reverse('agenda'))}\n")
-        send_quietly("La Bouygue - Échange de séjour accepté", body, requester.email)
         messages.success(request, "Échange accepté : les dates des deux séjours ont été échangées.")
     else:
-        body = (f"Bonjour,\n\n{_person(request.user)} n'a pas accepté l'échange de votre séjour "
-                f"« {exchange.offered.name} » contre « {exchange.requested.name} ». "
-                "Vos dates restent inchangées.\n")
-        send_quietly("La Bouygue - Échange de séjour refusé", body, requester.email)
         messages.success(request, "Demande refusée. La personne en est informée.")
     return redirect("exchanges")
+
+
+CONTACTS_PER_HOUR = 5
+
+
+@login_required
+@require_POST
+def contact_owner(request, pk):
+    """A member writes to whoever posed a stay; the owner answers by replying to the e-mail."""
+    user = request.user
+    stay = get_object_or_404(Reservation.objects.select_related("user"), pk=pk)
+    text = request.POST.get("message", "").strip()[:2000]
+    if stay.user_id == user.id or not text:
+        messages.error(request, "Le message est vide." if text == "" else "C'est votre propre séjour.")
+        return redirect("agenda")
+    key = f"agenda.contact.{user.id}"
+    sent = cache.get(key, 0)
+    if sent >= CONTACTS_PER_HOUR:
+        messages.error(request, "Vous avez déjà envoyé plusieurs messages cette heure-ci : réessayez un peu plus tard.")
+        return redirect("agenda")
+    cache.set(key, sent + 1, 60 * 60)
+    if send_quietly(*contact_email(user, stay, text), stay.user.email, reply_to=user.email):
+        messages.success(request, f"Message envoyé à {_person(stay.user)}. Sa réponse arrivera dans votre boîte e-mail.")
+    else:
+        messages.error(request, "Le message n'a pas pu partir. Réessayez plus tard, ou utilisez le carnet d'adresses.")
+    return redirect("agenda")
 
 
 @login_required

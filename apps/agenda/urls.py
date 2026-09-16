@@ -8,6 +8,7 @@ urlpatterns = [
     path('echanges/', exchanges.exchanges, name='exchanges'),
     path('agenda/reconduire/', renewal.renew_year, name='renew-year'),
     path('echanges/demander/', exchanges.exchange_request, name='exchange-request'),
+    path('reservation/<int:pk>/ecrire/', exchanges.contact_owner, name='contact-owner'),
     path('echanges/<int:pk>/repondre/', exchanges.exchange_answer, name='exchange-answer'),
     path('echanges/<int:pk>/annuler/', exchanges.exchange_cancel, name='exchange-cancel'),
 ]
