@@ -72,7 +72,7 @@ migrate`, create an account with `createsuperuser`, and start
 | What | Where |
 |---|---|
 | Code | `/home/ubuntu/My-Websites/La-Bouygue` (owned by root; run git as root) |
-| Python environment | `env/` in that folder |
+| Python environment | `.venv/` in that folder (Python 3.12) |
 | Gunicorn | Supervisor program `la_bouygue-gunicorn`, port 8000, user `ubuntu` |
 | Nginx | `/etc/nginx/sites-enabled/la_bouygue` (copy in `deploy/server/`) |
 | Database backups | `/var/backups/la_bouygue`, nightly (see below) |
@@ -93,9 +93,9 @@ restarts Gunicorn and checks that the site answers.
 A plain `git pull` is not enough: Nginx serves the collected static files,
 and Django caches its templates until Gunicorn restarts.
 
-Migrations: the files in `migrations/` on the server are the only record of
-what was applied to the production database. Never run `makemigrations`
-there without comparing with the actual schema first.
+Migrations are versioned: create them locally with `makemigrations`, commit
+them, and apply them on the server with `.venv/bin/python manage.py migrate`
+after the backup (the script stops when one is pending).
 
 To roll back: `git checkout <previous commit>`, then
 `SKIP_PULL=1 deploy/deploy.sh`.
