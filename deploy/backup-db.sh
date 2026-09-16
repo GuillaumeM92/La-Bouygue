@@ -2,7 +2,7 @@
 # Dump the La Bouygue database. Run by root's crontab every night:
 #   30 3 * * * /home/ubuntu/My-Websites/La-Bouygue/deploy/backup-db.sh
 # Keeps 30 days of dumps, plus the dump of the 1st of each month for a year.
-# Restore: pg_restore --clean --if-exists -d la_bouygue <file>   (as postgres)
+# Restore: runuser -u postgres -- pg_restore --clean --if-exists -d la_bouygue < <file>
 set -eu
 
 DB=la_bouygue

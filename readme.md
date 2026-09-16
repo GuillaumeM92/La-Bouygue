@@ -107,10 +107,13 @@ To roll back: `git checkout <previous commit>`, then
 the first of each month for a year, in `/var/backups/la_bouygue`, and logs to
 `/var/log/la_bouygue-backup.log`.
 
-Restore a dump (it replaces the current data):
+Restore a dump, as root (it replaces the current data):
 ```
-runuser -u postgres -- pg_restore --clean --if-exists -d la_bouygue /var/backups/la_bouygue/la_bouygue-YYYY-MM-DD.dump
+runuser -u postgres -- pg_restore --clean --if-exists -d la_bouygue < /var/backups/la_bouygue/la_bouygue-YYYY-MM-DD.dump
 ```
+If the database itself is gone, create it first
+(`runuser -u postgres -- createdb -O <DB_USER> la_bouygue`), then restore.
+A restore into a scratch database was tested on 2026-09-16.
 These backups live on the same disk as the database: copy one elsewhere from
 time to time, for example `scp ionos:/var/backups/la_bouygue/<file> .`
 
