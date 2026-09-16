@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.forms import AdminUserCreationForm, UserChangeForm
 from .forms import AdminLoginForm
 from .models import MyUser
 from .models import Profile
@@ -8,34 +9,45 @@ from .models import Profile
 admin.site.login_form = AdminLoginForm
 
 
+class MyUserCreationForm(AdminUserCreationForm):
+    class Meta:
+        model = MyUser
+        fields = ("email",)
+
+
+class MyUserChangeForm(UserChangeForm):
+    """The password shows as a summary with a link to reset it, never as a field."""
+
+    class Meta:
+        model = MyUser
+        fields = ("email",)
+
+
+@admin.register(MyUser)
 class MyUserAdmin(UserAdmin):
-    model = MyUser
-    list_display = (
-        "email",
-        "is_staff",
-        "is_active",
-    )
-    list_filter = (
-        "email",
-        "is_staff",
-        "is_active",
-    )
+    form = MyUserChangeForm
+    add_form = MyUserCreationForm
+    list_display = ("email", "surname", "name", "is_active", "is_staff", "date_joined")
+    list_filter = ("is_active", "is_staff", "is_superuser")
     fieldsets = (
         (None, {"fields": ("email", "password")}),
-        ("Permissions", {"fields": ("is_staff", "is_active")}),
+        ("Identité", {"fields": ("surname", "name")}),
+        ("Permissions", {"fields": ("is_active", "is_staff", "is_superuser", "groups", "user_permissions")}),
+        ("Dates", {"fields": ("last_login", "date_joined")}),
     )
     add_fieldsets = (
         (
             None,
             {
                 "classes": ("wide",),
-                "fields": ("email", "password1", "password2", "is_staff", "is_active"),
+                "fields": ("email", "surname", "name", "usable_password", "password1", "password2",
+                           "is_active", "is_staff"),
             },
         ),
     )
-    search_fields = ("email",)
+    readonly_fields = ("last_login", "date_joined")
+    search_fields = ("email", "surname", "name")
     ordering = ("email",)
 
 
 admin.site.register(Profile)
-admin.site.register(MyUser)

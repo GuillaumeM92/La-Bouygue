@@ -1,4 +1,5 @@
 from django.core.mail import send_mail
+from django.db.models import Q
 from apps.users.models import MyUser
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -35,11 +36,16 @@ def register(request):
                        "informant de l'activation.").format(user_surname, user_name),
                       None, [user_email], fail_silently=True, )
 
-            send_mail("La Bouygue - Nouvel Utilisateur",
-                      ("{} {} s'est créé un compte sur le site de la Bouygue. Merci de vérifier "
-                       "son identité avant d'activer son compte. Lien : "
-                       "https://labouygue.fr/info/admin/activate/").format(user_surname, user_name),
-                      None, ["gemacx@gmail.com", "x.merle@orange.fr", "patrice16.merle@orange.fr", "paulhenri.merle78@gmail.com"], fail_silently=True, )
+            # Whoever can activate accounts hears about the new one
+            administrators = MyUser.objects.filter(
+                Q(is_staff=True) | Q(is_superuser=True), is_active=True
+            ).values_list("email", flat=True)
+            for administrator in administrators:
+                send_mail("La Bouygue - Nouvel Utilisateur",
+                          ("{} {} s'est créé un compte sur le site de la Bouygue. Merci de "
+                           "vérifier son identité avant d'activer son compte. Lien : "
+                           "https://labouygue.fr/info/admin/activate/").format(user_surname, user_name),
+                          None, [administrator], fail_silently=True, )
             messages.success(request, str(
                 "Votre compte a été créé avec succès ! Un email de confirmation vient de vous "
                 "être envoyé. Vous pourrez vous connecter dès qu'un administrateur aura "

@@ -27,6 +27,12 @@ else:
     # to Gunicorn in plain HTTP, so Django would otherwise reject
     # https://labouygue.fr as a foreign origin.
     CSRF_TRUSTED_ORIGINS = ["https://labouygue.fr", "https://www.labouygue.fr"]
+    # Nginx says which scheme the visitor used (it overwrites any value the
+    # visitor sends), so Django builds https:// links, e.g. in password e-mails.
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    # Browsers that have seen the site once refuse plain HTTP for it. Started
+    # short on purpose; raise to a year (31536000) once it has run for a while.
+    SECURE_HSTS_SECONDS = 60 * 60 * 24
 
 # Application definition
 INSTALLED_APPS = [
