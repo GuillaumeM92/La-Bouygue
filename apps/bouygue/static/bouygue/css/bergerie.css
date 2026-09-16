@@ -2013,6 +2013,9 @@ input.berg-date { min-height: 2.9rem; }
 .berg-fil .berg-groupe-tete { margin-top: 0; }
 .berg-fil .post-archive-item { background-color: var(--b-papier); }
 .berg-commentaire:last-of-type { margin-bottom: 0 !important; }
+/* Faute de place, les boutons Modifier / Supprimer passent sous la signature. */
+.berg-commentaire .post-archive-meta { flex-wrap: wrap; row-gap: .5rem; }
+.berg-commentaire .post-archive-meta-details { flex: 1 1 10rem; min-width: 0; }
 
 /* --- Avertissement avant suppression -------------------------------------- */
 .berg-avertissement {
@@ -2232,6 +2235,7 @@ input.berg-date { min-height: 2.9rem; }
 }
 .dcsic_choose_img:hover,
 .dcsic_choose_other_img:hover { background-color: var(--b-bois); color: var(--b-chaux); }
+.dcsic_choose_other_img { margin-left: 0; }
 .dcsic_delete_image {
     border-color: var(--b-rouge);
     color: var(--b-rouge);
@@ -2248,15 +2252,21 @@ input.berg-date { min-height: 2.9rem; }
     border-radius: var(--b-r-lg);
     box-shadow: var(--b-ombre-4);
 }
-.dcsic_overlay button {
+/* Ses boutons sont des <div> : pivoter et annuler en bouton clair, OK en
+   bouton principal. */
+.dcsic_buttons > div > div {
     font-family: var(--b-texte);
+    font-size: .9rem;
     font-weight: 700;
+    letter-spacing: .03em;
     border-radius: var(--b-r);
-    border: 1px solid var(--b-tomette-2);
-    background-color: var(--b-tomette);
-    color: #fffaf1;
-    padding: .55rem 1.2rem;
+    border: 1px solid var(--b-bois);
+    background-color: var(--b-papier);
+    color: var(--b-bois);
 }
+.dcsic_buttons > div > div:hover { background-color: var(--b-laine); color: var(--b-tomette); }
+.dcsic_buttons .dcsic_ok { border-color: var(--b-tomette-2); background-color: var(--b-tomette); color: #fffaf1; }
+.dcsic_buttons .dcsic_ok:hover { background-color: var(--b-tomette-2); color: #fffaf1; }
 
 /* Intitule au-dessus d'un champ sans etiquette (zone de commentaire). */
 .berg-champ-titre {
@@ -2299,14 +2309,16 @@ input.berg-date { min-height: 2.9rem; }
     .page-header, .berg-entete { padding: calc(var(--b-nav-h) + 2.5rem) 0 3rem; }
     .post-preview-featured-img { min-height: 210px; }
 
-    .berg-sortie-une { grid-template-columns: 1fr; }
-    .berg-sortie-une-vue { min-height: 200px; aspect-ratio: 16 / 9; }
+    .berg-sortie-une { grid-template-columns: minmax(0, 1fr); }
+    /* Pas de hauteur minimale ici : avec le ratio, elle imposait 355px de large. */
+    .berg-sortie-une-vue { min-height: 0; aspect-ratio: 16 / 9; }
     .berg-sortie-une-corps { border-left: 0; border-top: 3px solid var(--b-bois); padding: 1.35rem 1.4rem; }
     .berg-agenda-ajout { margin-left: 0; width: 100%; }
 }
 
 @media (max-width: 767.98px) {
-    .berg-groupe-tete { flex-direction: column; align-items: flex-start; gap: .4rem; }
+    /* Le titre et son compteur restent sur une ligne tant qu'ils y tiennent. */
+    .berg-groupe-tete { flex-wrap: wrap; align-items: center; gap: .4rem .75rem; }
     .berg-actions .btn { flex: 1 1 auto; }
     .berg-agenda-vues { display: flex; }
     .berg-agenda-vues button { flex: 1 1 0; padding: .65rem .5rem; }
@@ -2322,6 +2334,14 @@ input.berg-date { min-height: 2.9rem; }
 }
 
 @media (max-width: 575.98px) {
+    /* Le theme donne 3rem de marge laterale aux conteneurs, a toutes les
+       largeurs : sur un telephone, c'est un quart de l'ecran. On revient a la
+       gouttiere de la grille.                                                 */
+    .container { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .berg-volet-fond { padding-left: 0; padding-right: 0; }
+    .g-recaptcha { transform: scale(.9); transform-origin: left top; margin-bottom: .5rem; }
+    .dcsic_delete_image { margin-left: 0; }
+
     body { font-size: 1.02rem; }
     .navbar-brand { font-size: 1.28rem !important; }
     .berg-volet-corps, .card-body { padding: 1.15rem; }

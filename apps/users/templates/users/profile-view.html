@@ -15,7 +15,7 @@
 
     <hr class="berg-couture my-4" />
 
-    <div class="berg-surtitre">Ce qu'{{ clicked_user.surname }} a écrit</div>
+    <div class="berg-surtitre">Publié par {{ clicked_user.surname }}</div>
     <ul class="list-group mt-2">
         <li class="list-group-item">
             <span>{{ clicked_user.post_set.all|length }} discussion{{ clicked_user.post_set.all|length|pluralize }}</span>

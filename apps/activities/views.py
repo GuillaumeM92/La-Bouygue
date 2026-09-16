@@ -80,6 +80,7 @@ class ActivityCreateView(LoginRequiredMixin, CreateView):
             preview_width=120,
             preview_height=72,
         )
+        form.fields['image2'].label = "Deuxième image"
         return form
 
     def form_valid(self, form):
@@ -108,6 +109,7 @@ class ActivityUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             preview_width=120,
             preview_height=72,
         )
+        form.fields['image2'].label = "Deuxième image"
         return form
 
     def form_valid(self, form):

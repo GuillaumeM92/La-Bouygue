@@ -16,8 +16,10 @@
     <form method="POST" autocomplete="off" class="berg-carte-form">
         {% csrf_token %}
         <fieldset class="form-group">
-            {# Le formulaire masque l'etiquette du champ « content » : on en
-               remet une, pour que le champ ne soit pas muet au lecteur d'ecran. #}
+            {% comment %}
+                Le formulaire masque l'etiquette du champ « content » : on en
+                remet une, pour que le champ ne soit pas muet au lecteur d'ecran.
+            {% endcomment %}
             <label class="berg-champ-titre" for="id_content">Votre commentaire</label>
             {{ form|crispy }}
         </fieldset>

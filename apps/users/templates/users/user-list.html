@@ -1,8 +1,9 @@
 {% extends "bouygue/base.html" %}
 {% load static %}
 {% block content %}
+<div hidden>{% block title %} — {{ clicked_user.surname }} {{ clicked_user.name }}{% endblock %}</div>
 
-{% include 'blocks/berg-entete.html' with surtitre="Carnet d'adresses" titre=clicked_user.surname|add:" "|add:clicked_user.name chapeau=view.kwargs.app image="bouygue/assets/img/backgrounds/montagne/cirque_lescun.jpg" %}
+{% include 'blocks/berg-entete.html' with surtitre="Carnet d'adresses" titre=clicked_user.surname|add:" "|add:clicked_user.name chapeau="Ses publications sur le site" image="bouygue/assets/img/backgrounds/montagne/cirque_lescun.jpg" %}
 
 <section class="berg-section berg-section--serree">
     <div class="container">
@@ -11,7 +12,12 @@
 
                 <div class="berg-actions">
                     <a class="berg-retour" onClick="javascript:history.go(-1);">Retour</a>
-                    <span class="berg-etiquette ml-auto">{{ app|length }} {{ view.kwargs.app }}</span>
+                    <span class="berg-etiquette ml-auto">{{ app|length }}
+                        {% if view.kwargs.app == "discussion(s)" %}discussion{{ app|length|pluralize }}
+                        {% elif view.kwargs.app == "activité(s)" %}sortie{{ app|length|pluralize }}
+                        {% elif view.kwargs.app == "information(s)" %}info{{ app|length|pluralize }}
+                        {% else %}tâche{{ app|length|pluralize }}{% endif %}
+                    </span>
                 </div>
 
                 <div class="berg-liste">
@@ -24,7 +30,8 @@
                             <h2 class="berg-article-titre"><a href="{{ lien }}">{{ post.title }}</a></h2>
                             <div class="berg-article-extrait">{{ post.content|truncatewords:50|linebreaks }}</div>
                             <div class="berg-article-pied">
-                                {% include 'blocks/berg-signature.html' with auteur=post.author date=post.date_posted %}
+                                {# lien="" : sinon la signature reprend le lien de la boucle et l'affiche une seconde fois #}
+                                {% include 'blocks/berg-signature.html' with auteur=post.author date=post.date_posted lien="" %}
                                 <a class="berg-article-suite" href="{{ lien }}">Ouvrir</a>
                             </div>
                         </article>
