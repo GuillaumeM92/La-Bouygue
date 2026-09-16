@@ -11,6 +11,9 @@ class InfoPost(models.Model):
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     image = models.ImageField(blank=True, upload_to="info")
+    pinned = models.BooleanField(
+        "Fiche épinglée", default=False,
+        help_text="Reste en tête des infos pratiques : ouverture de la maison, contacts utiles…")
 
     def __str__(self):
         return self.title

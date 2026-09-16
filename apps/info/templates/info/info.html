@@ -19,6 +19,23 @@
                     {% endif %}
                 </div>
 
+                {% if pinned %}
+                    <div class="berg-groupe-tete">
+                        <h2><i class="fas fa-thumbtack fa-fw berg-groupe-glyphe"></i>Fiches à garder sous la main</h2>
+                    </div>
+                    <div class="berg-fiches">
+                        {% for fiche in pinned %}
+                            <a class="berg-fiche-epinglee" href="{% url 'infopost-detail' fiche.id %}">
+                                <span class="berg-fiche-epinglee-titre">{{ fiche.title }}</span>
+                                <span class="berg-fiche-epinglee-extrait">{{ fiche.content|truncatewords:14 }}</span>
+                            </a>
+                        {% endfor %}
+                    </div>
+                    <div class="berg-groupe-tete">
+                        <h2><i class="fas fa-newspaper fa-fw berg-groupe-glyphe"></i>Les dernières nouvelles</h2>
+                    </div>
+                {% endif %}
+
                 <div class="berg-liste">
                     {% for post in infoposts %}
                         <article class="berg-article">
@@ -30,7 +47,7 @@
                             </div>
                         </article>
                     {% empty %}
-                        <p class="berg-vide">Aucune information pour l'instant. Tout va bien à la maison.</p>
+                        <p class="berg-vide">{% if pinned %}Pas de nouvelle information.{% else %}Aucune information pour l'instant. Tout va bien à la maison.{% endif %}</p>
                     {% endfor %}
                 </div>
 

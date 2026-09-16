@@ -6,7 +6,7 @@ from django.views.generic import ListView
 from apps.bouygue import posts
 from .models import InfoComment, InfoPost
 
-FIELDS = ["title", "content", "image"]
+FIELDS = ["title", "content", "image", "pinned"]
 
 
 class InfoPostListView(posts.CountsVisit, LoginRequiredMixin, ListView):
@@ -14,8 +14,14 @@ class InfoPostListView(posts.CountsVisit, LoginRequiredMixin, ListView):
     seen_field = "informations_viewed"
     template_name = "info/info.html"
     context_object_name = "infoposts"
+    queryset = InfoPost.objects.filter(pinned=False).select_related("author")
     ordering = ["-date_posted"]
     paginate_by = 5
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["pinned"] = InfoPost.objects.filter(pinned=True).order_by("title")
+        return context
 
 
 @login_required

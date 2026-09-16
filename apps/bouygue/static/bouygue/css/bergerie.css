@@ -490,6 +490,23 @@ small, .small   { font-size: .875rem; }
     padding-left: 1.1rem;
 }
 .dropdown-item .badge { margin-left: .4rem; vertical-align: 1px; }
+/* Les groupes du menu : la maison, la famille, l'administration */
+.navbar .dropdown-menu .dropdown-header {
+    margin: .7rem 0 .1rem;
+    padding: .2rem .8rem;
+    font-family: var(--b-texte);
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--b-bois);
+}
+.dropdown-item:has(+ .dropdown-header) { border-bottom: 0; }
+.dropdown-item.berg-menu-principal {
+    background-color: var(--b-chaux-2);
+    border-bottom: 0;
+}
+.dropdown-item.berg-menu-principal i { color: var(--b-bois); }
 
 
 /* =============================================================================
@@ -1994,6 +2011,27 @@ input[type="file"] {
 .berg-visionneuse-pied > div { flex: 1 1 12rem; }
 .berg-visionneuse-legende { font-weight: 700; }
 .berg-visionneuse-signe { font-size: .85rem; color: var(--b-encre-2); }
+
+/* Infos pratiques : les fiches epinglees, en cartes. */
+.berg-fiches {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    gap: .9rem;
+    margin-bottom: 2.25rem;
+}
+.berg-fiche-epinglee {
+    display: block;
+    padding: 1rem 1.1rem;
+    background-color: var(--b-papier);
+    border: var(--b-filet);
+    border-top: 4px solid var(--b-miel);
+    border-radius: var(--b-r);
+    box-shadow: var(--b-ombre-1);
+    color: var(--b-encre);
+}
+.berg-fiche-epinglee:hover { color: var(--b-encre); text-decoration: none; box-shadow: var(--b-ombre-2); }
+.berg-fiche-epinglee-titre { display: block; font-family: var(--b-titre); font-size: 1.1rem; font-weight: 600; margin-bottom: .3rem; }
+.berg-fiche-epinglee-extrait { display: block; font-size: .9rem; color: var(--b-encre-2); }
 
 /* Activations : refuser et activer, cote a cote. */
 .berg-activation-actions { display: flex; flex-wrap: wrap; gap: .4rem; justify-content: flex-end; }
