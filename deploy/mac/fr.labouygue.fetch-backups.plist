@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+Weekly copy of the La Bouygue backups to this Mac (Sunday 12:00; if the Mac
+is asleep then, it runs on wake). Install:
+  cp deploy/fetch-backups.sh ~/Library/Scripts/la-bouygue-fetch-backups.sh
+  cp deploy/mac/fr.labouygue.fetch-backups.plist ~/Library/LaunchAgents/
+  launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/fr.labouygue.fetch-backups.plist
+Log: ~/Library/Logs/la-bouygue-fetch-backups.log
+Run now: launchctl kickstart gui/$(id -u)/fr.labouygue.fetch-backups
+-->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>fr.labouygue.fetch-backups</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/sh</string>
+        <string>-c</string>
+        <string>exec /bin/sh "$HOME/Library/Scripts/la-bouygue-fetch-backups.sh"</string>
+    </array>
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Weekday</key>
+        <integer>0</integer>
+        <key>Hour</key>
+        <integer>12</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+</dict>
+</plist>
