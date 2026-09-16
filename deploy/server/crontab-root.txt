@@ -1,0 +1,2 @@
+# Root's crontab on the server (crontab -e as root)
+30 3 * * * /home/ubuntu/My-Websites/La-Bouygue/deploy/backup-db.sh >> /var/log/la_bouygue-backup.log 2>&1
