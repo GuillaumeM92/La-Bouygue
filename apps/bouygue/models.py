@@ -19,6 +19,9 @@ class Announcement(models.Model):
     expires_at = models.DateTimeField("visible jusqu'au")
     read_by = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True,
                                      related_name="announcements_read")
+    # Members who keep it folded to its title on the home page
+    folded_by = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True,
+                                       related_name="announcements_folded")
 
     objects = AnnouncementQuerySet.as_manager()
 

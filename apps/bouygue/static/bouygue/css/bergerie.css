@@ -689,6 +689,22 @@ small, .small   { font-size: .875rem; }
 }
 .berg-annonce:last-child { margin-bottom: 0; }
 .berg-annonce--accueil { margin-bottom: 1.5rem; box-shadow: var(--b-ombre-1); }
+.berg-annonce-tete { display: flex; align-items: flex-start; gap: 1rem; margin: 0; }
+.berg-annonce-tete > div { flex: 1 1 auto; }
+.berg-annonce-replier {
+    flex: 0 0 auto;
+    width: 2.2rem;
+    height: 2.2rem;
+    border: var(--b-filet);
+    border-radius: 50%;
+    background-color: var(--b-chaux);
+    color: var(--b-bois);
+    cursor: pointer;
+}
+.berg-annonce-replier:hover { background-color: var(--b-laine); }
+.berg-annonce-replier i { transition: transform .2s; }
+.berg-annonce--repliee .berg-annonce-replier i { transform: rotate(180deg); }
+.berg-annonce--repliee .berg-annonce-titre { margin-bottom: 0; }
 .berg-annonce--passee { border-left-color: var(--b-pierre); opacity: .75; }
 .berg-annonce-titre { font-size: 1.2rem; margin: 0 0 .5rem; }
 .berg-annonce-texte { color: var(--b-encre); line-height: 1.6; overflow-wrap: anywhere; }

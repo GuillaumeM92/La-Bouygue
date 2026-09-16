@@ -40,13 +40,27 @@
             </div>
         {% endif %}
         {% for annonce in announcements %}
-            <article class="berg-annonce berg-annonce--accueil">
-                <div class="berg-surtitre"><i class="fas fa-bullhorn mr-2"></i>Annonce</div>
-                <h3 class="berg-annonce-titre">{{ annonce.title }}</h3>
-                <div class="berg-annonce-texte">{{ annonce.message|urlize|linebreaksbr }}</div>
-                <p class="berg-annonce-signe">
-                    {% if annonce.author %}{{ annonce.author.surname }} {{ annonce.author.name }}, {% endif %}le {{ annonce.created_at|date:"j F Y" }}
-                </p>
+            <article class="berg-annonce berg-annonce--accueil{% if annonce.folded %} berg-annonce--repliee{% endif %}">
+                <form class="berg-annonce-tete" method="POST" action="{% url 'announcement-fold' annonce.pk %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="folded" value="{% if annonce.folded %}0{% else %}1{% endif %}" />
+                    <div>
+                        <div class="berg-surtitre"><i class="fas fa-bullhorn mr-2"></i>Annonce</div>
+                        <h3 class="berg-annonce-titre">{{ annonce.title }}</h3>
+                    </div>
+                    <button class="berg-annonce-replier" type="submit" aria-controls="annonce-corps-{{ annonce.pk }}"
+                            aria-expanded="{% if annonce.folded %}false{% else %}true{% endif %}"
+                            title="{% if annonce.folded %}Déplier{% else %}Replier{% endif %}">
+                        <i class="fas fa-chevron-up" aria-hidden="true"></i>
+                        <span class="sr-only">{% if annonce.folded %}Déplier l'annonce{% else %}Replier l'annonce{% endif %}</span>
+                    </button>
+                </form>
+                <div class="berg-annonce-corps" id="annonce-corps-{{ annonce.pk }}"{% if annonce.folded %} hidden{% endif %}>
+                    <div class="berg-annonce-texte">{{ annonce.message|urlize|linebreaksbr }}</div>
+                    <p class="berg-annonce-signe">
+                        {% if annonce.author %}{{ annonce.author.surname }} {{ annonce.author.name }}, {% endif %}le {{ annonce.created_at|date:"j F Y" }}
+                    </p>
+                </div>
             </article>
         {% endfor %}
         <div class="berg-maison">
@@ -196,4 +210,23 @@
     </div>
 </section>
 {% endif %}
+<script>
+    // Fold or unfold an announcement without reloading; the choice is saved for the member
+    document.querySelectorAll('.berg-annonce-tete').forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const article = form.closest('.berg-annonce');
+            const body = article.querySelector('.berg-annonce-corps');
+            const button = form.querySelector('.berg-annonce-replier');
+            const fold = form.elements.folded.value === '1';
+            article.classList.toggle('berg-annonce--repliee', fold);
+            body.hidden = fold;
+            button.setAttribute('aria-expanded', fold ? 'false' : 'true');
+            button.title = fold ? 'Déplier' : 'Replier';
+            button.querySelector('.sr-only').textContent = fold ? "Déplier l'annonce" : "Replier l'annonce";
+            fetch(form.action, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } });
+            form.elements.folded.value = fold ? '0' : '1';
+        });
+    });
+</script>
 {% endblock content %}

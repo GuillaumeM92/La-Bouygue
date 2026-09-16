@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
@@ -28,6 +28,14 @@ def landing(request):
         return render(request, 'bouygue/landing.html')
 
 
+def _with_fold_state(announcements, user):
+    folded = set(user.announcements_folded.values_list('pk', flat=True))
+    announcements = list(announcements)
+    for announcement in announcements:
+        announcement.folded = announcement.pk in folded
+    return announcements
+
+
 @login_required
 def home(request):
     user = request.user
@@ -47,7 +55,7 @@ def home(request):
         'users_length': MyUser.objects.filter(is_active=True).count() - user.users_viewed,
         'pending_accounts': pending_accounts,
         'exchanges_waiting': Exchange.objects.pending().filter(requested__user=user).count(),
-        'announcements': Announcement.objects.current().select_related('author'),
+        'announcements': _with_fold_state(Announcement.objects.current().select_related('author'), user),
         'stays_now': [stay for stay in stays if stay.start_date <= today],
         'stays_next': [stay for stay in stays if stay.start_date > today][:4],
         'slideshow': random.sample(photos, min(5, len(photos))),
@@ -97,6 +105,21 @@ def announcement_end(request, pk):
     announcement.save()
     messages.success(request, "Annonce retirée.")
     return redirect('announcements')
+
+
+@login_required
+@require_POST
+def announcement_fold(request, pk):
+    """Fold an announcement to its title on the home page, or unfold it."""
+    announcement = get_object_or_404(Announcement.objects.current(), pk=pk)
+    folded = request.POST.get('folded') == '1'
+    if folded:
+        announcement.folded_by.add(request.user)
+    else:
+        announcement.folded_by.remove(request.user)
+    if request.headers.get('Accept') == 'application/json':
+        return JsonResponse({'folded': folded})
+    return redirect('bouygue-home')
 
 
 @login_required

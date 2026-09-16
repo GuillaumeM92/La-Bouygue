@@ -9,4 +9,5 @@ urlpatterns = [
     path('annonces/', views.announcements, name='announcements'),
     path('annonces/<int:pk>/retirer/', views.announcement_end, name='announcement-end'),
     path('annonces/lu/', views.announcements_read, name='announcements-read'),
+    path('annonces/<int:pk>/replier/', views.announcement_fold, name='announcement-fold'),
 ]
