@@ -33,6 +33,9 @@ class ReservationForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         # Blank dates are refused by the model; say it in words people use
         for name in ("start_date", "end_date"):
+            # The model's "today" default is not a choice the member made
+            self.fields[name].initial = None
+            self.fields[name].show_hidden_initial = False
             self.fields[name].required = True
             self.fields[name].error_messages["required"] = "Choisissez une date."
             self.fields[name].error_messages["invalid"] = "Cette date n'est pas valide."
