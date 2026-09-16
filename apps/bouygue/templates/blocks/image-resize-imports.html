@@ -4,8 +4,9 @@
     Le gabarit d'origine enveloppait ces balises dans un second <head>, en
     plein milieu du <body> : le navigateur le jetait. Les scripts sont désormais
     posés tels quels dans le corps du document ; les feuilles de style du
-    widget sont chargées dans le <head> de base.html, avant la charte.
+    widget sont chargées dans le <head> de base.html, avant la charte, tout
+    comme jQuery, dont il a besoin : il chargeait autrefois sa propre copie
+    (1.12.4, depuis Google), qui écrasait celle du site.
 {% endcomment %}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="{% static 'client_side_image_cropping/croppie.min.js' %}"></script>
 <script src="{% static 'client_side_image_cropping/cropping_widget.js' %}"></script>

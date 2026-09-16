@@ -63,6 +63,6 @@
 {% endblock content %}
 
 {% block scripts_extra %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" crossorigin="anonymous"></script>
+<script src="{% static 'vendor/chartjs-2.9.4/Chart.min.js' %}"></script>
 <script src="{% static 'budget/js/chart-area-budget.js' %}"></script>
 {% endblock %}

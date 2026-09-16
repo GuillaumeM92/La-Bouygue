@@ -7,7 +7,9 @@
  * their dates as dd/mm/yyyy.
  */
 document.addEventListener('DOMContentLoaded', function () {
-    const csrftoken = Cookies.get('csrftoken')
+    // Django's CSRF token, read from its cookie
+    const cookie = document.cookie.split('; ').find(row => row.startsWith('csrftoken='))
+    const csrftoken = cookie ? decodeURIComponent(cookie.split('=')[1]) : ''
     const user_id = $("#user_id").attr("value")
     const is_admin = $("#is_admin").attr("value")
     const calendarEl = document.getElementById('calendar');
