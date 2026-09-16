@@ -23,6 +23,10 @@ else:
     # session and CSRF cookies never need to travel in clear.
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
+    # Since Django 4.0, a form's Origin header must match the site. Nginx talks
+    # to Gunicorn in plain HTTP, so Django would otherwise reject
+    # https://labouygue.fr as a foreign origin.
+    CSRF_TRUSTED_ORIGINS = ["https://labouygue.fr", "https://www.labouygue.fr"]
 
 # Application definition
 INSTALLED_APPS = [
