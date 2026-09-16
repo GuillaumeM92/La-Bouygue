@@ -37,6 +37,10 @@ def home(request):
     infoposts_length = len(InfoPost.objects.all()) - user.informations_viewed
     works_length = len(Work.objects.all()) - user.works_viewed
     users_length = MyUser.objects.filter(is_active=True).count() - user.users_viewed
+    # Administrators see pending registrations here, even if the notice e-mail was lost
+    pending_accounts = 0
+    if user.is_staff or user.is_superuser:
+        pending_accounts = MyUser.objects.filter(is_active=False).count()
     # get posts and comments that contain images
     posts_with_images = Post.objects.exclude(image='')
     comments_with_images = Comment.objects.exclude(image='')
@@ -55,6 +59,7 @@ def home(request):
         'infoposts_length': infoposts_length,
         'works_length': works_length,
         'users_length': users_length,
+        'pending_accounts': pending_accounts,
         'caroussel_img_1': caroussel_img_1,
         'caroussel_img_2': caroussel_img_2,
         'caroussel_img_3': caroussel_img_3,

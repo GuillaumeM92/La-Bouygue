@@ -9,7 +9,7 @@
             <div class="row justify-content-center">
                 <div class="col-lg-8">
                     <div class="berg-surtitre berg-surtitre--clair">La Bouygue</div>
-                    <h1 class="berg-entete-titre">Bonjour {{ user.surname|default:user.username }}</h1>
+                    <h1 class="berg-entete-titre">Bonjour{% if user.surname %} {{ user.surname }}{% endif %}</h1>
                     <p class="berg-entete-texte">Tout ce qui se passe à la maison, d'un coup d'œil.</p>
                 </div>
             </div>
@@ -21,6 +21,15 @@
 <!-- Les rubriques -->
 <section class="berg-section berg-section--serree">
     <div class="container">
+        {% if pending_accounts %}
+            <div class="alert alert-warning d-flex flex-wrap align-items-center" role="status">
+                <span class="mr-3">
+                    <i class="fas fa-user-clock mr-2"></i>
+                    {{ pending_accounts }} compte{{ pending_accounts|pluralize }} attend{{ pending_accounts|pluralize:"ent" }} votre validation.
+                </span>
+                <a class="ml-auto" href="{% url 'activate-users' %}">Voir les inscriptions<i class="fas fa-arrow-right ml-2"></i></a>
+            </div>
+        {% endif %}
         <div class="berg-titre-section">
             <div class="berg-surtitre">Les rubriques</div>
             <h2>Par où voulez-vous commencer&nbsp;?</h2>
