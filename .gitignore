@@ -150,3 +150,6 @@ apps/food/chromedriver_win32/
 config/chromdriver.exe
 migrations/
 db_backups/
+
+# macOS
+.DS_Store
