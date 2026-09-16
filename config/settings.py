@@ -18,6 +18,8 @@ ALLOWED_HOSTS = [os.getenv("HOST")]
 if os.getenv("ENV") == 'dev':
     DEBUG = True
     ALLOWED_HOSTS = ["localhost", "127.0.0.1", '0.0.0.0']
+    # Local dev uses Google's reCAPTCHA test keys, which always validate
+    SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
 
 # Application definition
 INSTALLED_APPS = [
@@ -89,7 +91,7 @@ else:
     DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
