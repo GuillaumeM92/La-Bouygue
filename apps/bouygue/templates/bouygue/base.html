@@ -17,10 +17,10 @@
         <!-- Thème d'origine : on n'en garde que la grille et les plugins Bootstrap. -->
         <link href="{% static 'bouygue/css/styles.min.css' %}" rel="stylesheet" />
 
-        <!-- Charte « Bergerie » : chargée après le thème, elle le recouvre. -->
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Alegreya+Sans:wght@400;500;700&family=Caveat:wght@500;600&display=swap" rel="stylesheet" />
+        <!-- Charte « Bergerie » : chargée après le thème, elle le recouvre.
+             Ses polices sont hébergées sur le site (voir bergerie.css). -->
+        <link rel="preload" href="{% static 'bouygue/assets/fonts/bergerie/alegreya-sans-400-latin.woff2' %}" as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href="{% static 'bouygue/assets/fonts/bergerie/fraunces-latin.woff2' %}" as="font" type="font/woff2" crossorigin />
         <link href="{% static 'bouygue/css/bergerie.css' %}" rel="stylesheet" />
 
         <link rel="icon" type="image/x-icon" href="{% static 'bouygue/assets/img/favicon.jpg' %}" />
