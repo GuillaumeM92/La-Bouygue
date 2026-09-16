@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from apps.bouygue.utils import safe_next
 from django.core.paginator import Paginator
 from client_side_image_cropping import ClientsideCroppingWidget
 from apps.users.models import MyUser
@@ -113,7 +114,6 @@ class ActivityUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return form
 
     def form_valid(self, form):
-        form.instance.author = self.request.user
         messages.success(self.request, str("L'activité a bien été modifiée."))
         return super().form_valid(form)
 
@@ -159,7 +159,6 @@ class ActivityCommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateV
         return form
 
     def form_valid(self, form):
-        form.instance.author = self.request.user
         messages.success(self.request, str("Le commentaire a bien été modifié."))
         return super().form_valid(form)
 
@@ -176,11 +175,8 @@ class ActivityCommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteV
     context_object_name = 'comment'
 
     def get_success_url(self):
-        next_url = self.request.GET.get('next')
-        if next_url:
-            messages.success(self.request, str("Le commentaire a bien été supprimé."))
-            return next_url  # return next url for redirection
-        return '/activities/'  # return some other url if next parameter not present
+        messages.success(self.request, str("Le commentaire a bien été supprimé."))
+        return safe_next(self.request, '/activities/')
 
     def test_func(self):
         activity = self.get_object()

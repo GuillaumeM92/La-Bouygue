@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib import messages
+from apps.bouygue.utils import safe_next
 from apps.users.models import MyUser
 from .models import Work, WorkComment
 from .forms import WorkCommentForm
@@ -57,7 +58,7 @@ def work_detail(request, pk):
     form = WorkCommentForm()
 
     if request.method == 'POST':
-        if request.POST['action'] == 'comment':
+        if request.POST.get('action') == 'comment':
             form = WorkCommentForm(data=request.POST)
             if form.is_valid():
                 # Create Comment object but don't save to database yet
@@ -70,7 +71,7 @@ def work_detail(request, pk):
                 messages.success(request, str("Commentaire publié."))
             form = WorkCommentForm()
 
-        elif request.POST['action'] == 'done':
+        elif request.POST.get('action') == 'done':
             work.state = 2
             work.save()
             # Post comment saying who completed the work
@@ -136,7 +137,6 @@ class WorkUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return form
 
     def form_valid(self, form):
-        form.instance.author = self.request.user
         messages.success(self.request, str("Le travail a bien été modifié."))
         return super().form_valid(form)
 
@@ -162,6 +162,7 @@ class WorkDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         if (
             self.request.user == work.author
             or self.request.user.is_superuser
+            or self.request.user.is_staff
             or self.request.user.has_perm("work.delete_work")
         ):
             return True
@@ -185,7 +186,6 @@ class WorkCommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView)
         return form
 
     def form_valid(self, form):
-        form.instance.author = self.request.user
         messages.success(self.request, str("Le commentaire a bien été modifié."))
         return super().form_valid(form)
 
@@ -202,11 +202,8 @@ class WorkCommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView)
     context_object_name = 'comment'
 
     def get_success_url(self):
-        next_url = self.request.GET.get('next')
-        if next_url:
-            messages.success(self.request, str("Le commentaire a bien été supprimé."))
-            return next_url  # return next url for redirection
-        return '/work/'  # return some other url if next parameter not present
+        messages.success(self.request, str("Le commentaire a bien été supprimé."))
+        return safe_next(self.request, '/work/')
 
     def test_func(self):
         work = self.get_object()

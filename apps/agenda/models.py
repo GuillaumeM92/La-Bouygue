@@ -33,7 +33,8 @@ class ReservationManager(models.Manager):
                 description=form.data['description'], color=random_color, user=user)
         else:
             reservation = Reservation.objects.filter(id=id)
-            if user == reservation.first().user or user.is_superuser or user.is_staff:
+            existing = reservation.first()
+            if existing and (user == existing.user or user.is_superuser or user.is_staff):
                 reservation.update(name=form.data['name'], start_date=start_date,
                                    end_date=end_date, description=form.data['description'])
                 return reservation

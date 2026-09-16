@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib import messages
+from apps.bouygue.utils import safe_next
 from apps.users.models import MyUser
 from .models import InfoPost, InfoComment
 from .forms import InfoCommentForm
@@ -61,7 +62,7 @@ def infopost_detail(request, pk):
         'page_obj': page_obj, 'comment_count': comment_count})
 
 
-class InfoPostCreateView(LoginRequiredMixin, CreateView):
+class InfoPostCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = InfoPost
     template_name = 'info/infopost-create.html'
     fields = ['title', 'content', 'image']
@@ -81,6 +82,10 @@ class InfoPostCreateView(LoginRequiredMixin, CreateView):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
+    def test_func(self):
+        user = self.request.user
+        return user.is_superuser or user.is_staff
+
 
 class InfoPostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = InfoPost
@@ -99,7 +104,6 @@ class InfoPostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return form
 
     def form_valid(self, form):
-        form.instance.author = self.request.user
         messages.success(self.request, str("L'information a bien été modifiée."))
         return super().form_valid(form)
 
@@ -145,7 +149,6 @@ class InfoCommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView)
         return form
 
     def form_valid(self, form):
-        form.instance.author = self.request.user
         messages.success(self.request, str("Le commentaire a bien été modifié."))
         return super().form_valid(form)
 
@@ -162,11 +165,8 @@ class InfoCommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView)
     context_object_name = 'comment'
 
     def get_success_url(self):
-        next_url = self.request.GET.get('next')
-        if next_url:
-            messages.success(self.request, str("Le commentaire a bien été supprimé."))
-            return next_url  # return next url for redirection
-        return '/info/'  # return some other url if next parameter not present
+        messages.success(self.request, str("Le commentaire a bien été supprimé."))
+        return safe_next(self.request, '/info/')
 
     def test_func(self):
         info = self.get_object()
@@ -176,7 +176,7 @@ class InfoCommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView)
         return False
 
 
-class ActivateUsersListView(LoginRequiredMixin, ListView):
+class ActivateUsersListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = MyUser
     template_name = 'admin/activate-users.html'
     context_object_name = 'users'
@@ -188,23 +188,22 @@ class ActivateUsersListView(LoginRequiredMixin, ListView):
         context["inactive_users"] = MyUser.objects.filter(is_active=False).order_by("-date_joined")
         return context
 
+    def test_func(self):
+        # The page lists every account, pending ones included: administrators only
+        user = self.request.user
+        return user.is_superuser or user.is_staff
+
     def post(self, request, *args, **kwargs):
-        if self.request.user.is_superuser or self.request.user.is_staff:
-            if request.method == 'POST':
-                user_id = request.POST['action']
-                user = MyUser.objects.get(id=user_id)
-                user.is_active = True
-                user.save()
-                user_email = user.email
-                send_mail("La Bouygue - Compte Activé",
-                          ("Votre compte La Bouygue vient d'être activé. "
-                           "Vous pouvez désormais vous connecter en cliquant "
-                           "sur le lien suivant : https://labouygue.fr/login/"),
-                          None, [user_email], fail_silently=True, )
-                messages.success(self.request, str("Utilisateur activé !"))
-            return super().get(request, *args, **kwargs)
-        else:
-            return render(request, 'errors/error-403.html', status=403)
+        user = get_object_or_404(MyUser, id=request.POST.get('action'), is_active=False)
+        user.is_active = True
+        user.save()
+        send_mail("La Bouygue - Compte Activé",
+                  ("Votre compte La Bouygue vient d'être activé. "
+                   "Vous pouvez désormais vous connecter en cliquant "
+                   "sur le lien suivant : https://labouygue.fr/login/"),
+                  None, [user.email], fail_silently=True, )
+        messages.success(self.request, str("Utilisateur activé !"))
+        return super().get(request, *args, **kwargs)
 
 
 class AllUsersListView(LoginRequiredMixin, ListView):

@@ -16,7 +16,7 @@ def budget(request):
     else:
         difference = None
     funding = Funding.objects.order_by('-date_posted').first()
-    if funding:
+    if funding and funding.goal:
         funding_percent = int((funding.progress / funding.goal) * 100)
     else:
         funding_percent = None
