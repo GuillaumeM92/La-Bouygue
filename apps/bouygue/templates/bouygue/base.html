@@ -97,7 +97,7 @@
                                     <a class="btn btn-outline-white btn-sm" id="admin" href="{% url 'activate-users' %}">Admin</a>
                                 {% endif %}
                                 <a class="btn btn-outline-white btn-sm ml-lg-2" href="{% url 'users-profile' %}" name="profile">Profil</a>
-                                <form class="d-inline-block ml-lg-2" method="post" action="{% url 'users-logout' %}">
+                                <form class="d-lg-inline-block ml-lg-2" method="post" action="{% url 'users-logout' %}">
                                     {% csrf_token %}
                                     <button type="submit" class="btn btn-outline-white btn-sm" id="logout-icon">Déconnexion<i class="fas fa-arrow-right ml-2"></i></button>
                                 </form>
