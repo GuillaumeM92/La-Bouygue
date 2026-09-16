@@ -1,0 +1,28 @@
+{% load static %}
+{% comment %}
+    En-tête de rubrique : une photo de la vallée, chauffée par un voile
+    duotone, refermée par une crête de montagne.
+
+    Usage :
+      {% include 'blocks/berg-entete.html' with titre="Travaux" chapeau="…" image="bouygue/assets/img/backgrounds/montagne/pic_har.jpg" %}
+
+    Paramètres :
+      titre    — obligatoire, le nom de la rubrique
+      chapeau  — facultatif, une phrase qui dit à quoi sert la page
+      surtitre — facultatif, l'étiquette en petites capitales
+      image    — chemin statique de la photo de fond
+{% endcomment %}
+<header class="berg-entete" style="background-image: url('{% static image %}')">
+    <div class="berg-entete-contenu">
+        <div class="container text-center">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    {% if surtitre %}<div class="berg-surtitre berg-surtitre--clair">{{ surtitre }}</div>{% endif %}
+                    <h1 class="berg-entete-titre">{{ titre }}</h1>
+                    {% if chapeau %}<p class="berg-entete-texte">{{ chapeau }}</p>{% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'blocks/svg-border-wave.html' %}
+</header>

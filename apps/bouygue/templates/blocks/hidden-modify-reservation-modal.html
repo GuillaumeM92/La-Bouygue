@@ -1,19 +1,23 @@
 {% load static %}
 {% load crispy_forms_tags %}
-<!-- Hidden reservation modification modal -->
+{% comment %}
+    Modification de son propre séjour (ou de n'importe lequel, pour un
+    administrateur). Le script du calendrier déclenche
+    #modify-reservation-button, remplit les champs de #staticBackdrop2 et
+    branche la suppression sur #delete-reservation.
+{% endcomment %}
 <button hidden="hidden" class="btn" id="modify-reservation-button" type="button" data-toggle="modal" data-target="#staticBackdrop2"></button>
-<div class="modal fade" id="staticBackdrop2" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+<div class="modal fade" id="staticBackdrop2" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Séjour</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h5 class="modal-title" id="staticBackdropLabel2">Modifier le séjour</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Fermer"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-            <!-- Registration form-->
                 <form method="POST" autocomplete="off">
                     {% csrf_token %}
-                    <!-- Form Row-->
                     <fieldset class="form-group">
                         {{ form.id|as_crispy_field }}
                         {{ form.name|as_crispy_field }}
@@ -21,36 +25,30 @@
                         {{ form.end_date|as_crispy_field }}
                         {{ form.description|as_crispy_field }}
                     </fieldset>
-                    <!-- Form Group (create account submit)-->
                     <div class="modal-footer form-group mb-0">
+                        <button class="btn btn-outline-danger mr-auto" type="button" data-toggle="modal" data-target="#staticBackdrop4">Supprimer le séjour</button>
+                        <button class="btn btn-primary" type="submit">Enregistrer</button>
+                    </div>
+                </form>
 
-                        <!-- Confirmation modal -->
-                        <button class="btn btn-outline-red font-weight-bolder" type="button" data-toggle="modal" data-target="#staticBackdrop4">Supprimer le séjour</button>
-                        <button class="btn btn-outline-teal font-weight-bolder" type="submit">Modifier le séjour</button>
-                        <div class="modal fade" id="staticBackdrop4" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-md" role="document">
-                                <div class="modal-content bg-dark" style="margin-top: 20rem;">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title text-white" id="staticBackdropLabel">Attention</h5>
-                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                    </div>
-                                    <div class="modal-body text-white">
-                                        <p>Etes vous sûr de vouloir supprimer ce séjour ?</p>
-                                    <!-- Registration form-->
-                                        <form method="POST"  autocomplete="off">
-                                            {% csrf_token %}
-                                            <!-- Form Row-->
-                                            <fieldset class="form-group">
-                                                <button class="btn btn-primary font-weight-bolder" data-dismiss="modal">Annuler</button>
-                                                <button class="btn btn-red font-weight-bolder ml-1" type="button" id="delete-reservation">Supprimer</button>
-                                            </fieldset>
-                                        </form>
-                                    </div>
+                <!-- Confirmation de suppression -->
+                <div class="modal fade" id="staticBackdrop4" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel4" aria-hidden="true">
+                    <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+                        <div class="modal-content bg-dark">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="staticBackdropLabel4">Attention</h5>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Fermer"><span aria-hidden="true">&times;</span></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Êtes-vous sûr de vouloir supprimer ce séjour&nbsp;? Il disparaîtra du calendrier de tout le monde.</p>
+                                <div class="berg-form-pied">
+                                    <button class="btn btn-danger" type="button" id="delete-reservation">Oui, supprimer</button>
+                                    <button class="btn btn-outline-white" type="button" data-dismiss="modal">Annuler</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>

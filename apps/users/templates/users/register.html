@@ -1,43 +1,24 @@
-{% extends "bouygue/base.html" %}
+{% extends "bouygue/base-volet.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
-{% block content %}
-<div id="layoutAuthentication_content" class="bg-img-cover bg-gray-900" style="padding-right: 0.5rem; padding-left: 0.5rem; background-image: url({% static 'bouygue/assets/img/backgrounds/montagne/foratata.jpg' %});">
-    <div class="container" style="padding-right: 1rem; padding-left: 1rem;">
-        <div class="row justify-content-center">
-            <div class="col-lg-9">
-                <!-- Basic registration form-->
-                <div class="card shadow-lg border-0 rounded-lg mt-10 mb-10 animated--fade-in" style="opacity: 92% ">
-                    <div class="card-header justify-content-center" style="background-color: #19273c; opacity: 96%"><h3 class="font-weight-50 my-4" style="color: white">Créer un compte</h3></div>
-                    <div class="card-body">
-                        {% if messages %}
-                            {% for message in messages %}
-                                <div class="font-weight-600 text-center alert alert-{{ message.tags }}">
-                                    {{ message }}
-                                </div>
-                            {% endfor %}
-                        {% endif %}
-                        <!-- Registration form-->
-                        <form method="POST" autocomplete="off">
-                            {% csrf_token %}
-                            <!-- Form Row-->
-                            <fieldset class="form-group">
-                                {{ form|crispy }}
-                            </fieldset>
-                            <!-- Form Group (create account submit)-->
-                            <div class="form-group mt-4 mb-0">
-                                <button class="btn btn-primary btn-block font-weight-bold" type="submit" name="register">Créer le compte</button>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="card-footer text-center">
-                        <div class="small">
-                            <a href="{% url 'users-login' %}">Déjà un compte ? Se connecter</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+{% block title %} — Créer un compte {% endblock %}
+{% block volet_image %}{% static 'bouygue/assets/img/backgrounds/montagne/foratata.jpg' %}{% endblock %}
+{% block volet_largeur %}col-lg-8{% endblock %}
+{% block volet_retour %}{% endblock %}
+{% block volet_titre %}Créer un compte{% endblock %}
+{% block volet_corps %}
+    <p class="text-muted mb-4">
+        L'accès est réservé à la famille. Votre compte sera validé par un administrateur
+        avant de vous ouvrir le site&nbsp;: comptez un jour ou deux.
+    </p>
+    <form method="POST" autocomplete="off">
+        {% csrf_token %}
+        <fieldset class="form-group">{{ form|crispy }}</fieldset>
+        <div class="berg-form-pied">
+            <button class="btn btn-primary btn-block" type="submit" name="register">Créer le compte</button>
         </div>
-    </div>
-</div>
-{% endblock content %}
+    </form>
+{% endblock %}
+{% block volet_pied %}
+    <div class="berg-volet-pied">Déjà un compte&nbsp;? <a href="{% url 'users-login' %}">Se connecter</a>.</div>
+{% endblock %}

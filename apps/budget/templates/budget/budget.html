@@ -1,99 +1,68 @@
 {% extends "bouygue/base.html" %}
 {% load static %}
 {% block content %}
+<div hidden>{% block title %} — Budget {% endblock %}</div>
 
-<!-- Header-->
-<header class="page-header page-header-dark bg-gradient-primary-to-secondary pb-10 overlay" style="background-image: url({% static 'bouygue/assets/img/backgrounds/montagne/ossau.jpg' %}); height: 22rem;">
+{% include 'blocks/berg-entete.html' with surtitre="L'indivision" titre="Budget" chapeau="Où en est le compte commun, et comment il a évolué." image="bouygue/assets/img/backgrounds/montagne/ossau.jpg" %}
+
+<section class="berg-section berg-section--serree">
     <div class="container">
-        <div class="page-header-content pt-1">
-            <div class="row align-items-center justify-content-between">
-                <div class="col-auto mt-4">
-                    <h1 class="page-header-title">
-                        Budget
-                    </h1>
-                    <div class="page-header-subtitle mb-2">
-                        Représentations graphiques du budget de la Bouygue
+
+        {% include 'blocks/berg-messages.html' %}
+
+        <div class="berg-actions">
+            <a class="berg-retour" href="{% url 'bouygue-home' %}">Accueil</a>
+            {% if user.is_superuser or user.is_staff %}
+                <a class="btn btn-primary btn-sm ml-auto" href="{% url 'budget-create' %}" name="create-budget">Mettre à jour le budget</a>
+            {% endif %}
+        </div>
+
+        <div class="row">
+            <div class="col-lg-5 mb-4">
+                <div class="berg-tuile-budget">
+                    <div class="berg-surtitre">Compte indivision</div>
+                    <div class="berg-tuile-budget-total">{{ current_budget.total }} €</div>
+                    <hr class="berg-couture my-3" />
+                    <div class="berg-surtitre">Dernière opération</div>
+                    <p class="mb-3">
+                        <strong class="{% if difference > 0 %}text-success{% else %}text-danger{% endif %}">{% if difference > 0 %}+{% endif %}{{ difference }} €</strong>
+                        — {{ current_budget.description }}
+                    </p>
+                    <a class="berg-article-suite" href="{% url 'budget-detail' %}">Voir toutes les opérations</a>
+                    <div class="small text-muted mt-3">Mis à jour le {{ current_budget.date_posted.date }} à {{ current_budget.date_posted.time }}</div>
+                </div>
+            </div>
+
+            <div class="col-lg-7 mb-4">
+                <div class="berg-tuile-budget h-100">
+                    <div class="d-flex align-items-baseline justify-content-between">
+                        <div class="berg-surtitre mb-0">Participations annuelles</div>
+                        {% if user.is_superuser or user.is_staff %}
+                            <a class="small" name="add-funding" href="{% url 'funding-create' %}">Modifier</a>
+                        {% endif %}
                     </div>
+                    <div class="berg-tuile-budget-total">{{ funding_percent }} %</div>
+                    <p class="text-muted">{{ funding.progress }} € collectés sur {{ funding.goal }} €</p>
+                    <div class="progress mb-3">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: {{ funding_percent }}%" aria-valuenow="{{ funding_percent }}" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <div class="small text-muted">Mis à jour le {{ funding.date_posted.date }} à {{ funding.date_posted.time }}</div>
                 </div>
             </div>
         </div>
-    </div>
-</header>
 
-<!-- Main page content-->
-<div class="container mt-n10 mb-10" style="padding-left: 1.5rem; padding-right: 1.5rem;">
-    <div class="row mt-4">
-    {% if user.is_superuser or user.is_staff %}
-    <div class="col-xxl-6 col-lg-12 d-flex">
-        <a class="btn btn-green font-weight-700 mb-5" href="{% url 'budget-create' %}" name="create-budget">Mettre à jour le Budget</a>
-    </div>
-    {% endif %}
-    <div class="col-xxl-3 col-lg-6">
-        <div class="card mb-4">
-            <div class="card-body bg-blue">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div class="mr-3">
-                        <div class="text-white-75 small">Compte indivision</div>
-                        <div class="text-lg text-white font-weight-bold">Total : {{ current_budget.total }} €</div>
-                    </div>
-                    <i class="feather-xl text-white-50" data-feather="dollar-sign"></i>
-                </div>
-            </div>
-            <div class="card-body bg-white">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div class="mr-3 mb-3">
-                        <div class="text-black small">Dernière Opération</div>
-                        <div class="text-lg text-black font-weight-bold">{% if difference > 0 %} + {% endif %} {{ difference }} € &nbsp; - &nbsp; {{ current_budget.description }}</div>
-                    </div>
-                    <i class="feather-xl text-white-50" data-feather="dollar-sign"></i>
-                </div>
-            </div>
-            <div class="card-footer d-flex align-items-center justify-content-between bg-rgba(0,0,0,.03)">
-                <a class="small text-black stretched-link" href="{% url 'budget-detail' %}">Voir toutes les opérations</a>
-                <div class="small text-black"><i class="fas fa-angle-right"></i></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-xxl-4 col-xl-6 mb-4">
-        <div class="card card-header-actions h-100">
-            <div class="card-header">
-                Progression des financements
-                {% if user.is_superuser or user.is_staff %}
-                <div class="dropdown no-caret">
-                    <button class="btn btn-transparent-dark btn-icon dropdown-toggle" name="funding-menu" id="dropdownMenuButton" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="text-gray-500" data-feather="more-vertical"></i></button>
-                    <div class="dropdown-menu dropdown-menu-right animated--fade-in-up" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" name="add-funding" href="{% url 'funding-create' %}">
-                            <div class="dropdown-item-icon"><i class="text-gray-500" data-feather="list"></i></div>
-                            Modifier
-                        </a>
-                    </div>
-                </div>
-                {% endif %}
-            </div>
+        <div class="card">
+            <div class="card-header">Évolution du budget</div>
             <div class="card-body">
-                <h4 class="small mb-3">
-                    <b>Participations Annuelles</b><br>
-                    <span class="float-right font-weight-bold">{{ funding_percent }} %</span>
-                    <p class="mt-1">{{ funding.progress }} € / {{ funding.goal }} €</p>
-                </h4>
-                <div class="progress mb-4"><div class="progress-bar bg-success" role="progressbar" style="width: {{ funding_percent }}%" aria-valuenow="{{ funding_percent }}" aria-valuemin="0" aria-valuemax="100"></div></div>
+                <div class="chart-area"><canvas id="myAreaChart" width="100%" height="30"></canvas></div>
             </div>
-            <div class="card-footer small text-muted">Mis à jour le {{ funding.date_posted.date }} à {{ funding.date_posted.time }}</div>
+            <div class="card-footer small text-muted">Mis à jour le {{ current_budget.date_posted.date }} à {{ current_budget.date_posted.time }}</div>
         </div>
     </div>
-</div>
+</section>
+{% endblock content %}
 
-<!-- Area chart example-->
-<div class="card mb-4">
-    <div class="card-header">Evolution du budget</div>
-    <div class="card-body">
-        <div class="chart-area"><canvas id="myAreaChart" width="100%" height="30"></canvas></div>
-    </div>
-    <div class="card-footer small text-muted">Mis à jour le {{ current_budget.date_posted.date }} à {{ current_budget.date_posted.time }}</div>
-</div>
-
-<!-- Budget specific imports -->
+{% block scripts_extra %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" crossorigin="anonymous"></script>
 <script src="{% static 'budget/js/chart-area-budget.js' %}"></script>
-{% endblock content %}
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "bouygue/base.html" %}
+{% load static %}
+{% comment %}
+    Gabarit « volet » : une carte de papier posée sur une photo de la vallée.
+    Sert à toutes les pages courtes et centrées — connexion, inscription,
+    création, modification, confirmation de suppression, profil.
+
+    Il remplace le bloc #layoutAuthentication_content du thème d'origine, qui
+    fixait une hauteur en dur (height: 62rem) et cassait dès qu'un champ
+    s'ajoutait. Ici la hauteur suit le contenu.
+
+    Blocs à remplir dans les gabarits enfants :
+      volet_image    — chemin statique de la photo de fond
+      volet_largeur  — classes de colonne (par défaut col-lg-8 col-xl-7)
+      volet_retour   — le lien de retour dans l'en-tête (mettre vide pour l'ôter)
+      volet_titre    — le titre de la page
+      volet_corps    — le contenu (formulaire, texte…)
+      volet_pied     — le pied de carte (facultatif)
+      volet_imports  — scripts/feuilles propres à la page (recadrage d'image…)
+{% endcomment %}
+
+{% block content %}
+{% block volet_imports %}{% endblock %}
+
+<div id="layoutAuthentication_content" class="berg-volet-fond" style="background-image: url('{% block volet_image %}{% static 'bouygue/assets/img/backgrounds/montagne/bouygue1.JPG' %}{% endblock %}')">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="{% block volet_largeur %}col-lg-8 col-xl-7{% endblock %}">
+                <div class="berg-volet animated--fade-in">
+
+                    <div class="berg-volet-tete">
+                        {% block volet_retour %}
+                            <a class="berg-retour" onClick="javascript:history.go(-1);" title="Revenir en arrière">Retour</a>
+                        {% endblock %}
+                        <h1>{% block volet_titre %}{% endblock %}</h1>
+                    </div>
+
+                    <div class="berg-volet-corps">
+                        {% include 'blocks/berg-messages.html' %}
+                        {% block volet_corps %}{% endblock %}
+                    </div>
+
+                    {% block volet_pied %}{% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

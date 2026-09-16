@@ -1,0 +1,2181 @@
+/* =============================================================================
+   LA BOUYGUE — Charte graphique « Bergerie »
+   -----------------------------------------------------------------------------
+   Refonte visuelle complete du site de la maison de famille.
+
+   Cette feuille est chargee APRES styles.min.css (theme SB UI Kit Pro). On garde
+   du theme ce qui est structurel — la grille Bootstrap 4, les plugins JS
+   (dropdown, modal, carousel, collapse) — et on remplace tout le reste :
+   couleurs, typographie, matieres, formes, ombres, rythme.
+
+   Le theme d'origine etait un theme SaaS bleu nuit. L'intention ici est
+   inverse : une bergerie de montagne dans les Pyrenees, ou l'on se retrouve en
+   famille l'ete. Murs chaules, poutres de chataignier, toit de lauze, tomettes
+   au sol, laine ecrue, lumiere chaude. Rien de froid, rien de bleu, rien de
+   « corporate » : du papier, du bois, de la pierre.
+
+   Sommaire
+     1.  Jetons (couleurs, typographie, rythme, matieres)
+     2.  Fondations et neutralisation du theme
+     3.  Typographie
+     4.  Navigation
+     5.  Boutons
+     6.  En-tetes de page
+     7.  Cartes, vignettes, volets
+     8.  Listes d'articles et de taches
+     9.  Formulaires
+     10. Messages, etiquettes, pastilles
+     11. Pagination et tableaux
+     12. Modales
+     13. Carrousel et images
+     14. Pied de page
+     15. Blocs de composition
+     16. Agenda (FullCalendar + widget date de l'admin)
+     17. Budget
+     18. Pages d'erreur
+     19. Responsive
+     20. Accessibilite, mouvement, impression
+   ========================================================================== */
+
+
+/* =============================================================================
+   1. JETONS
+   ========================================================================== */
+
+:root {
+    /* --- Matieres claires : chaux, papier, laine, pierre seche ------------- */
+    --b-chaux:      #f6f1e6;   /* mur chaule — fond general                   */
+    --b-chaux-2:    #efe7d6;   /* section alternee                            */
+    --b-papier:     #fffcf4;   /* feuille posee sur le mur — cartes           */
+    --b-laine:      #e3d9c3;   /* laine ecrue — surfaces secondaires          */
+    --b-pierre:     #c9bca3;   /* pierre seche — filets et bordures           */
+    --b-pierre-2:   #dcd1ba;
+
+    /* --- Bois et terres cuites -------------------------------------------- */
+    --b-bois:       #8a5a38;   /* chataignier — liens, filets d'accent        */
+    --b-bois-2:     #5a3a24;   /* poutre dans l'ombre                         */
+    --b-tomette:    #ae5029;   /* tomette — action principale                 */
+    --b-tomette-2:  #8e3d1d;
+    --b-miel:       #d59a2e;   /* miel, ocre — signalement, surlignage        */
+
+    /* --- Verts et ardoises ------------------------------------------------ */
+    --b-sapin:      #3e5540;   /* sapin — couleur d'appui                     */
+    --b-sapin-2:    #56704f;
+    --b-lauze:      #2a2f2b;   /* toit de lauze — bandeau et pied de page     */
+    --b-lauze-2:    #383f39;
+
+    /* --- Encres ------------------------------------------------------------ */
+    --b-encre:      #282320;
+    --b-encre-2:    #635a50;
+    --b-encre-3:    #938878;
+
+    /* --- Etats ------------------------------------------------------------- */
+    --b-vert:       #4a6d43;
+    --b-orange:     #b3741a;
+    --b-rouge:      #9d3626;
+
+    /* --- Typographie -------------------------------------------------------
+       Fraunces : serif variable, un peu « wonky », taillee a la main.
+       Alegreya Sans : humaniste chaleureuse, excellente en francais.
+       Caveat : la craie sur l'ardoise de la cuisine.                        */
+    --b-titre:  'Fraunces', 'Iowan Old Style', Georgia, 'Times New Roman', serif;
+    --b-texte:  'Alegreya Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --b-craie:  'Caveat', 'Bradley Hand', 'Segoe Script', cursive;
+
+    /* --- Formes : presque droites, comme une planche sciee ------------------ */
+    --b-r-xs: 2px;
+    --b-r:    4px;
+    --b-r-lg: 7px;
+    --b-r-xl: 12px;
+
+    /* --- Ombres : chaudes et courtes, jamais bleutees ----------------------- */
+    --b-ombre-1: 0 1px 2px rgba(58, 42, 26, .08);
+    --b-ombre-2: 0 3px 10px rgba(58, 42, 26, .11);
+    --b-ombre-3: 0 14px 34px rgba(58, 42, 26, .18);
+    --b-ombre-4: 0 26px 64px rgba(30, 22, 14, .42);
+
+    /* --- Filets ------------------------------------------------------------ */
+    --b-filet:      1px solid var(--b-pierre);
+    --b-filet-doux: 1px solid var(--b-pierre-2);
+
+    /* --- Rythme ------------------------------------------------------------ */
+    --b-nav-h: 68px;
+}
+
+
+/* =============================================================================
+   2. FONDATIONS ET NEUTRALISATION DU THEME
+   ========================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--b-nav-h) + 12px);
+}
+
+body {
+    font-family: var(--b-texte);
+    font-size: 1.075rem;
+    line-height: 1.62;
+    color: var(--b-encre);
+    background-color: var(--b-chaux);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+}
+
+/* Le grain de l'enduit a la chaux, tres discret, pose sur toute la page.
+   Fixe : la lumiere ne « defile » pas avec le contenu.                       */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: .55;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23g)' opacity='.05'/%3E%3C/svg%3E");
+}
+body > * { position: relative; z-index: 1; }
+
+/* Le theme peint tout en bleu pale ou bleu nuit : on repeint a la chaux. */
+body,
+#layoutDefault, #layoutDefault_content, #layoutError, #layoutError_content,
+.bg-light, .bg-white, .bg-gray-100, .bg-gray-200, .bg-gray-300 {
+    background-color: var(--b-chaux) !important;
+}
+.bg-dark, .bg-gray-800, .bg-gray-900, .bg-black,
+.bg-gradient-primary-to-secondary {
+    background-color: var(--b-lauze) !important;
+    background-image: none !important;
+}
+.bg-blue, .bg-teal, .bg-indigo, .bg-purple { background-color: var(--b-sapin) !important; }
+.bg-green { background-color: var(--b-vert) !important; }
+.bg-red   { background-color: var(--b-rouge) !important; }
+
+/* Les blocs « contenu secondaire » du theme (bg-gray-200) deviennent une
+   feuille de papier legerement plus creme, pas un aplat gris.                */
+.bg-gray-200 {
+    background-color: var(--b-chaux-2) !important;
+    border: var(--b-filet-doux);
+    border-radius: var(--b-r-lg) !important;
+}
+
+::selection { background: var(--b-miel); color: var(--b-encre); }
+
+/* La barre fixe mange le haut de page : on decale tout le contenu. */
+#layoutDefault > #layoutDefault_content:nth-of-type(2),
+#layoutDefault > div > #layoutDefault_content { padding-top: 0; }
+
+/* Le theme abuse des hauteurs fixes en ligne (height: 62rem, 100rem...) sur les
+   pages a formulaire. Elles cassent le rendu des qu'un champ est ajoute ou que
+   l'ecran change. On neutralise partout, au profit d'une hauteur minimale.    */
+#layoutAuthentication_content,
+#responsive-calendar[style],
+section[style*="height"] {
+    height: auto !important;
+}
+
+
+/* =============================================================================
+   3. TYPOGRAPHIE
+   ========================================================================== */
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: var(--b-titre);
+    font-weight: 600;
+    font-optical-sizing: auto;
+    font-variation-settings: 'SOFT' 24, 'WONK' 1;
+    color: var(--b-encre);
+    letter-spacing: -.012em;
+    line-height: 1.16;
+    margin-top: 0;
+}
+h1, .h1 { font-size: clamp(2.05rem, 1.5rem + 2.4vw, 3.15rem); font-weight: 700; }
+h2, .h2 { font-size: clamp(1.65rem, 1.3rem + 1.6vw, 2.3rem);  font-weight: 600; }
+h3, .h3 { font-size: clamp(1.35rem, 1.15rem + 1vw, 1.7rem); }
+h4, .h4 { font-size: 1.3rem; }
+h5, .h5 { font-size: 1.14rem; }
+h6, .h6 { font-size: 1rem; letter-spacing: 0; }
+
+p { margin-bottom: 1rem; }
+p:last-child { margin-bottom: 0; }
+
+/* Surtitre : petites capitales espacees, comme l'etiquette d'un bocal. */
+.berg-surtitre {
+    display: block;
+    font-family: var(--b-texte);
+    font-size: .76rem;
+    font-weight: 700;
+    letter-spacing: .24em;
+    text-transform: uppercase;
+    color: var(--b-bois);
+    margin-bottom: .5rem;
+}
+.berg-surtitre--clair { color: var(--b-miel); }
+
+/* Note a la craie. Utilisee avec parcimonie : une phrase, pas un paragraphe. */
+.berg-craie {
+    font-family: var(--b-craie);
+    font-size: 1.7rem;
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--b-bois);
+}
+.berg-craie--clair { color: var(--b-miel); }
+
+/* Lettrine sur les textes longs (page de politique de donnees). */
+.berg-lettrine::first-letter {
+    font-family: var(--b-titre);
+    font-size: 3.3em;
+    font-weight: 700;
+    float: left;
+    line-height: .82;
+    margin: .06em .1em 0 0;
+    color: var(--b-tomette);
+}
+
+a {
+    color: var(--b-bois);
+    text-decoration: none;
+    transition: color .15s ease;
+}
+a:hover, a:focus { color: var(--b-tomette); text-decoration: none; }
+
+/* Lien de corps de texte : souligne discret qui s'epaissit au survol. */
+.berg-lien, .single-post-text a, .berg-prose a {
+    box-shadow: inset 0 -1px 0 var(--b-pierre);
+    transition: box-shadow .15s ease, color .15s ease;
+}
+.berg-lien:hover, .single-post-text a:hover, .berg-prose a:hover {
+    box-shadow: inset 0 -2px 0 var(--b-tomette);
+}
+
+/* Filet : une ligne de pierre seche qui s'efface aux extremites. */
+hr {
+    border: 0;
+    height: 1px;
+    margin: 2rem 0;
+    background: linear-gradient(90deg, transparent, var(--b-pierre) 15%, var(--b-pierre) 85%, transparent);
+    opacity: 1;
+}
+/* Variante « couture de laine ». */
+.berg-couture {
+    border: 0;
+    height: 0;
+    border-top: 2px dashed var(--b-pierre);
+    opacity: .85;
+}
+
+.text-muted     { color: var(--b-encre-2) !important; }
+.text-primary   { color: var(--b-sapin) !important; }
+.text-purple,
+.text-info      { color: var(--b-tomette) !important; }
+.text-success   { color: var(--b-vert) !important; }
+.text-danger    { color: var(--b-rouge) !important; }
+.text-warning   { color: var(--b-orange) !important; }
+.text-black     { color: var(--b-encre) !important; }
+.text-gray-400,
+.text-gray-500  { color: var(--b-encre-3) !important; }
+.text-white-75  { color: rgba(255, 252, 244, .8) !important; }
+.lead           { font-size: 1.18rem; color: var(--b-encre-2); }
+small, .small   { font-size: .875rem; }
+
+/* Le theme utilise font-weight-500/600/700/bolder un peu partout. */
+.font-weight-500    { font-weight: 500 !important; }
+.font-weight-600    { font-weight: 600 !important; }
+.font-weight-700,
+.font-weight-bold,
+.font-weight-bolder { font-weight: 700 !important; }
+
+/* Bloc de texte redactionnel : mesure confortable, veuves evitees. */
+.berg-prose { max-width: 68ch; }
+.berg-prose p { margin-bottom: 1.15rem; }
+.berg-prose ul, .berg-prose ol { margin-bottom: 1.15rem; padding-left: 1.3rem; }
+.berg-prose li { margin-bottom: .4rem; }
+
+
+/* =============================================================================
+   4. NAVIGATION — une poutre de chataignier sous le toit de lauze
+   ========================================================================== */
+
+.navbar {
+    min-height: var(--b-nav-h);
+    padding: .5rem 1rem !important;
+    background-color: var(--b-lauze) !important;
+    background-image:
+        linear-gradient(180deg, rgba(255, 252, 244, .06), transparent 45%),
+        repeating-linear-gradient(90deg,
+            rgba(255, 252, 244, .016) 0 1px,
+            transparent 1px 6px);
+    opacity: 1 !important;
+    border-bottom: 3px solid var(--b-bois-2);
+    box-shadow: 0 2px 16px rgba(30, 34, 30, .3);
+    transition: box-shadow .2s ease;
+}
+
+.navbar-brand {
+    display: inline-flex !important;
+    align-items: center;
+    gap: .55rem;
+    font-family: var(--b-titre) !important;
+    font-size: 1.55rem !important;
+    font-weight: 700;
+    letter-spacing: .005em;
+    color: var(--b-chaux) !important;
+    padding: .2rem 0 !important;
+}
+.navbar-brand:hover { color: #fff !important; }
+.berg-marque-glyphe {
+    flex: 0 0 auto;
+    width: 30px;
+    height: 26px;
+    color: var(--b-miel);
+    transition: transform .25s ease;
+}
+.navbar-brand:hover .berg-marque-glyphe { transform: translateY(-2px); }
+
+.navbar-dark .navbar-nav .nav-link,
+.navbar .nav-link {
+    font-family: var(--b-texte);
+    font-size: .95rem !important;
+    font-weight: 700 !important;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--b-laine) !important;
+    padding: .55rem .9rem !important;
+}
+.navbar .nav-link:hover,
+.navbar .nav-link:focus { color: var(--b-miel) !important; }
+.navbar .dropdown-arrow { margin-left: .4rem; font-size: .7em; opacity: .7; }
+
+.navbar-toggler {
+    border: 1px solid rgba(227, 217, 195, .35);
+    border-radius: var(--b-r);
+    color: var(--b-laine);
+    padding: .38rem .6rem;
+}
+.navbar-toggler:focus-visible { outline: 2px solid var(--b-miel); outline-offset: 2px; }
+
+/* --- Le menu des rubriques : une porte d'armoire qui s'ouvre --------------- */
+.dropdown-menu {
+    background-color: var(--b-papier);
+    border: var(--b-filet);
+    border-top: 3px solid var(--b-bois);
+    border-radius: var(--b-r);
+    box-shadow: var(--b-ombre-3);
+    padding: .45rem;
+}
+.dropdown-menu .bg-gray-800 {
+    background-color: var(--b-sapin) !important;
+    background-image:
+        linear-gradient(160deg, var(--b-sapin-2), var(--b-sapin)),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23g)' opacity='.08'/%3E%3C/svg%3E");
+    border-radius: var(--b-r-xs);
+}
+.dropdown-item {
+    font-family: var(--b-texte);
+    font-size: 1rem;
+    font-weight: 600 !important;
+    color: var(--b-encre) !important;
+    border-radius: var(--b-r-xs);
+    padding: .55rem .8rem;
+    border-bottom: 1px dotted var(--b-pierre-2);
+    transition: background-color .12s ease, color .12s ease, padding-left .12s ease;
+}
+.dropdown-item:last-child { border-bottom: 0; }
+.dropdown-item:hover,
+.dropdown-item:focus {
+    background-color: var(--b-laine) !important;
+    color: var(--b-tomette) !important;
+    padding-left: 1.1rem;
+}
+.dropdown-item .badge { margin-left: .4rem; vertical-align: 1px; }
+
+
+/* =============================================================================
+   5. BOUTONS — bois tourne et terre cuite
+   ========================================================================== */
+
+.btn {
+    font-family: var(--b-texte);
+    font-size: .93rem;
+    font-weight: 700;
+    letter-spacing: .05em;
+    line-height: 1.3;
+    border-width: 1px;
+    border-radius: var(--b-r);
+    padding: .62rem 1.3rem;
+    box-shadow: var(--b-ombre-1);
+    transition: transform .12s ease, background-color .15s ease,
+                border-color .15s ease, color .15s ease, box-shadow .15s ease;
+}
+.btn:hover  { transform: translateY(-1px); box-shadow: var(--b-ombre-2); }
+.btn:active { transform: translateY(0);    box-shadow: var(--b-ombre-1); }
+.btn-sm    { padding: .42rem .9rem;  font-size: .82rem; }
+.btn-lg    { padding: .85rem 1.95rem; font-size: 1rem; }
+.btn-block { display: block; width: 100%; }
+
+/* Action principale : la tomette. */
+.btn-primary,
+.btn-teal,
+.btn-primary:not(:disabled):not(.disabled):active {
+    background-color: var(--b-tomette) !important;
+    border-color: var(--b-tomette-2) !important;
+    color: #fffaf1 !important;
+}
+.btn-primary:hover, .btn-primary:focus,
+.btn-teal:hover,    .btn-teal:focus {
+    background-color: var(--b-tomette-2) !important;
+    border-color: var(--b-tomette-2) !important;
+    color: #fffaf1 !important;
+}
+
+/* Action d'appui : le sapin. */
+.btn-secondary, .btn-dark, .btn-blue, .btn-green {
+    background-color: var(--b-sapin) !important;
+    border-color: var(--b-sapin) !important;
+    color: var(--b-chaux) !important;
+}
+.btn-secondary:hover, .btn-dark:hover, .btn-blue:hover, .btn-green:hover {
+    background-color: #334629 !important;
+    border-color: #334629 !important;
+    color: var(--b-chaux) !important;
+}
+
+.btn-success { background-color: var(--b-vert)   !important; border-color: var(--b-vert)   !important; color: #fff !important; }
+.btn-warning { background-color: var(--b-miel)   !important; border-color: #b8821f          !important; color: var(--b-encre) !important; }
+.btn-danger,
+.btn-red     { background-color: var(--b-rouge)  !important; border-color: var(--b-rouge)  !important; color: #fff !important; }
+
+/* Contours : un trait de crayon de charpentier. */
+.btn-outline-primary, .btn-outline-secondary, .btn-outline-dark, .btn-outline-teal {
+    background-color: transparent !important;
+    border-color: var(--b-bois) !important;
+    color: var(--b-bois) !important;
+    box-shadow: none;
+}
+.btn-outline-primary:hover, .btn-outline-secondary:hover,
+.btn-outline-dark:hover,    .btn-outline-teal:hover {
+    background-color: var(--b-bois) !important;
+    border-color: var(--b-bois) !important;
+    color: var(--b-chaux) !important;
+}
+.btn-outline-danger, .btn-outline-red {
+    background-color: transparent !important;
+    border-color: var(--b-rouge) !important;
+    color: var(--b-rouge) !important;
+    box-shadow: none;
+}
+.btn-outline-danger:hover, .btn-outline-red:hover {
+    background-color: var(--b-rouge) !important;
+    border-color: var(--b-rouge) !important;
+    color: #fff !important;
+}
+.btn-outline-success {
+    background-color: transparent !important;
+    border-color: var(--b-vert) !important;
+    color: var(--b-vert) !important;
+    box-shadow: none;
+}
+.btn-outline-success:hover {
+    background-color: var(--b-vert) !important;
+    color: #fff !important;
+}
+
+/* Sur fond sombre (bandeau, photo, modale d'ardoise). */
+.btn-outline-white {
+    background: transparent !important;
+    border-color: rgba(227, 217, 195, .5) !important;
+    color: var(--b-laine) !important;
+    box-shadow: none;
+}
+.btn-outline-white:hover, .btn-outline-white:focus {
+    background-color: var(--b-miel) !important;
+    border-color: var(--b-miel) !important;
+    color: var(--b-encre) !important;
+}
+/* Pose sur une photo : fond creme plein, lisible partout. */
+.berg-btn-photo {
+    background-color: var(--b-chaux) !important;
+    border-color: var(--b-chaux) !important;
+    color: var(--b-encre) !important;
+}
+.berg-btn-photo:hover {
+    background-color: var(--b-miel) !important;
+    border-color: var(--b-miel) !important;
+    color: var(--b-encre) !important;
+}
+
+.btn-link, .btn-transparent-dark {
+    background: transparent !important;
+    border-color: transparent !important;
+    color: var(--b-bois) !important;
+    box-shadow: none;
+}
+.btn-icon { padding: .45rem .55rem; }
+
+/* Lien de retour : une fleche gravee, pas un bouton. */
+.berg-retour {
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+    font-family: var(--b-texte);
+    font-size: .88rem;
+    font-weight: 700;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--b-bois);
+    padding: .3rem 0;
+    cursor: pointer;
+}
+.berg-retour::before { content: "\2190"; font-size: 1.1em; transition: transform .15s ease; }
+.berg-retour:hover { color: var(--b-tomette); }
+.berg-retour:hover::before { transform: translateX(-3px); }
+
+.text-arrow-icon {
+    display: inline-flex;
+    align-items: center;
+    font-weight: 700;
+    color: var(--b-bois);
+    cursor: pointer;
+}
+
+/* Barre d'actions au-dessus d'une liste ou d'un article. */
+.berg-actions, .post-archive-tag {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .55rem;
+    margin-bottom: 1.75rem;
+}
+
+
+/* =============================================================================
+   6. EN-TETES DE PAGE — la photo, chauffee, et une crete de montagne
+   ========================================================================== */
+
+.page-header, .berg-entete {
+    position: relative;
+    border-bottom: 0;
+    padding: calc(var(--b-nav-h) + 3.5rem) 0 4rem;
+    background-size: cover;
+    background-position: center 45%;
+    background-repeat: no-repeat;
+}
+.page-header-dark.bg-img-cover { background-position: center 42%; }
+
+/* Voile duotone chaud (lauze + bois) a la place du voile bleu-noir du theme.
+   Deux couches : un fondu vertical pour le texte, un aplat pour le contraste. */
+.page-header.overlay::before,
+.berg-entete::before,
+.overlay::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(185deg,
+            rgba(42, 47, 43, .74) 0%,
+            rgba(42, 47, 43, .52) 45%,
+            rgba(90, 58, 36, .80) 100%) !important;
+    opacity: 1 !important;
+}
+.overlay-20::before { opacity: .78 !important; }
+.overlay-60::before { opacity: .92 !important; }
+
+.page-header-content, .berg-entete-contenu { position: relative; z-index: 2; }
+
+.page-header-title, .berg-entete-titre {
+    font-family: var(--b-titre);
+    font-weight: 700;
+    color: var(--b-chaux) !important;
+    text-shadow: 0 2px 22px rgba(18, 14, 10, .55);
+    margin-bottom: .6rem;
+}
+.page-header-text, .page-header-subtitle, .berg-entete-texte {
+    font-family: var(--b-texte);
+    font-size: 1.1rem;
+    color: rgba(246, 241, 230, .9) !important;
+    text-shadow: 0 1px 12px rgba(18, 14, 10, .5);
+    margin-bottom: 0;
+}
+
+/* La crete de montagne, en separateur entre la photo et le contenu. */
+.berg-crete {
+    display: block;
+    line-height: 0;
+    margin-bottom: -1px;
+    position: relative;
+    z-index: 3;
+}
+.berg-crete svg { display: block; width: 100%; height: 84px; }
+
+/* Posee au bas d'un en-tete photo, la crete doit mordre sur la photo, pas
+   pousser le bloc : sinon le rembourrage du header reapparait sous elle. */
+.berg-entete > .berg-crete,
+.page-header > .berg-crete,
+header > .berg-crete {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    margin-bottom: 0;
+}
+
+/* Bandeau de titre sans photo : une ardoise gravee. */
+.berg-bandeau {
+    background-color: var(--b-lauze);
+    background-image:
+        linear-gradient(170deg, var(--b-lauze-2), var(--b-lauze)),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23g)' opacity='.06'/%3E%3C/svg%3E");
+    color: var(--b-chaux);
+    padding: calc(var(--b-nav-h) + 2.5rem) 0 2.75rem;
+    border-bottom: 3px solid var(--b-bois-2);
+}
+.berg-bandeau h1, .berg-bandeau h2, .berg-bandeau h3 { color: var(--b-chaux); }
+.berg-bandeau p { color: rgba(246, 241, 230, .82); }
+
+/* Le theme insere une vague arrondie bleue un peu partout : on la supprime. */
+.svg-border-rounded { display: none !important; }
+
+/* Toute page sans en-tete photo doit quand meme degager la barre fixe. */
+.berg-page { padding-top: calc(var(--b-nav-h) + 2.5rem); padding-bottom: 4rem; }
+
+
+/* =============================================================================
+   7. CARTES, VIGNETTES, VOLETS
+   ========================================================================== */
+
+.card {
+    background-color: var(--b-papier);
+    border: var(--b-filet);
+    border-radius: var(--b-r-lg);
+    box-shadow: var(--b-ombre-2);
+    opacity: 1 !important;          /* le theme posait opacity: 92% en ligne */
+}
+.card.shadow-lg { box-shadow: var(--b-ombre-3) !important; }
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    background-color: var(--b-laine) !important;
+    background-image: repeating-linear-gradient(90deg,
+        rgba(90, 58, 36, .025) 0 1px, transparent 1px 7px);
+    border-bottom: 1px solid var(--b-pierre);
+    border-radius: var(--b-r-lg) var(--b-r-lg) 0 0 !important;
+    font-family: var(--b-titre);
+    font-size: 1.12rem;
+    font-weight: 600;
+    color: var(--b-encre) !important;
+    opacity: 1 !important;
+    padding: .9rem 1.25rem;
+}
+.card-header h1, .card-header h2, .card-header h3,
+.card-header h4, .card-header h5, .card-header .h4 {
+    color: var(--b-encre) !important;
+    margin: 0;
+}
+.card-body   { padding: 1.5rem; }
+.card-footer {
+    background-color: var(--b-chaux-2) !important;
+    border-top: 1px solid var(--b-pierre);
+    border-radius: 0 0 var(--b-r-lg) var(--b-r-lg) !important;
+    padding: .9rem 1.25rem;
+}
+.rounded, .rounded-lg, .rounded-xl { border-radius: var(--b-r-lg) !important; }
+
+/* Le soulevement du theme, rendu plus sobre et plus chaud. */
+.lift:hover, .lift-lg:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: var(--b-ombre-3) !important;
+}
+
+/* --- Volet : la carte centree des pages de formulaire ---------------------- */
+.berg-volet-fond {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    padding: calc(var(--b-nav-h) + 3rem) 1rem 4rem;
+    min-height: 100vh;
+}
+.berg-volet-fond::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(185deg,
+        rgba(42, 47, 43, .68), rgba(90, 58, 36, .78));
+}
+.berg-volet-fond > * { position: relative; z-index: 1; }
+
+.berg-volet {
+    background-color: var(--b-papier);
+    border: var(--b-filet);
+    border-top: 5px solid var(--b-bois);
+    border-radius: var(--b-r-lg);
+    box-shadow: var(--b-ombre-4);
+    overflow: hidden;
+}
+.berg-volet-tete {
+    display: flex;
+    align-items: center;
+    gap: .9rem;
+    background-color: var(--b-laine);
+    background-image: repeating-linear-gradient(90deg,
+        rgba(90, 58, 36, .03) 0 1px, transparent 1px 7px);
+    border-bottom: 1px solid var(--b-pierre);
+    padding: 1.1rem 1.5rem;
+}
+.berg-volet-tete h1 {
+    font-size: 1.5rem;
+    margin: 0;
+    flex: 1 1 auto;
+}
+.berg-volet-corps { padding: 1.75rem 1.5rem; }
+.berg-volet-pied {
+    background-color: var(--b-chaux-2);
+    border-top: 1px solid var(--b-pierre);
+    padding: .95rem 1.5rem;
+    text-align: center;
+    font-size: .92rem;
+}
+
+/* --- Vignette de rubrique (accueil) --------------------------------------- */
+.berg-rubrique {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: var(--b-papier);
+    border: var(--b-filet);
+    border-radius: var(--b-r-lg);
+    overflow: hidden;
+    box-shadow: var(--b-ombre-1);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.berg-rubrique:hover, .berg-rubrique:focus-visible {
+    transform: translateY(-4px);
+    box-shadow: var(--b-ombre-3);
+    border-color: var(--b-bois);
+}
+.berg-rubrique-vue {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background-color: var(--b-laine);
+}
+.berg-rubrique-vue img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(.82) sepia(.14) contrast(1.02);
+    transition: transform .45s ease, filter .3s ease;
+}
+.berg-rubrique:hover .berg-rubrique-vue img {
+    transform: scale(1.05);
+    filter: saturate(1) sepia(0);
+}
+.berg-rubrique-glyphe {
+    position: absolute;
+    left: .85rem;
+    bottom: .85rem;
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    background-color: var(--b-papier);
+    color: var(--b-tomette);
+    border-radius: 50%;
+    border: 2px solid var(--b-papier);
+    box-shadow: var(--b-ombre-2);
+    font-size: 1.05rem;
+}
+.berg-rubrique-corps {
+    flex: 1 1 auto;
+    padding: 1rem 1.15rem 1.2rem;
+    border-top: 3px solid var(--b-bois);
+}
+.berg-rubrique-titre {
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+    font-family: var(--b-titre);
+    font-size: 1.24rem;
+    font-weight: 600;
+    color: var(--b-encre);
+    margin: 0 0 .25rem;
+}
+.berg-rubrique-note {
+    font-size: .93rem;
+    color: var(--b-encre-2);
+    margin: 0;
+}
+
+/* --- Vignette d'activite (cartes du theme : post-preview) ------------------ */
+.post-preview {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--b-papier);
+    border: var(--b-filet);
+    border-radius: var(--b-r-lg);
+    overflow: hidden;
+    box-shadow: var(--b-ombre-1);
+    color: inherit;
+}
+.post-preview:hover { color: inherit; }
+.post-preview .card-img-top {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    filter: saturate(.86) sepia(.1);
+    transition: transform .4s ease, filter .3s ease;
+}
+.post-preview:hover .card-img-top { transform: scale(1.04); filter: none; }
+.post-preview-featured-img {
+    height: 100%;
+    min-height: 260px;
+    background-size: cover;
+    background-position: center;
+    filter: saturate(.86) sepia(.1);
+}
+.card-body-activities,
+.card-body-activities-first {
+    flex: 1 1 auto;
+    padding: 1.15rem 1.25rem;
+}
+.card-body-activities .card-title {
+    font-family: var(--b-titre);
+    font-size: 1.22rem;
+    font-weight: 600;
+    color: var(--b-encre);
+    margin-bottom: .75rem;
+}
+/* Les caracteristiques d'une activite : une fiche de refuge. */
+.card-text-2 {
+    display: flex;
+    align-items: baseline;
+    gap: .5rem;
+    font-size: .93rem;
+    color: var(--b-encre-2);
+    margin: 0 0 .35rem;
+    padding-bottom: .35rem;
+    border-bottom: 1px dotted var(--b-pierre-2);
+}
+.card-text-2:last-child { border-bottom: 0; }
+
+/* Carte « fiche » : un petit tableau de caracteristiques. */
+.berg-fiche {
+    background-color: var(--b-papier);
+    border: var(--b-filet);
+    border-left: 4px solid var(--b-sapin);
+    border-radius: var(--b-r);
+    padding: 1.1rem 1.25rem;
+    box-shadow: var(--b-ombre-1);
+}
+.berg-fiche dl { margin: 0; }
+.berg-fiche dt {
+    font-size: .74rem;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--b-bois);
+    margin-top: .85rem;
+}
+.berg-fiche dt:first-child { margin-top: 0; }
+.berg-fiche dd {
+    font-size: 1.02rem;
+    color: var(--b-encre);
+    margin: .1rem 0 0;
+}
+
+
+/* =============================================================================
+   8. LISTES D'ARTICLES ET DE TACHES
+   ========================================================================== */
+
+/* Un article dans une liste : une feuille epinglee, avec un onglet de bois. */
+.post-archive-item {
+    display: block;
+    background-color: var(--b-papier);
+    border: var(--b-filet);
+    border-left: 4px solid var(--b-bois);
+    border-radius: var(--b-r);
+    padding: 1.3rem 1.45rem;
+    box-shadow: var(--b-ombre-1);
+    color: inherit;
+    transition: border-left-color .15s ease, box-shadow .15s ease, transform .15s ease;
+}
+a.post-archive-item:hover, a.post-archive-item:focus-visible {
+    border-left-color: var(--b-tomette);
+    box-shadow: var(--b-ombre-2);
+    transform: translateX(3px);
+    color: inherit;
+}
+.post-archive-item h5 {
+    font-family: var(--b-titre);
+    font-size: 1.36rem;
+    font-weight: 600;
+    color: var(--b-encre);
+    margin-bottom: .55rem;
+}
+.post-archive-item p { color: var(--b-encre-2); margin-bottom: 0; }
+.post-archive-item img { border-radius: var(--b-r); margin-top: .85rem; }
+
+/* La signature : portrait, nom, date. */
+.post-archive-meta, .post-preview-meta {
+    display: flex;
+    align-items: center;
+    gap: .8rem;
+    margin-top: .85rem;
+    padding: 0 .3rem;
+}
+.post-archive-meta-img, .post-preview-meta-img {
+    flex: 0 0 auto;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--b-pierre);
+    background-color: var(--b-laine);
+}
+.post-archive-meta-details-name,
+.post-preview-meta-details-name {
+    font-family: var(--b-texte);
+    font-weight: 700;
+    color: var(--b-encre);
+    line-height: 1.25;
+}
+.post-archive-meta-details-date,
+.post-preview-meta-details-date {
+    font-size: .82rem;
+    font-style: italic;
+    color: var(--b-encre-3);
+}
+
+/* Liste de taches / de personnes : un registre relie. */
+.list-group, .list-group-careers {
+    background-color: var(--b-papier);
+    border: var(--b-filet);
+    border-radius: var(--b-r);
+    overflow: hidden;
+    box-shadow: var(--b-ombre-1);
+    padding: 0;
+    margin-bottom: 2.25rem;
+}
+.list-group-item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .35rem .9rem;
+    background-color: transparent !important;
+    border: 0 !important;
+    border-bottom: 1px dotted var(--b-pierre) !important;
+    padding: .85rem 1.15rem !important;
+    color: var(--b-encre);
+    transition: background-color .12s ease;
+}
+.list-group-item:last-child { border-bottom: 0 !important; }
+.list-group-item:hover { background-color: var(--b-chaux-2) !important; }
+.list-group-item > a { font-weight: 600; }
+.list-group-item .small { color: var(--b-encre-3); font-style: italic; }
+.list-group-item i { color: var(--b-bois); width: 1.2em; }
+/* Liste vide : on le dit, plutot que de laisser un cadre muet. */
+.berg-vide {
+    padding: 1.4rem 1.15rem;
+    font-style: italic;
+    color: var(--b-encre-3);
+}
+
+/* Titre de groupe au-dessus d'une liste. */
+.berg-groupe-tete {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 2.5rem 0 .6rem;
+    padding-bottom: .5rem;
+    border-bottom: 2px solid var(--b-pierre);
+}
+.berg-groupe-tete h2 { margin: 0; font-size: 1.5rem; }
+
+/* Article long (detail d'activite, de travail). */
+.single-post img, .berg-illustration {
+    display: block;
+    width: 100%;
+    border-radius: var(--b-r-lg);
+    border: 1px solid var(--b-pierre);
+    box-shadow: var(--b-ombre-2);
+    margin-bottom: 1.5rem;
+}
+.single-post-text h4 {
+    font-family: var(--b-titre);
+    margin-bottom: .75rem;
+}
+
+
+/* =============================================================================
+   9. FORMULAIRES — un registre de ferme, a l'encre
+   ========================================================================== */
+
+label, .col-form-label {
+    display: block;
+    font-family: var(--b-texte);
+    font-size: .79rem;
+    font-weight: 700;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--b-bois);
+    margin-bottom: .4rem;
+}
+.form-group { margin-bottom: 1.35rem; }
+fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+
+.form-control, .custom-select, textarea, select,
+input[type="text"], input[type="email"], input[type="password"],
+input[type="number"], input[type="date"], input[type="url"], input[type="tel"] {
+    display: block;
+    width: 100%;
+    font-family: var(--b-texte);
+    font-size: 1.02rem;
+    line-height: 1.5;
+    color: var(--b-encre);
+    background-color: #fffefa;
+    border: 1px solid var(--b-pierre);
+    border-bottom-width: 2px;
+    border-radius: var(--b-r);
+    padding: .68rem .85rem;
+    height: auto;
+    box-shadow: none;
+    transition: border-color .15s ease, background-color .15s ease, box-shadow .15s ease;
+}
+.form-control:focus, .custom-select:focus, textarea:focus, select:focus {
+    background-color: #fff;
+    border-color: var(--b-sapin);
+    box-shadow: 0 0 0 3px rgba(62, 85, 64, .16);
+    outline: none;
+}
+.form-control::placeholder { color: var(--b-encre-3); }
+textarea.form-control { min-height: 9rem; resize: vertical; }
+
+.custom-select, select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8' fill='none' stroke='%238a5a38' stroke-width='1.8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right .9rem center;
+    background-size: 12px 8px;
+    padding-right: 2.4rem;
+}
+
+.form-control.is-invalid,
+.form-control.is-invalid:focus { border-color: var(--b-rouge); box-shadow: 0 0 0 3px rgba(157, 54, 38, .14); }
+.invalid-feedback, .errorlist {
+    display: block;
+    color: var(--b-rouge) !important;
+    font-size: .88rem;
+    font-weight: 600;
+    list-style: none;
+    padding: 0;
+    margin: .4rem 0 0;
+}
+.form-text, .help-block, .helptext {
+    display: block;
+    font-size: .85rem;
+    font-style: italic;
+    color: var(--b-encre-2);
+    margin-top: .35rem;
+}
+
+/* Fichiers et images. */
+input[type="file"] {
+    font-family: var(--b-texte);
+    font-size: .95rem;
+    padding: .55rem 0;
+}
+.custom-file-label {
+    background-color: #fffefa;
+    border: 1px solid var(--b-pierre);
+    border-radius: var(--b-r);
+}
+
+/* Cases a cocher et boutons radio. */
+.custom-control-label { text-transform: none; letter-spacing: 0; font-weight: 500; font-size: 1rem; color: var(--b-encre); }
+.custom-control-input:checked ~ .custom-control-label::before {
+    background-color: var(--b-sapin);
+    border-color: var(--b-sapin);
+}
+.custom-control-input:focus ~ .custom-control-label::before {
+    box-shadow: 0 0 0 3px rgba(62, 85, 64, .18);
+}
+
+/* reCAPTCHA : on le laisse respirer. */
+.g-recaptcha, div[class*="recaptcha"] { margin: .5rem 0 1.25rem; }
+
+/* Barre d'envoi d'un formulaire. */
+.berg-form-pied {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .75rem;
+    margin-top: 1.75rem;
+    padding-top: 1.25rem;
+    border-top: 1px dashed var(--b-pierre);
+}
+
+/* Portrait du profil. */
+.account-img, #profile-img {
+    width: 138px;
+    height: 138px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid var(--b-papier);
+    box-shadow: var(--b-ombre-2), 0 0 0 1px var(--b-pierre);
+    background-color: var(--b-laine);
+}
+
+
+/* =============================================================================
+   10. MESSAGES, ETIQUETTES, PASTILLES
+   ========================================================================== */
+
+.alert, .calendar-alert {
+    font-family: var(--b-texte);
+    font-size: 1rem;
+    background-color: var(--b-chaux-2);
+    color: var(--b-encre);
+    border: var(--b-filet);
+    border-left: 5px solid var(--b-bois);
+    border-radius: var(--b-r);
+    box-shadow: var(--b-ombre-1);
+    padding: .95rem 1.15rem;
+    margin-bottom: 1.25rem;
+}
+.alert-success, .calendar-alert.alert-success { border-left-color: var(--b-vert);   background-color: #eef2e8; color: #2f4529; }
+.alert-danger, .alert-error,
+.calendar-alert.alert-error                   { border-left-color: var(--b-rouge);  background-color: #f8ece8; color: #74281b; }
+.alert-warning, .calendar-alert.alert-warning { border-left-color: var(--b-miel);   background-color: #fbf2dd; color: #67480f; }
+.alert-info, .calendar-alert.alert-info       { border-left-color: var(--b-sapin);  background-color: #edf1ea; color: #30402e; }
+
+.badge {
+    font-family: var(--b-texte);
+    font-size: .76rem;
+    font-weight: 700;
+    letter-spacing: .05em;
+    border-radius: var(--b-r-xs);
+    padding: .34em .62em;
+    vertical-align: middle;
+}
+.badge-pill { border-radius: 10rem; }
+.badge-primary, .badge-primary-soft {
+    background-color: var(--b-laine) !important;
+    color: var(--b-bois-2) !important;
+    border: 1px solid var(--b-pierre);
+}
+.badge-danger  { background-color: var(--b-tomette) !important; color: #fffaf1 !important; }
+.badge-success { background-color: var(--b-vert)    !important; color: #fff !important; }
+.badge-warning { background-color: var(--b-miel)    !important; color: var(--b-encre) !important; }
+.badge-marketing { padding: .45em .8em; font-size: .78rem; }
+
+/* Pastille de nouveautes, cousue sur le titre d'une rubrique. */
+.berg-pastille {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.55rem;
+    height: 1.55rem;
+    padding: 0 .42rem;
+    font-family: var(--b-texte);
+    font-size: .76rem;
+    font-weight: 700;
+    color: #fffaf1;
+    background-color: var(--b-tomette);
+    border-radius: 10rem;
+    box-shadow: var(--b-ombre-1);
+}
+
+/* Etiquette de bois (categorie, statut). */
+.berg-etiquette {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    font-size: .76rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--b-bois-2);
+    background-color: var(--b-laine);
+    border: 1px solid var(--b-pierre);
+    border-radius: 10rem;
+    padding: .28rem .75rem;
+}
+.berg-etiquette--sapin  { background-color: #e7ece4; color: #31442f; border-color: #c3d0bf; }
+.berg-etiquette--tomette{ background-color: #f7e7df; color: #7d3517; border-color: #e2c2b2; }
+
+/* Pastille ronde (icone dans un rond), remplace .icon-stack du theme. */
+.icon-stack, .berg-jeton {
+    display: inline-grid;
+    place-items: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 50%;
+    background-color: var(--b-laine) !important;
+    color: var(--b-bois) !important;
+    border: 1px solid var(--b-pierre);
+    flex: 0 0 auto;
+}
+
+
+/* =============================================================================
+   11. PAGINATION ET TABLEAUX
+   ========================================================================== */
+
+.pagination {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .35rem;
+    padding: 0;
+    margin: 2.5rem 0 0;
+    list-style: none;
+}
+.page-link {
+    display: block;
+    font-family: var(--b-texte);
+    font-weight: 700;
+    font-size: .92rem;
+    color: var(--b-bois);
+    background-color: var(--b-papier);
+    border: 1px solid var(--b-pierre);
+    border-radius: var(--b-r);
+    padding: .45rem .8rem;
+}
+.page-link:hover { background-color: var(--b-laine); color: var(--b-tomette); }
+/* Le gabarit marque la page courante avec .page-item.disabled : c'est elle
+   qu'il faut mettre en avant, pas l'inverse.                                 */
+.page-item.disabled .page-link {
+    background-color: var(--b-sapin);
+    border-color: var(--b-sapin);
+    color: var(--b-chaux);
+    opacity: 1;
+    cursor: default;
+}
+
+.table {
+    width: 100%;
+    font-family: var(--b-texte);
+    color: var(--b-encre);
+    background-color: var(--b-papier);
+    border: var(--b-filet);
+    border-radius: var(--b-r);
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+}
+.table thead th {
+    font-size: .76rem;
+    font-weight: 700;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--b-chaux);
+    background-color: var(--b-sapin);
+    border: 0;
+    padding: .75rem 1rem;
+}
+.table td, .table th {
+    border-color: var(--b-pierre-2);
+    vertical-align: middle;
+    padding: .7rem 1rem;
+}
+.table-striped tbody tr:nth-of-type(odd) { background-color: var(--b-chaux-2); }
+.table-hover tbody tr:hover { background-color: var(--b-laine); }
+.berg-table-enveloppe { overflow-x: auto; }
+
+/* Barre de progression (budget). */
+.progress {
+    height: .95rem;
+    background-color: var(--b-laine);
+    border: 1px solid var(--b-pierre);
+    border-radius: 10rem;
+    overflow: hidden;
+}
+.progress-bar { background-color: var(--b-sapin) !important; }
+.progress-bar.bg-success { background-color: var(--b-vert) !important; }
+
+
+/* =============================================================================
+   12. MODALES
+   ========================================================================== */
+
+.modal-content {
+    background-color: var(--b-chaux);
+    border: var(--b-filet);
+    border-top: 4px solid var(--b-bois);
+    border-radius: var(--b-r-lg);
+    box-shadow: var(--b-ombre-4);
+}
+.modal-header {
+    background-color: var(--b-laine);
+    border-bottom: 1px solid var(--b-pierre);
+    border-radius: var(--b-r-lg) var(--b-r-lg) 0 0;
+    padding: 1rem 1.35rem;
+}
+.modal-title {
+    font-family: var(--b-titre);
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--b-encre);
+}
+.modal-body   { padding: 1.5rem 1.35rem; }
+.modal-footer {
+    background-color: var(--b-chaux-2);
+    border-top: 1px solid var(--b-pierre);
+    border-radius: 0 0 var(--b-r-lg) var(--b-r-lg);
+    padding: .95rem 1.35rem;
+    gap: .6rem;
+}
+.close {
+    font-size: 1.6rem;
+    color: var(--b-encre);
+    text-shadow: none;
+    opacity: .55;
+}
+.close:hover { color: var(--b-tomette); opacity: 1; }
+.modal-backdrop.show { background-color: #211b14; opacity: .62; }
+
+/* La modale de confirmation de suppression, posee sur l'ardoise. */
+.modal-content.bg-dark {
+    background-color: var(--b-lauze) !important;
+    border-top-color: var(--b-rouge);
+    margin-top: 0 !important;       /* le gabarit posait margin-top: 20rem */
+}
+.modal-content.bg-dark .modal-header { background-color: var(--b-lauze-2); border-bottom-color: rgba(227, 217, 195, .18); }
+.modal-content.bg-dark .modal-title,
+.modal-content.bg-dark .modal-body   { color: var(--b-chaux); }
+.modal-content.bg-dark .close        { color: var(--b-laine); opacity: .8; }
+
+
+/* =============================================================================
+   13. CARROUSEL ET IMAGES
+   ========================================================================== */
+
+.carousel-inner {
+    background-color: var(--b-laine);
+    border: var(--b-filet);
+    border-radius: var(--b-r-lg);
+    box-shadow: var(--b-ombre-2);
+    overflow: hidden;
+}
+.carousel-item img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+}
+.carousel-indicators { margin-bottom: .75rem; }
+.carousel-indicators li {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--b-chaux);
+    border: 1px solid rgba(42, 47, 43, .45);
+    opacity: .65;
+}
+.carousel-indicators li.active { background-color: var(--b-miel); opacity: 1; }
+.carousel-control-prev-icon, .carousel-control-next-icon {
+    width: 2.6rem;
+    height: 2.6rem;
+    background-color: rgba(42, 47, 43, .62);
+    background-size: 42%;
+    border-radius: 50%;
+}
+
+.img-fluid { max-width: 100%; height: auto; }
+
+/* Photo encadree, comme une vue punaisee au mur. */
+.berg-photo {
+    display: block;
+    width: 100%;
+    border-radius: var(--b-r-lg);
+    border: 1px solid var(--b-pierre);
+    box-shadow: var(--b-ombre-2);
+}
+
+
+/* =============================================================================
+   14. PIED DE PAGE — l'ardoise et la fumee de cheminee
+   ========================================================================== */
+
+.footer, footer.footer {
+    background-color: var(--b-lauze) !important;
+    background-image:
+        linear-gradient(180deg, rgba(255, 252, 244, .04), transparent 30%),
+        repeating-linear-gradient(90deg, rgba(255, 252, 244, .014) 0 1px, transparent 1px 7px);
+    color: var(--b-laine);
+    border-top: 3px solid var(--b-bois-2);
+    padding: 3.25rem 0 2.25rem !important;
+    margin-top: 0;
+}
+.footer a { color: var(--b-laine); }
+.footer a:hover { color: var(--b-miel); }
+.berg-pied-marque {
+    display: inline-flex;
+    align-items: center;
+    gap: .55rem;
+    font-family: var(--b-titre);
+    font-size: 1.65rem;
+    font-weight: 700;
+    color: var(--b-chaux);
+}
+.berg-pied-marque:hover { color: #fff; }
+.berg-pied-devise {
+    font-family: var(--b-craie);
+    font-size: 1.4rem;
+    color: var(--b-miel);
+    margin-top: .2rem;
+}
+.berg-pied-liens { line-height: 2; }
+
+
+/* =============================================================================
+   15. BLOCS DE COMPOSITION
+   ========================================================================== */
+
+/* Sections, pour rythmer une longue page. */
+.berg-section        { padding: 4.5rem 0; }
+.berg-section--creme { background-color: var(--b-chaux-2) !important; }
+.berg-section--laine { background-color: var(--b-laine) !important; }
+.berg-section--serree{ padding: 3rem 0; }
+
+/* Titre de section : un filet de pierre et une petite lauze au centre. */
+.berg-titre-section { text-align: center; margin-bottom: 2.75rem; }
+.berg-titre-section h2 { margin-bottom: .35rem; }
+.berg-titre-section p  { color: var(--b-encre-2); margin: .5rem auto 0; max-width: 56ch; }
+.berg-filet {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .7rem;
+    margin-top: 1rem;
+    color: var(--b-pierre);
+}
+.berg-filet::before, .berg-filet::after {
+    content: "";
+    height: 1px;
+    width: min(120px, 22vw);
+    background-color: currentColor;
+}
+.berg-filet span {
+    width: 10px;
+    height: 10px;
+    background-color: var(--b-miel);
+    transform: rotate(45deg);
+}
+
+/* Heros de la page d'accueil publique. */
+.berg-hero {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 92vh;
+    padding: calc(var(--b-nav-h) + 3rem) 0 4rem;
+    background-size: cover;
+    background-position: center 48%;
+}
+.berg-hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(190deg,
+        rgba(42, 47, 43, .52) 0%,
+        rgba(42, 47, 43, .30) 42%,
+        rgba(90, 58, 36, .82) 100%);
+}
+.berg-hero-contenu { position: relative; z-index: 2; width: 100%; }
+
+/* Le cartouche : une planchette de bois posee sur la photo. */
+.berg-cartouche {
+    background-color: rgba(246, 241, 230, .96);
+    border: var(--b-filet);
+    border-top: 5px solid var(--b-bois);
+    border-radius: var(--b-r-lg);
+    padding: 2.85rem 2.35rem;
+    box-shadow: var(--b-ombre-4);
+    text-align: center;
+}
+.berg-cartouche h1 { margin-bottom: .5rem; }
+.berg-cartouche p  { color: var(--b-encre-2); }
+
+/* Les reperes : trois colonnes sous le heros. */
+.berg-repere { text-align: center; padding: 1.25rem .85rem; }
+.berg-repere-glyphe {
+    display: inline-grid;
+    place-items: center;
+    width: 3.4rem;
+    height: 3.4rem;
+    margin-bottom: .85rem;
+    color: var(--b-tomette);
+    background-color: var(--b-chaux-2);
+    border: 1px solid var(--b-pierre);
+    border-radius: 50%;
+    font-size: 1.45rem;
+}
+.berg-section--laine .berg-repere-glyphe { background-color: var(--b-papier); }
+.berg-repere h3 { font-size: 1.2rem; margin-bottom: .4rem; }
+.berg-repere p  { font-size: .96rem; color: var(--b-encre-2); margin: 0; }
+
+/* Le mot de la maison : un encart manuscrit sur fond de laine. */
+.berg-mot {
+    position: relative;
+    background-color: var(--b-papier);
+    border: var(--b-filet);
+    border-radius: var(--b-r-lg);
+    padding: 2rem 2.25rem;
+    box-shadow: var(--b-ombre-1);
+    text-align: center;
+}
+.berg-mot::before, .berg-mot::after {
+    content: "";
+    position: absolute;
+    top: -9px;
+    width: 18px;
+    height: 18px;
+    background-color: var(--b-miel);
+    border: 2px solid var(--b-papier);
+    border-radius: 50%;
+    box-shadow: var(--b-ombre-1);
+}
+.berg-mot::before { left: 26px; }
+.berg-mot::after  { right: 26px; }
+
+/* Grille souple, sans dependre de la grille du theme. */
+.berg-grille {
+    display: grid;
+    gap: 1.6rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+}
+
+
+/* =============================================================================
+   16. AGENDA — FullCalendar et le selecteur de date de l'admin Django
+   ========================================================================== */
+
+#responsive-calendar { padding: calc(var(--b-nav-h) + 2rem) 0 4rem; }
+
+.fc {
+    font-family: var(--b-texte);
+    --fc-border-color: var(--b-pierre);
+    --fc-today-bg-color: rgba(213, 154, 46, .16);
+    --fc-neutral-bg-color: var(--b-chaux-2);
+    --fc-page-bg-color: var(--b-papier);
+    --fc-event-border-color: transparent;
+}
+.fc .fc-toolbar-title {
+    font-family: var(--b-titre);
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--b-encre);
+    text-transform: capitalize;
+}
+.fc .fc-toolbar.fc-header-toolbar { margin-bottom: 1.25rem; flex-wrap: wrap; gap: .6rem; }
+.fc .fc-button, .fc .fc-button-primary {
+    font-family: var(--b-texte);
+    font-size: .85rem;
+    font-weight: 700;
+    letter-spacing: .05em;
+    text-transform: capitalize;
+    background-color: var(--b-papier);
+    border: 1px solid var(--b-pierre);
+    color: var(--b-bois);
+    border-radius: var(--b-r);
+    padding: .42rem .85rem;
+    box-shadow: var(--b-ombre-1);
+    text-shadow: none;
+}
+.fc .fc-button-primary:hover {
+    background-color: var(--b-laine);
+    border-color: var(--b-pierre);
+    color: var(--b-tomette);
+}
+.fc .fc-button-primary:not(:disabled).fc-button-active,
+.fc .fc-button-primary:not(:disabled):active {
+    background-color: var(--b-sapin);
+    border-color: var(--b-sapin);
+    color: var(--b-chaux);
+}
+.fc .fc-button-primary:focus,
+.fc .fc-button-primary:not(:disabled).fc-button-active:focus { box-shadow: 0 0 0 3px rgba(62, 85, 64, .2); }
+.fc .fc-button-primary:disabled { background-color: var(--b-laine); border-color: var(--b-pierre); color: var(--b-encre-3); }
+
+.fc-theme-standard .fc-scrollgrid,
+.fc-theme-standard td, .fc-theme-standard th { border-color: var(--b-pierre); }
+.fc .fc-scrollgrid {
+    background-color: var(--b-papier);
+    border-radius: var(--b-r-lg);
+    overflow: hidden;
+    box-shadow: var(--b-ombre-2);
+}
+.fc .fc-col-header-cell {
+    background-color: var(--b-sapin);
+    padding: .5rem 0;
+}
+.fc .fc-col-header-cell-cushion {
+    font-size: .76rem;
+    font-weight: 700;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--b-chaux);
+    padding: .35rem;
+}
+.fc .fc-daygrid-day-number {
+    font-size: .92rem;
+    font-weight: 600;
+    color: var(--b-encre-2);
+    padding: .4rem .5rem;
+}
+.fc .fc-day-today .fc-daygrid-day-number { color: var(--b-tomette); font-weight: 700; }
+.fc .fc-day-other .fc-daygrid-day-number { color: var(--b-encre-3); opacity: .6; }
+.fc .fc-daygrid-day:hover { background-color: var(--b-chaux-2); cursor: pointer; }
+
+/* Un sejour : un bandeau de laine teinte, pas une pastille bleue. */
+.fc-event, .fc-daygrid-event {
+    font-family: var(--b-texte);
+    font-size: .86rem;
+    font-weight: 600;
+    border: 0;
+    border-left: 3px solid rgba(0, 0, 0, .22);
+    border-radius: var(--b-r-xs);
+    padding: .14rem .45rem;
+    margin: 1px 2px;
+    box-shadow: var(--b-ombre-1);
+    cursor: pointer;
+}
+.fc-event .fc-event-title { font-weight: 600; }
+.fc .fc-daygrid-more-link { font-weight: 700; color: var(--b-bois); }
+.fc .fc-list { background-color: var(--b-papier); border-radius: var(--b-r-lg); }
+.fc .fc-list-day-cushion { background-color: var(--b-laine); }
+.fc .fc-list-event:hover td { background-color: var(--b-chaux-2); }
+
+.calendar-hint {
+    font-style: italic;
+    color: var(--b-encre-2);
+    text-align: center;
+}
+
+/* Le selecteur de date de l'admin Django, deplace dans les modales par le JS
+   du calendrier. On le rhabille pour qu'il n'arrive pas en bleu Django.      */
+.calendarbox, .clockbox {
+    background-color: var(--b-papier);
+    border: var(--b-filet);
+    border-radius: var(--b-r);
+    box-shadow: var(--b-ombre-3);
+    z-index: 1060;
+}
+.calendarbox h2, .calendar caption {
+    background-color: var(--b-sapin) !important;
+    color: var(--b-chaux) !important;
+    font-family: var(--b-titre);
+    font-weight: 600;
+}
+.calendar td a { color: var(--b-bois); }
+.calendar td.selected a { background-color: var(--b-tomette); color: #fff; }
+.calendar-shortcuts {
+    background-color: var(--b-laine) !important;
+    color: var(--b-encre);
+    font-size: .85rem;
+}
+.calendar-cancel { background-color: var(--b-chaux-2); }
+.calendar-cancel a { color: var(--b-rouge); }
+
+
+/* =============================================================================
+   17. BUDGET
+   ========================================================================== */
+
+.chart-area { min-height: 18rem; }
+.card-header-actions .card-header { justify-content: space-between; }
+.feather-xl { width: 2.1rem; height: 2.1rem; }
+.text-lg { font-size: 1.28rem; }
+
+
+/* =============================================================================
+   18. PAGES D'ERREUR
+   ========================================================================== */
+
+.berg-erreur {
+    display: flex;
+    align-items: center;
+    min-height: 82vh;
+    padding: calc(var(--b-nav-h) + 3rem) 0 4rem;
+    text-align: center;
+}
+.berg-erreur-code {
+    font-family: var(--b-titre);
+    font-size: clamp(4.5rem, 16vw, 9rem);
+    font-weight: 700;
+    line-height: .9;
+    color: var(--b-pierre);
+    letter-spacing: -.03em;
+}
+.berg-erreur h1 { margin: .75rem 0 .6rem; }
+.berg-erreur p  { color: var(--b-encre-2); font-size: 1.1rem; }
+.berg-erreur img { max-width: 320px; margin: 0 auto 1.5rem; }
+
+
+
+/* =============================================================================
+   18 bis. COMPOSANTS DE PAGE
+   ========================================================================== */
+
+.berg-messages:not(:empty) { margin-bottom: 1.5rem; }
+
+/* --- Liste d'articles (infos, discussions, publications d'un membre) ------- */
+.berg-liste { display: flex; flex-direction: column; gap: 1.5rem; }
+
+.berg-article {
+    position: relative;
+    background-color: var(--b-papier);
+    border: var(--b-filet);
+    border-left: 4px solid var(--b-bois);
+    border-radius: var(--b-r);
+    padding: 1.4rem 1.6rem 1.1rem;
+    box-shadow: var(--b-ombre-1);
+    transition: border-left-color .15s ease, box-shadow .15s ease, transform .15s ease;
+}
+.berg-article:hover {
+    border-left-color: var(--b-tomette);
+    box-shadow: var(--b-ombre-2);
+    transform: translateX(3px);
+}
+.berg-article-titre {
+    font-size: 1.42rem;
+    margin: 0 0 .6rem;
+}
+.berg-article-titre a { color: var(--b-encre); }
+.berg-article-titre a:hover { color: var(--b-tomette); }
+/* Toute la carte est cliquable, mais le lien du titre reste le lien réel :
+   les liens de la signature passent au-dessus. */
+.berg-article-titre a::after { content: ""; position: absolute; inset: 0; }
+.berg-article-extrait { color: var(--b-encre-2); }
+.berg-article-extrait p:last-child { margin-bottom: 0; }
+.berg-article-pied {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .75rem;
+    margin-top: 1rem;
+    padding-top: .9rem;
+    border-top: 1px dotted var(--b-pierre);
+}
+.berg-article-pied .post-archive-meta { margin-top: 0; padding: 0; }
+.berg-article-pied a, .berg-article-pied .post-archive-meta { position: relative; z-index: 1; }
+.berg-article-suite {
+    margin-left: auto;
+    font-weight: 700;
+    font-size: .92rem;
+    white-space: nowrap;
+}
+.berg-article-suite::after { content: " \2192"; }
+
+/* --- Article complet ------------------------------------------------------ */
+.berg-detail {
+    background-color: var(--b-papier);
+    border: var(--b-filet);
+    border-top: 4px solid var(--b-bois);
+    border-radius: var(--b-r-lg);
+    padding: 2rem 2.15rem;
+    box-shadow: var(--b-ombre-2);
+}
+.berg-detail-titre { margin-bottom: 1rem; }
+.berg-detail .post-archive-meta { margin-top: 0; padding: 0; }
+.berg-detail .berg-prose h2 {
+    font-size: 1.45rem;
+    margin-top: 2rem;
+    margin-bottom: .75rem;
+}
+.berg-detail .berg-prose h2:first-child { margin-top: 0; }
+
+/* --- Fil de commentaires -------------------------------------------------- */
+.berg-fil {
+    margin-top: 3rem;
+    background-color: var(--b-chaux-2);
+    border: var(--b-filet-doux);
+    border-radius: var(--b-r-lg);
+    padding: 1.75rem 1.85rem 2rem;
+}
+.berg-fil .berg-groupe-tete { margin-top: 0; }
+.berg-fil .post-archive-item { background-color: var(--b-papier); }
+.berg-commentaire:last-of-type { margin-bottom: 0 !important; }
+
+/* --- Avertissement avant suppression -------------------------------------- */
+.berg-avertissement {
+    background-color: #f8ece8;
+    border: 1px solid #e0c3ba;
+    border-left: 5px solid var(--b-rouge);
+    border-radius: var(--b-r);
+    padding: 1.1rem 1.25rem;
+    margin-bottom: 1.5rem;
+    color: #74281b;
+}
+
+/* --- Profil --------------------------------------------------------------- */
+.berg-profil-tete {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.4rem;
+}
+.berg-profil-tete h2 { font-size: 1.6rem; }
+
+/* --- Fiche du carnet d'adresses ------------------------------------------- */
+.berg-carte-membre {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background-color: var(--b-papier);
+    border: var(--b-filet);
+    border-top: 4px solid var(--b-sapin);
+    border-radius: var(--b-r-lg);
+    padding: 1.6rem 1.35rem;
+    box-shadow: var(--b-ombre-1);
+    transition: box-shadow .15s ease, transform .15s ease;
+}
+.berg-carte-membre:hover { box-shadow: var(--b-ombre-2); transform: translateY(-3px); }
+.berg-carte-membre-portrait {
+    width: 92px;
+    height: 92px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid var(--b-papier);
+    box-shadow: 0 0 0 1px var(--b-pierre);
+    background-color: var(--b-laine);
+    margin-bottom: .9rem;
+}
+.berg-carte-membre-nom { font-size: 1.2rem; margin: 0 0 .85rem; }
+.berg-carte-membre-nom a { color: var(--b-encre); }
+.berg-carte-membre-nom a:hover { color: var(--b-tomette); }
+.berg-carte-membre-coord {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: .4rem .6rem;
+    width: 100%;
+    margin: 0;
+    text-align: left;
+    font-size: .93rem;
+}
+.berg-carte-membre-coord dt { color: var(--b-bois); margin: 0; }
+.berg-carte-membre-coord dd { margin: 0; color: var(--b-encre-2); word-break: break-word; }
+
+/* --- Travaux -------------------------------------------------------------- */
+.berg-groupe-glyphe { color: var(--b-bois); margin-right: .5rem; font-size: .8em; }
+.berg-tache-titre { font-weight: 600; }
+
+/* --- Sorties (activités) -------------------------------------------------- */
+.berg-sortie-une {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    background-color: var(--b-papier);
+    border: var(--b-filet);
+    border-radius: var(--b-r-lg);
+    overflow: hidden;
+    box-shadow: var(--b-ombre-2);
+    color: inherit;
+}
+.berg-sortie-une:hover { color: inherit; }
+.berg-sortie-une-vue { position: relative; min-height: 260px; overflow: hidden; background-color: var(--b-laine); }
+.berg-sortie-une-vue img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(.86) sepia(.1);
+    transition: transform .45s ease, filter .3s ease;
+}
+.berg-sortie-une:hover .berg-sortie-une-vue img { transform: scale(1.04); filter: none; }
+.berg-sortie-une-corps {
+    display: flex;
+    flex-direction: column;
+    padding: 1.75rem 1.85rem;
+    border-left: 3px solid var(--b-bois);
+}
+.berg-sortie-titre { font-size: 1.7rem; margin-bottom: 1rem; }
+
+.berg-sortie-chiffres {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin: 0 0 1.25rem;
+}
+.berg-sortie-chiffres > div { min-width: 0; }
+.berg-sortie-chiffres dt {
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--b-bois);
+}
+.berg-sortie-chiffres dd { margin: .1rem 0 0; font-size: 1.02rem; color: var(--b-encre); }
+.berg-sortie-chiffres--serres { gap: .9rem; margin-bottom: 0; }
+.berg-sortie-chiffres--serres dd { font-size: .95rem; }
+
+.berg-sortie .berg-rubrique-corps { border-top-color: var(--b-sapin); }
+.berg-sortie-pied {
+    display: flex;
+    align-items: center;
+    gap: .7rem;
+    padding: .85rem 1.15rem;
+    background-color: var(--b-chaux-2);
+    border-top: 1px solid var(--b-pierre);
+}
+.berg-sortie-pied .post-preview-meta-img { width: 36px; height: 36px; }
+
+/* --- Budget --------------------------------------------------------------- */
+.berg-tuile-budget {
+    background-color: var(--b-papier);
+    border: var(--b-filet);
+    border-top: 4px solid var(--b-sapin);
+    border-radius: var(--b-r-lg);
+    padding: 1.6rem 1.75rem;
+    box-shadow: var(--b-ombre-1);
+}
+.berg-tuile-budget-total {
+    font-family: var(--b-titre);
+    font-size: 2.3rem;
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--b-encre);
+    margin: .2rem 0 .4rem;
+}
+
+/* --- Pages d'erreur ------------------------------------------------------- */
+.berg-erreur-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+    justify-content: center;
+}
+
+/* --- Agenda --------------------------------------------------------------- */
+.berg-agenda-tete {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: 1.75rem;
+}
+.berg-agenda-tete h1 { font-size: clamp(1.7rem, 3vw, 2.3rem); margin-bottom: .3rem; }
+.berg-agenda-tete .calendar-hint { text-align: left; }
+.berg-agenda-ajout { margin-left: auto; white-space: nowrap; }
+
+
+
+/* =============================================================================
+   18 ter. WIDGET DE RECADRAGE D'IMAGE (django-client-side-image-cropping)
+   -----------------------------------------------------------------------------
+   Le widget arrive avec ses propres boutons gris. On lui donne l'allure du
+   reste des formulaires sans toucher a son balisage ni a son script.
+   ========================================================================== */
+
+.dcsic_wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .75rem;
+    background-color: var(--b-chaux-2);
+    border: 1px dashed var(--b-pierre);
+    border-radius: var(--b-r);
+    padding: .85rem 1rem;
+}
+/* Le <label> du widget n'est pas une etiquette de champ : il ne doit pas
+   heriter des petites capitales des formulaires. */
+.dcsic_wrapper label {
+    display: inline-block;
+    margin: 0;
+    font-size: inherit;
+    letter-spacing: normal;
+    text-transform: none;
+    color: inherit;
+    cursor: pointer;
+}
+.dcsic_current_img {
+    border-radius: var(--b-r-xs);
+    border: 1px solid var(--b-pierre);
+    object-fit: cover;
+    background-color: var(--b-laine);
+}
+.dcsic_current_img[src=""] { display: none; }
+
+.dcsic_choose_img,
+.dcsic_choose_other_img,
+.dcsic_delete_image {
+    display: inline-block;
+    font-family: var(--b-texte);
+    font-size: .86rem;
+    font-weight: 700;
+    letter-spacing: .04em;
+    border-radius: var(--b-r);
+    padding: .45rem .95rem;
+    border: 1px solid var(--b-bois);
+    color: var(--b-bois);
+    background-color: var(--b-papier);
+    cursor: pointer;
+    transition: background-color .15s ease, color .15s ease;
+}
+.dcsic_choose_img:hover,
+.dcsic_choose_other_img:hover { background-color: var(--b-bois); color: var(--b-chaux); }
+.dcsic_delete_image {
+    border-color: var(--b-rouge);
+    color: var(--b-rouge);
+    margin-left: auto;
+}
+.dcsic_delete_image:hover { background-color: var(--b-rouge); color: #fff; }
+.dcsic_file_input { display: none; }
+
+/* La fenetre de recadrage. */
+.dcsic_overlay { background-color: rgba(33, 27, 20, .68) !important; }
+.dcsic_overlay .dcsic_modal,
+.dcsic_overlay > div {
+    background-color: var(--b-chaux);
+    border-radius: var(--b-r-lg);
+    box-shadow: var(--b-ombre-4);
+}
+.dcsic_overlay button {
+    font-family: var(--b-texte);
+    font-weight: 700;
+    border-radius: var(--b-r);
+    border: 1px solid var(--b-tomette-2);
+    background-color: var(--b-tomette);
+    color: #fffaf1;
+    padding: .55rem 1.2rem;
+}
+
+/* Intitule au-dessus d'un champ sans etiquette (zone de commentaire). */
+.berg-champ-titre {
+    display: block;
+    font-family: var(--b-texte);
+    font-size: .79rem;
+    font-weight: 700;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--b-bois);
+    margin-bottom: .4rem;
+}
+
+
+/* =============================================================================
+   19. RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 991.98px) {
+    :root { --b-nav-h: 62px; }
+
+    .navbar-collapse {
+        margin-top: .75rem;
+        padding-top: .75rem;
+        border-top: 1px solid rgba(227, 217, 195, .22);
+    }
+    .navbar .btn {
+        display: block;
+        width: 100%;
+        margin: .45rem 0 0;
+        text-align: center;
+    }
+    .navbar .nav-link { padding-left: 0 !important; }
+    .dropdown-menu { border-top-width: 2px; box-shadow: none; }
+
+    .berg-section { padding: 3.25rem 0; }
+    .berg-hero { min-height: 82vh; }
+    .berg-cartouche { padding: 2rem 1.35rem; }
+    .berg-crete svg { height: 48px; }
+    .page-header, .berg-entete { padding: calc(var(--b-nav-h) + 2.5rem) 0 3rem; }
+    .post-preview-featured-img { min-height: 210px; }
+
+    .berg-sortie-une { grid-template-columns: 1fr; }
+    .berg-sortie-une-vue { min-height: 200px; aspect-ratio: 16 / 9; }
+    .berg-sortie-une-corps { border-left: 0; border-top: 3px solid var(--b-bois); padding: 1.35rem 1.4rem; }
+    .berg-agenda-ajout { margin-left: 0; width: 100%; }
+}
+
+@media (max-width: 767.98px) {
+    .berg-groupe-tete { flex-direction: column; align-items: flex-start; gap: .4rem; }
+    .berg-actions .btn { flex: 1 1 auto; }
+    .fc .fc-toolbar.fc-header-toolbar { flex-direction: column; align-items: stretch; }
+    .fc .fc-toolbar-chunk { display: flex; justify-content: center; flex-wrap: wrap; gap: .3rem; }
+}
+
+@media (max-width: 575.98px) {
+    body { font-size: 1.02rem; }
+    .navbar-brand { font-size: 1.28rem !important; }
+    .berg-volet-corps, .card-body { padding: 1.15rem; }
+    .berg-volet-tete, .berg-volet-pied { padding: .85rem 1.15rem; }
+    .post-archive-item { padding: 1.05rem 1.15rem; }
+    .berg-crete svg { height: 34px; }
+    .account-img, #profile-img { width: 112px; height: 112px; }
+    .berg-cartouche { padding: 1.6rem 1.15rem; }
+    .berg-detail { padding: 1.35rem 1.25rem; }
+    .berg-fil { padding: 1.25rem 1.15rem 1.5rem; }
+    .berg-article { padding: 1.1rem 1.2rem .95rem; }
+    .berg-article-suite { margin-left: 0; }
+    .berg-profil-tete { justify-content: center; text-align: center; }
+}
+
+
+/* =============================================================================
+   20. ACCESSIBILITE, MOUVEMENT, IMPRESSION
+   ========================================================================== */
+
+/* Un anneau de focus chaud et visible, sur tout ce qui est actionnable. */
+a:focus-visible, button:focus-visible, .btn:focus-visible,
+input:focus-visible, select:focus-visible, textarea:focus-visible,
+[tabindex]:focus-visible {
+    outline: 3px solid var(--b-miel);
+    outline-offset: 2px;
+    box-shadow: none;
+}
+
+/* Lien d'evitement, pour aller droit au contenu au clavier. */
+.berg-evitement {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 1100;
+    background-color: var(--b-miel);
+    color: var(--b-encre);
+    font-weight: 700;
+    padding: .75rem 1.25rem;
+    border-radius: 0 0 var(--b-r) 0;
+}
+.berg-evitement:focus { left: 0; color: var(--b-encre); }
+
+.sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+    }
+    .lift:hover, .lift-lg:hover, .btn:hover,
+    .berg-rubrique:hover, .post-archive-item:hover { transform: none !important; }
+    .berg-rubrique:hover .berg-rubrique-vue img,
+    .post-preview:hover .card-img-top { transform: none !important; }
+}
+
+@media (prefers-contrast: more) {
+    :root { --b-encre-2: #4a4239; --b-encre-3: #6d6357; --b-pierre: #a8987c; }
+}
+
+@media print {
+    body::before, .navbar, .footer, .berg-crete,
+    .berg-actions, .pagination, .berg-evitement { display: none !important; }
+    body { background: #fff !important; color: #000; font-size: 11pt; }
+    .card, .post-archive-item, .list-group { box-shadow: none !important; border-color: #999 !important; }
+    a { color: #000; box-shadow: none; }
+    .berg-page, .page-header, .berg-entete { padding-top: 0 !important; }
+}

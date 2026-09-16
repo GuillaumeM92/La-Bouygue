@@ -11,9 +11,9 @@ fetch('/budget/data/')
         }
 
         // Set new default font family and font color to mimic Bootstrap's default styling
-        (Chart.defaults.global.defaultFontFamily = "Metropolis"),
+        (Chart.defaults.global.defaultFontFamily = "Alegreya Sans"),
             '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-        Chart.defaults.global.defaultFontColor = "#858796";
+        Chart.defaults.global.defaultFontColor = "#635a50";
 
         function number_format(number, decimals, dec_point, thousands_sep) {
             // *     example: number_format(1234.56, 2, ',', ' ');
@@ -49,14 +49,14 @@ fetch('/budget/data/')
                 datasets: [{
                     label: "Total",
                     lineTension: 0.3,
-                    backgroundColor: "rgba(0, 97, 242, 0.05)",
-                    borderColor: "rgba(0, 97, 242, 1)",
+                    backgroundColor: "rgba(174, 80, 41, 0.08)",
+                    borderColor: "rgba(174, 80, 41, 1)",
                     pointRadius: 3,
-                    pointBackgroundColor: "rgba(0, 97, 242, 1)",
-                    pointBorderColor: "rgba(0, 97, 242, 1)",
+                    pointBackgroundColor: "rgba(174, 80, 41, 1)",
+                    pointBorderColor: "rgba(174, 80, 41, 1)",
                     pointHoverRadius: 3,
-                    pointHoverBackgroundColor: "rgba(0, 97, 242, 1)",
-                    pointHoverBorderColor: "rgba(0, 97, 242, 1)",
+                    pointHoverBackgroundColor: "rgba(174, 80, 41, 1)",
+                    pointHoverBorderColor: "rgba(174, 80, 41, 1)",
                     pointHitRadius: 10,
                     pointBorderWidth: 2,
                     data: totalDict

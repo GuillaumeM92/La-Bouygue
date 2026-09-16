@@ -1,26 +1,21 @@
 {% extends "bouygue/base.html" %}
 {% load static %}
 {% block content %}
-<body class="bg-light">
-    <div id="layoutError">
-        <div id="layoutError_content">
-            <main>
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-6">
-                            <div class="text-center mt-10">
-                                <img class="img-fluid p-4 mt-10" src="{% static 'bouygue/assets/img/illustrations/500-internal-server-error.svg' %}" alt="" />
-                                <p class="lead">Erreur interne au serveur.</p>
-                                <a class="text-arrow-icon" onClick="javascript:history.go(-1);">
-                                    <i class="ml-0 mr-1" data-feather="arrow-left"></i>
-                                    Revenir en arrière
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+<div hidden>{% block title %} — Erreur 500 {% endblock %}</div>
+<div class="berg-erreur">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7 col-md-9">
+                <img class="img-fluid" src="{% static 'bouygue/assets/img/illustrations/500-internal-server-error.svg' %}" alt="" />
+                <div class="berg-erreur-code">500</div>
+                <h1>La maison a un souci</h1>
+                <p class="mb-4">Une erreur est survenue côté serveur. Elle a été enregistrée&nbsp;: réessayez dans un instant.</p>
+                <div class="berg-erreur-actions">
+                    <a class="btn btn-primary" href="{% url 'bouygue-home' %}">Retour à l'accueil</a>
+                    <a class="btn btn-outline-primary" onClick="javascript:history.go(-1);">Revenir en arrière</a>
                 </div>
-            </main>
+            </div>
         </div>
     </div>
-</body>
+</div>
 {% endblock content %}

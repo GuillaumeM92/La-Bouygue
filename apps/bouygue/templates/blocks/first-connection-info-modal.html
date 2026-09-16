@@ -1,34 +1,49 @@
 {% load static %}
-{% load crispy_forms_tags %}
-<!-- Hidden view reservation modal -->
+{% comment %}
+    Fenêtre affichée à la toute première connexion.
+    L'identifiant #staticBackdrop et le bouton #view-reservation-button sont
+    conservés : c'est le script du site qui déclenche l'ouverture.
+{% endcomment %}
 <button hidden="hidden" class="btn" id="view-reservation-button" type="button" data-toggle="modal" data-target="#staticBackdrop"></button>
+
 <div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Informations</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h5 class="modal-title" id="staticBackdropLabel">Bienvenue</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Fermer"><span aria-hidden="true">&times;</span></button>
             </div>
-            <div class="modal-body ml-2 mr-2 lead">
-                <h3 class="font-weight-bolder text-center mt-4 mb-5 ">Bienvenue sur le site de la Bouygue !</h3>
-                     <p>Nous espérons que vous l'apprécierez, et qu'il facilitera l'organisation de vos séjours.</p>
-                <div>
-                    <p>Voici le mode de fonctionnement du site, provisoire pendant la 1ère année :</p>
-                    <ul>
-                        <li>l'accès sera réservé aux membres de la famille.</li>
-                        <li>les administrateurs sont (par ordre d'ancienneté dans le grade) : Paul-Henri, Patrice, Xavier, et Guillaume qui a développé le site.</li>
-                    </ul>
-                    <p>Le rôle de l'administrateur est de :</p>
-                    <ul>
-                        <li>valider les accès pour les nouveaux arrivants lors de leur 1ère connexion.</li>
-                        <li>renseigner la rubrique "Infos Pratiques" (exemple : le pont des Lannes vient de s'effondrer ...) : donc rubrique <b>à lire en priorité avant chaque séjour !</b></li>
-                        <li>mettre à jour périodiquement le site lorsque nécessaire (exemple : supprimer un texte devenu inutile).</li>
-                    </ul>
-                    <p class="mt-2 mb-5">Vos suggestions sont évidemment les bienvenues.</p>
-                    <hr>
-                    <p class="mt-2 mb-1 text-center">Bonne découverte et bons séjours !</p>
+            <div class="modal-body">
+                <div class="text-center mb-4">
+                    <div class="berg-surtitre">La maison de famille</div>
+                    <h2>Bienvenue sur le site de la Bouygue&nbsp;!</h2>
+                    <p class="berg-craie">on s'y retrouve, saison après saison</p>
                 </div>
 
+                <div class="berg-prose">
+                    <p>Nous espérons qu'il vous plaira, et qu'il facilitera l'organisation de vos séjours.</p>
+
+                    <h3 class="h5">Comment ça marche</h3>
+                    <ul>
+                        <li>L'accès est réservé aux membres de la famille.</li>
+                        <li>Les administrateurs sont, par ordre d'ancienneté dans le grade&nbsp;: Paul-Henri, Patrice, Xavier, et Guillaume qui a développé le site.</li>
+                    </ul>
+
+                    <h3 class="h5">Le rôle de l'administrateur</h3>
+                    <ul>
+                        <li>Valider l'accès des nouveaux arrivants à leur première connexion.</li>
+                        <li>Tenir la rubrique <strong>Infos pratiques</strong> — par exemple&nbsp;: le pont des Lannes vient de s'effondrer. <strong>À lire en priorité avant chaque séjour.</strong></li>
+                        <li>Mettre le site à jour quand c'est nécessaire.</li>
+                    </ul>
+
+                    <p>Vos suggestions sont évidemment les bienvenues.</p>
+                </div>
+
+                <hr class="berg-couture my-4" />
+                <p class="text-center berg-craie mb-0">bonne découverte, et bons séjours&nbsp;!</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="button" data-dismiss="modal">C'est parti</button>
             </div>
         </div>
     </div>

@@ -2,154 +2,81 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% block content %}
-{% block import %}
-    {% include 'blocks/image-resize-imports.html' %}
-{% endblock %}
-<!-- Page Header-->
-<header class="page-header page-header-dark bg-img-cover overlay overlay-60" style="background-image: url({% static 'bouygue/assets/img/backgrounds/montagne/pic_har.jpg' %}); height: 19rem;">
-    <div class="page-header-content">
-        <div class="container text-center">
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <h1 class="page-header-title mt-0 mb-3">Travaux</h1>
-                    <p class="page-header-text mb-0">Consultez le détail d'une tâche</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    {% block border-wave %}
-        {% include 'blocks/svg-border-wave.html' %}
-    {% endblock %}
-</header>
-<section class="bg-light py-4 mb-5">
-    <div class="container" style="padding-left: 1.5rem; padding-right: 1.5rem">
-        <div class="row">
-            <div class="col-lg-3">
-                <ul class="list-group list-group-flush list-group-careers">
-                    <li class="list-group-item pt-0">
-                        <a class="small" href="{% url "work"%}" style="cursor: pointer"><i class="fas fa-arrow-left mr-1"></i>Retour</a>
-                    </li>
-                    <li class="list-group-item mt-2" style="border-bottom: 0; padding-bottom: 0.3rem"><h1>{{ work.title }}</h1></li>
-                    <li class="list-group-item" style="padding-top: 0.3rem; justify-content: left">
-                        {% if user == work.author %}
-                            <a class="btn btn-outline-primary font-weight-600 mb-1" style="padding: 0.7rem;" href="{% url 'work-update' work.id %}" name="update-work">Modifier</a>
-                        {% endif %}
-                        {% if user == work.author or user.is_superuser or user.is_staff %}
-                            <a class="btn btn-outline-danger font-weight-600 ml-1 mb-1" style="padding: 0.7rem;" href="{% url 'work-delete' work.id %}" name="delete-work">Supprimer</a>
-                        {% endif %}
-                    </li>
-                    <li class="list-group-item">Catégorie : {{ work.get_categories_display }}<i class="fas fa-tools fa-fw text-gray-400"></i></li>
-                    <li class="list-group-item">État : {{ work.get_state_display }}<i class="fas fa-calendar fa-fw text-gray-400"></i></li>
-                    <li class="list-group-item">Coût estimé : {{ work.cost }} €<i class="fas fa-euro-sign fa-fw text-gray-400"></i></li>
-                    <li class="list-group-item">Statut : {{ work.get_status_display }}<i class="fas fa-clock fa-fw text-gray-400"></i></li>
-                </ul>
-            </div>
-            <div class="col-lg-9 mb-4">
-                {% if messages %}
-                    {% for message in messages %}
-                        <div class="font-weight-400 text-center mb-4 calendar-alert alert-{{ message.tags }}" style="padding: 0.8rem">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                {% endif %}
-                <h5 class="mb-4">Description</h5>
-                <p class="mb-4">{{ work.content|linebreaks }}</p>
-                {% if work.image %} <img src="{{ work.image.url }}" class="img-fluid"/> {% endif %}
-                <div class="d-flex align-items-center justify-content-between mt-4 mb-5">
-                    <div class="post-archive-meta mr-4 ml-auto p-2">
-                        <a href="{% url 'profile-view' work.author.id %}"><img class="post-archive-meta-img" src="{{ work.author.profile.image.url }}"/>
-                        <div class="post-archive-meta-details">
-                            <div class="post-archive-meta-details-name {% if work.author.is_superuser or work.author.is_staff %} text-purple {% endif %}">{{ work.author.surname }} {{ work.author.name }}</div></a>
-                            <div class="post-archive-meta-details-date">{{ work.date_posted }}</div>
-                        </div>
-                    </div>
-                </div>
-                <hr class="mt-5 mb-4">
-                {% if work.state != 2 %}
-                <h5 class="mb-4">Signaler que cette tâche est terminée ?</h5>
-                <!-- Confirmation modal -->
-                <button class="btn btn-primary font-weight-bolder" type="button" data-toggle="modal" data-target="#staticBackdrop">J'ai terminé !</button>
-                <div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-md" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="staticBackdropLabel">Attention</h5>
-                                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                            </div>
-                            <div class="modal-body">
-                                <p>Confirmez-vous avoir terminé ce travail ?</p>
-                                <!-- Confirmation form-->
-                                <form method="POST">
-                                    {% csrf_token %}
-                                    <!-- Form Row-->
-                                    <fieldset class="form-group">
-                                        <button class="btn btn-outline-red font-weight-bolder" data-dismiss="modal">Annuler</button>
-                                        <button class="btn btn-outline-primary font-weight-bolder ml-1" id="confirm-done" type="submit" name="action" value="done">Confirmer</button>
-                                    </fieldset>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {% endif %}
-            </div>
-            <!-- Comment Section -->
-            <div class="col-lg-9 bg-gray-200 rounded ml-auto mt-4">
-                <div class="bg-gray-200 rounded mt-5 mb-4">
-                    <h1 class="mt-3">Commentaires</h1>
-                    <hr class="my-2" />
-                    <!-- Post Comment form-->
-                    <form method="POST" autocomplete="off">
-                        {% csrf_token %}
-                        <!-- Form Row-->
-                        <fieldset class="form-group mb-5">
-                            {{ form|crispy }}
-                            <button class="btn btn-primary font-weight-bolder" type="submit" name="action" value="comment">PUBLIER</button>
-                        </fieldset>
-                    </form>
-                    {% for comment in page_obj.object_list %}
-                        <div class="post-archive-meta d-flex">
-                            <a href="{% url 'profile-view' comment.author.id %}"><img class="post-archive-meta-img" src="{{ comment.author.profile.image.url }}" />
-                            <div class="post-archive-meta-details mr-auto p-2">
-                                <div class="post-archive-meta-details-name {% if comment.author.is_superuser or comment.author.is_staff %} text-purple {% endif %}">{{ comment.author.surname }} {{ comment.author.name }}</div></a>
-                                <div class="post-archive-meta-details-date">{{ comment.date_posted }}</div>
-                            </div>
-                            {% if user == comment.author %}
-                                <a class="btn btn-outline-primary font-weight-500" style="padding: 0.6rem;" href="{% url 'workcomment-update' comment.id %}" name="workcomment-update">modifier</a>
-                            {% endif %}
-                            {% if user == comment.author or user.is_superuser or user.is_staff %}
-                                <a class="btn btn-outline-danger font-weight-500 ml-1" style="padding: 0.6rem;" href="{% url 'workcomment-delete' comment.id %}?next={{ request.path }}" name="workcomment-delete">supprimer</a>
-                            {% endif %}
-                        </div>
-                        <div class="post-archive-item mt-3">
-                            <p>{{ comment.content|linebreaks }}</p>
-                            {% if comment.image %} <img src="{{ comment.image.url }}" class="img-fluid"/> {% endif %}
-                        </div>
-                        <hr class="my-5" />
-                    {% endfor %}
-                    <!-- Pagination -->
-                    {% if comment_count > 5 %}
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination pagination-blog justify-content-center">
-                        {% if page_obj.has_previous %}
-                            <li class="page-item active"><a class="page-link" href="?page=1">Début</a></li>
-                            <li class="page-item active"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Préc.</a></li>
-                        {% endif %}
-                        {% for num in page_obj.paginator.page_range %}
-                            {% if page_obj.number == num %}
-                                <li class="page-item disabled"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
-                            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                                <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
-                            {% endif %}
-                        {% endfor %}
-                        {% if page_obj.has_next %}
-                            <li class="page-item active"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Suiv.</a></li>
-                            <li class="page-item active"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Fin</a></li>
-                        {% endif %}
-                        </ul>
-                    </nav>
+{% include 'blocks/image-resize-imports.html' %}
+
+{% include 'blocks/berg-entete.html' with surtitre="Travaux" titre=work.title image="bouygue/assets/img/backgrounds/montagne/pic_har.jpg" %}
+
+<section class="berg-section berg-section--serree">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-11 col-xl-10">
+
+                {% include 'blocks/berg-messages.html' %}
+
+                <div class="berg-actions">
+                    <a class="berg-retour" href="{% url 'work' %}">Tous les travaux</a>
+                    <span class="ml-auto"></span>
+                    {% if user == work.author %}
+                        <a class="btn btn-outline-primary btn-sm" href="{% url 'work-update' work.id %}" name="update-work">Modifier</a>
+                    {% endif %}
+                    {% if user == work.author or user.is_superuser or user.is_staff %}
+                        <a class="btn btn-outline-danger btn-sm" href="{% url 'work-delete' work.id %}" name="delete-work">Supprimer</a>
                     {% endif %}
                 </div>
+
+                <div class="row">
+                    <div class="col-lg-4 mb-4">
+                        <div class="berg-fiche">
+                            <dl>
+                                <dt>Catégorie</dt><dd><i class="fas fa-tools fa-fw"></i> {{ work.get_categories_display }}</dd>
+                                <dt>État</dt><dd><i class="fas fa-calendar fa-fw"></i> {{ work.get_state_display }}</dd>
+                                <dt>Coût estimé</dt><dd><i class="fas fa-euro-sign fa-fw"></i> {{ work.cost }} €</dd>
+                                <dt>Statut</dt><dd><i class="fas fa-clock fa-fw"></i> {{ work.get_status_display }}</dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-8">
+                        <article class="berg-detail">
+                            <h1 class="berg-detail-titre">{{ work.title }}</h1>
+                            {% include 'blocks/berg-signature.html' with auteur=work.author date=work.date_posted %}
+                            <hr class="berg-couture my-4" />
+                            <div class="berg-prose">{{ work.content|linebreaks }}</div>
+                            {% if work.image %}<img class="berg-illustration mt-4" src="{{ work.image.url }}" alt="" />{% endif %}
+                        </article>
+
+                        {% if work.state != 2 %}
+                            <div class="berg-mot mt-4 text-left">
+                                <h2 class="h4 mb-2">Cette tâche est terminée&nbsp;?</h2>
+                                <p class="text-muted mb-3">Signalez-le : elle basculera dans la liste des travaux terminés.</p>
+                                <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#staticBackdrop">J'ai terminé&nbsp;!</button>
+                            </div>
+
+                            <div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="staticBackdropLabel">Confirmation</h5>
+                                            <button class="close" type="button" data-dismiss="modal" aria-label="Fermer"><span aria-hidden="true">&times;</span></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Confirmez-vous avoir terminé «&nbsp;{{ work.title }}&nbsp;»&nbsp;?</p>
+                                            <form method="POST">
+                                                {% csrf_token %}
+                                                <div class="berg-form-pied">
+                                                    <button class="btn btn-primary" id="confirm-done" type="submit" name="action" value="done">Oui, c'est fait</button>
+                                                    <button class="btn btn-outline-primary" type="button" data-dismiss="modal">Annuler</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                {% include 'blocks/berg-commentaires.html' with url_update='workcomment-update' url_delete='workcomment-delete' nom_bouton='action' valeur_bouton='comment' %}
             </div>
         </div>
     </div>

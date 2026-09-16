@@ -1,47 +1,52 @@
 {% extends "bouygue/base.html" %}
 {% load static %}
 {% block content %}
-<section class="bg-light py-10">
+<div hidden>{% block title %} — Données personnelles {% endblock %}</div>
+
+{% include 'blocks/berg-entete.html' with surtitre="Transparence" titre="Vos données" chapeau="Ce que ce site enregistre, pourquoi, et ce qu'il n'en fait pas." image="bouygue/assets/img/backgrounds/montagne/panticosa.jpg" %}
+
+<section class="berg-section berg-section--serree">
     <div class="container">
-        <a href="{% url "bouygue-home" %}" style="cursor: pointer"><i class="fas fa-arrow-left mr-1"></i> Accueil</a>
-        <h1 class="mb-4 mt-4">Traitement des données utilisateurs</h1>
-        <h4 class="mb-4">
-            <div class="icon-stack bg-primary text-white mt-3 mr-2"><i data-feather="arrow-right"></i></div>
-            Adresses Email
-        </h4>
-        <p>Pour garantir son bon fonctionnement, ce site recueille les adresses email des utilisateurs dans sa base de données.</p>
-        <p>Les adresses email sont uniquement utilisées pour le fonctionnement interne du site, et ne sont à aucun moment divulguées à des fins commerciales.</p>
-        <hr class="my-4" />
-        <h4 class="mb-4">
-            <div class="icon-stack bg-primary text-white mt-3 mr-2"><i data-feather="arrow-right"></i></div>
-            Mots de passe
-        </h4>
-        <p >Les mots de passe sont également stockés dans la base de données, mais ils sont automatiquement masqués à l'aide de l'algorithme d'encryption SHA-256.</p>
-        <p class="mb-0">Grâce à cette encrpytion, ni l'administrateur de ce site, ni un pirate informatique, ne peuvent être en mesure de prendre connaissance de votre mot de passe.</p>
-        <hr class="my-4" />
-        <h4 class="mb-4">
-            <div class="icon-stack bg-primary text-white mt-3 mr-2"><i data-feather="arrow-right"></i></div>
-            Cookies
-        </h4>
-        <p>Ce site ne génère aucun cookie, autre que ceux nécessaires au bon fonctionnement de l'application.</p>
-        <div class="card bg-light shadow-none">
-            <div class="card-body">
-                <h6>Par exemple :</h6>
-                <ul class="mb-0">
-                    <li class="font-italic">Le cookie d'identification de session, qui permet de ne pas avoir à se reconnecter à chaque visite.</li>
-                    <li class="font-italic">Le cookie de jeton CSRF, qui vérifie qu'un pirate n'a pas usurpé votre identité sur le site.</li>
-                    <li class="font-italic">Le cookie de première connexion, qui affiche la fenêtre d'information à la première connexion.</li>
-                </ul>
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+
+                <div class="berg-actions">
+                    <a class="berg-retour" href="{% url 'bouygue-home' %}">Accueil</a>
+                </div>
+
+                <div class="berg-prose">
+                    <div class="berg-groupe-tete">
+                        <h2><i class="fas fa-envelope fa-fw berg-groupe-glyphe"></i>Adresses email</h2>
+                    </div>
+                    <p>Pour garantir son bon fonctionnement, ce site enregistre les adresses email des utilisateurs dans sa base de données.</p>
+                    <p>Elles servent uniquement au fonctionnement interne du site, et ne sont à aucun moment divulguées à des fins commerciales.</p>
+
+                    <div class="berg-groupe-tete">
+                        <h2><i class="fas fa-key fa-fw berg-groupe-glyphe"></i>Mots de passe</h2>
+                    </div>
+                    <p>Les mots de passe sont eux aussi stockés dans la base de données, mais automatiquement masqués par l'algorithme de chiffrement SHA-256.</p>
+                    <p>Grâce à ce chiffrement, ni l'administrateur du site, ni un pirate informatique, ne peuvent prendre connaissance de votre mot de passe.</p>
+
+                    <div class="berg-groupe-tete">
+                        <h2><i class="fas fa-cookie-bite fa-fw berg-groupe-glyphe"></i>Cookies</h2>
+                    </div>
+                    <p>Ce site ne dépose aucun cookie autre que ceux nécessaires au fonctionnement de l'application.</p>
+                    <div class="berg-fiche mb-4">
+                        <h3 class="h6 mb-3">Par exemple</h3>
+                        <ul class="mb-0">
+                            <li>le cookie de session, qui évite d'avoir à se reconnecter à chaque visite&nbsp;;</li>
+                            <li>le cookie de jeton CSRF, qui vérifie qu'un tiers n'a pas usurpé votre identité&nbsp;;</li>
+                            <li>le cookie de première connexion, qui affiche la fenêtre d'accueil une seule fois.</li>
+                        </ul>
+                    </div>
+
+                    <div class="berg-groupe-tete">
+                        <h2><i class="fas fa-life-ring fa-fw berg-groupe-glyphe"></i>Un problème&nbsp;?</h2>
+                    </div>
+                    <p>Pour tout problème technique rencontré sur le site, écrivez à <a href="mailto:gemacx@gmail.com">gemacx@gmail.com</a>.</p>
+                </div>
             </div>
         </div>
-        <hr class="my-4" />
-        <h4 class="mb-4">
-            <div class="icon-stack bg-primary text-white mt-3 mr-2"><i data-feather="arrow-right"></i></div>
-            Un problème ?
-        </h4>
-        <p>Pour tout problème technique rencontré lors de l'utilisation du site, merci d'adresser un email à <b>gemacx@gmail.com</b></p>
-    <div class="svg-border-rounded text-dark">
-        <!-- Rounded SVG Border--><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144.54 17.34" preserveAspectRatio="none" fill="#1e2c41"><path d="M144.54,17.34H0V0H144.54ZM0,0S32.36,17.34,72.27,17.34,144.54,0,144.54,0"></path></svg>
     </div>
 </section>
 {% endblock content %}

@@ -1,0 +1,16 @@
+{% comment %}
+    Signature d'une publication : portrait, nom, date.
+    Usage : {% include 'blocks/berg-signature.html' with auteur=post.author date=post.date_posted %}
+{% endcomment %}
+<div class="post-archive-meta">
+    <a href="{% url 'profile-view' auteur.id %}" aria-label="Voir le profil de {{ auteur.surname }} {{ auteur.name }}">
+        <img class="post-archive-meta-img" src="{{ auteur.profile.image.url }}" alt="" />
+    </a>
+    <div class="post-archive-meta-details mr-auto">
+        <a href="{% url 'profile-view' auteur.id %}">
+            <div class="post-archive-meta-details-name {% if auteur.is_superuser or auteur.is_staff %}text-purple{% endif %}">{{ auteur.surname }} {{ auteur.name }}</div>
+        </a>
+        <div class="post-archive-meta-details-date">{{ date|date:"j F Y" }}</div>
+    </div>
+    {% if lien %}<a class="font-weight-700 ml-auto" href="{{ lien }}">{{ lien_texte|default:"Ouvrir" }}</a>{% endif %}
+</div>

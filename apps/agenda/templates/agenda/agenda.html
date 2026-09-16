@@ -2,37 +2,39 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% block content %}
-<!-- Agenda Specific Imports -->
+<div hidden>{% block title %} — Calendrier {% endblock %}</div>
+
+<!-- Imports propres au calendrier -->
 <link href="{% static 'agenda/fullcalendar/main.css' %}" rel="stylesheet" />
 <script src="{% static 'agenda/fullcalendar/main.min.js' %}"></script>
 <script src="{% static 'agenda/fullcalendar/calendar-custom.js' %}"></script>
 
-<!-- Date Picker Widget Imports -->
-<link rel="stylesheet" type="text/css" href="{% static 'admin/css/widgets.css' %}"/>
+<!-- Sélecteur de date de l'admin Django : requis par le formulaire de séjour.
+     Le script du calendrier déplace ces widgets dans les fenêtres modales. -->
+<link rel="stylesheet" type="text/css" href="{% static 'admin/css/widgets.css' %}" />
 <script type="text/javascript" src="/jsi18n/"></script>
 <script type="text/javascript" src="{% static 'admin/js/core.js' %}"></script>
-<style>
-    .calendar caption, .calendarbox h2 {
-        background: rgb(142, 178, 204);
-    }
-    .calendar-shortcuts {
-        background: white;
-    }
-</style>
 
-<section class="bg-light py-10" id="responsive-calendar" style="height:100rem;">
+<section id="responsive-calendar">
     <div class="container-fluid animated--fade-in">
+
         {% if messages %}
             {% for message in messages %}
-                <div class="font-weight-600 text-center calendar-alert alert-{{ message.tags }}">
-                    {{ message }}
-                </div>
+                <div class="calendar-alert alert-{{ message.tags }}">{{ message }}</div>
             {% endfor %}
         {% endif %}
 
-        {% block reservation-modal %}
-            {% include 'blocks/reservation-modal.html' %}
-        {% endblock %}
+        <div class="berg-agenda-tete">
+            <div>
+                <div class="berg-surtitre">Le calendrier des séjours</div>
+                <h1>Qui vient, et quand</h1>
+                <p class="calendar-hint mb-0">Cliquez sur un séjour pour l'ouvrir. Le vôtre s'ajoute avec le bouton ci-contre.</p>
+            </div>
+
+            {% block reservation-modal %}
+                {% include 'blocks/reservation-modal.html' %}
+            {% endblock %}
+        </div>
 
         {% block hidden-view-reservation-modal %}
             {% include 'blocks/hidden-view-reservation-modal.html' %}
@@ -42,12 +44,13 @@
             {% include 'blocks/hidden-modify-reservation-modal.html' %}
         {% endblock %}
 
-        <!-- Agenda-->
-        <div id='calendar'></div>
+        <!-- L'agenda -->
+        <div id="calendar"></div>
     </div>
 </section>
+
 <div id="user_id" value="{{ user.id }}"></div>
-{% if user.is_superuser or user.is_superuser or user.is_staff  %}
-<div id="is_admin" value="yes"></div>
+{% if user.is_superuser or user.is_staff %}
+    <div id="is_admin" value="yes"></div>
 {% endif %}
 {% endblock content %}

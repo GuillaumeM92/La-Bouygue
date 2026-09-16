@@ -1,56 +1,22 @@
-{% extends "bouygue/base.html" %}
+{% extends "bouygue/base-volet.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
-{% block content %}
-<div hidden>{% block title %} - Connexion {% endblock %}</div>
-<div id="layoutAuthentication_content" class="bg-img-cover bg-gray-900" style="padding-right: 0.5rem; padding-left: 0.5rem; background-image: url({% static 'bouygue/assets/img/backgrounds/montagne/bouygue1.JPG' %}); height: 62rem;">
-    <div class="container" style="padding-right: 1rem; padding-left: 1rem;">
-        <div class="row justify-content-center">
-            <div class="col-lg-7">
-                <!-- Basic registration form-->
-                <div class="card shadow-lg border-0 rounded-lg mt-12 mb-10 animated--fade-in" style="opacity: 92%">
-                    <div class="card-header justify-content-center" style="background-color: #19273c; opacity: 96%"><h3 class="font-weight-50 my-4" style="color: white">Connexion</h3></div>
-                    <div class="card-body">
-                        {% if messages %}
-                            {% for message in messages %}
-                                <div class="alert alert-{{ message.tags }}">
-                                    {{ message }}
-                                </div>
-                            {% endfor %}
-                        {% endif %}
-                        <!-- Registration form-->
-                        <form method="POST" autocomplete="off">
-                            {% csrf_token %}
-                            <!-- Form Row-->
-                            <fieldset class="form-group">
-                                {{ form|crispy }}
-                            </fieldset>
-                            <!-- Form Group (create account submit)-->
-                            <div class="form-group mt-4 mb-0">
-                                <button class="btn btn-primary font-weight-bold" type="submit" name="login">Se connecter</button>
-                                <small class="text-muted">
-                                    <a class="ml-2" href="{% url 'password_reset' %}">Mot de passe oublié ?</a>
-                                </small>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="card-footer text-center">
-                        <div class="small">
-                            <a href="{% url 'users-register' %}">Pas encore de compte ? Par ici !</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+{% block title %} — Connexion {% endblock %}
+{% block volet_image %}{% static 'bouygue/assets/img/backgrounds/montagne/bouygue1.JPG' %}{% endblock %}
+{% block volet_largeur %}col-lg-7 col-xl-6{% endblock %}
+{% block volet_retour %}{% endblock %}
+{% block volet_titre %}Connexion{% endblock %}
+{% block volet_corps %}
+    <p class="berg-craie mb-4">content de vous revoir</p>
+    <form method="POST" autocomplete="off">
+        {% csrf_token %}
+        <fieldset class="form-group">{{ form|crispy }}</fieldset>
+        <div class="berg-form-pied">
+            <button class="btn btn-primary" type="submit" name="login">Se connecter</button>
+            <a class="ml-auto small" href="{% url 'password_reset' %}">Mot de passe oublié&nbsp;?</a>
         </div>
-    </div>
-</div>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
-<!-- <script>
-    // let done = false;
-    // if ($(location).attr('href').includes('login-as-test-user') && !done) {
-    //     $('#id_username').val($('#id_username').val() + 'testuser@email.com');
-    //     $('#id_password').val($('#id_password').val() + 'Test123.');
-    //     done = true;
-    // }
-</script> -->
-{% endblock content %}
+    </form>
+{% endblock %}
+{% block volet_pied %}
+    <div class="berg-volet-pied">Pas encore de compte&nbsp;? <a href="{% url 'users-register' %}">Par ici</a>.</div>
+{% endblock %}

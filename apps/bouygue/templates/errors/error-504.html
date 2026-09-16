@@ -1,54 +1,69 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>504 Error - SB Admin Pro</title>
-        <link href="css/styles.css" rel="stylesheet" />
-        <link rel="icon" type="image/x-icon" href="assets/img/favicon.png" />
-        <script data-search-pseudo-elements defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.js" crossorigin="anonymous"></script>
-    </head>
-    <body class="bg-light">
-        <div id="layoutError">
-            <div id="layoutError_content">
-                <main>
-                    <div class="container">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-6">
-                                <div class="text-center mt-4">
-                                    <img class="img-fluid p-4" src="assets/img/illustrations/504-error-gateway-timeout.svg" alt="" />
-                                    <p class="lead">The server encountered a temporary error and could not complete your request.</p>
-                                    <a class="text-arrow-icon" href="index.html">
-                                        <i class="ml-0 mr-1" data-feather="arrow-left"></i>
-                                        Return to Dashboard
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </main>
-            </div>
-            <div id="layoutError_footer">
-                <footer class="footer mt-auto footer-light">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-6 small">Copyright &copy; Your Website 2021</div>
-                            <div class="col-md-6 text-md-right small">
-                                <a href="#!">Privacy Policy</a>
-                                &middot;
-                                <a href="#!">Terms &amp; Conditions</a>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
-            </div>
-        </div>
-        <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="js/scripts.js"></script>
-    </body>
+<html lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>La Bouygue — Le serveur ne répond pas</title>
+    <style>
+        /* Page autonome : elle doit s'afficher meme si le site est a l'arret,
+           donc aucune dependance a une feuille de style externe. */
+        :root { color-scheme: light; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 2rem 1.25rem;
+            background-color: #f6f1e6;
+            color: #282320;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            text-align: center;
+        }
+        .boite {
+            max-width: 34rem;
+            background-color: #fffcf4;
+            border: 1px solid #c9bca3;
+            border-top: 5px solid #8a5a38;
+            border-radius: 7px;
+            padding: 2.5rem 2rem;
+            box-shadow: 0 14px 34px rgba(58, 42, 26, .18);
+        }
+        svg { width: 76px; height: 64px; color: #d59a2e; }
+        .code {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1;
+            color: #c9bca3;
+            letter-spacing: -.03em;
+            margin: .5rem 0 .25rem;
+        }
+        h1 { font-family: Georgia, 'Times New Roman', serif; font-size: 1.75rem; margin: 0 0 .75rem; }
+        p { color: #635a50; margin: 0 0 1.5rem; }
+        a {
+            display: inline-block;
+            background-color: #ae5029;
+            color: #fffaf1;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 4px;
+            padding: .7rem 1.4rem;
+        }
+        a:hover { background-color: #8e3d1d; }
+    </style>
+</head>
+<body>
+    <main class="boite">
+        <svg viewBox="0 0 30 26" fill="none" aria-hidden="true">
+            <path d="M1 20 L8.5 5.5 L13 12.5 L17 3 L29 20 Z" fill="currentColor" opacity=".55"/>
+            <path d="M9 25 V15.5 L15.5 10.5 L22 15.5 V25 Z" fill="currentColor"/>
+            <path d="M6.5 16.5 L15.5 9 L24.5 16.5" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="code">504</div>
+        <h1>Le serveur ne répond pas</h1>
+        <p>La demande a mis trop de temps à aboutir. Réessayez dans un instant.</p>
+        <a href="/">Revenir à l'accueil</a>
+    </main>
+</body>
 </html>

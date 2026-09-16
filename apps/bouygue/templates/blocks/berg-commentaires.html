@@ -1,0 +1,62 @@
+{% load crispy_forms_tags %}
+{% comment %}
+    Fil de commentaires, partagé par les discussions, les infos, les activités
+    et les travaux. Les noms d'URL de modification / suppression changent d'une
+    rubrique à l'autre : ils sont passés en paramètres.
+
+    Usage :
+      {% include 'blocks/berg-commentaires.html' with url_update='comment-update' url_delete='comment-delete' %}
+{% endcomment %}
+<section class="berg-fil" aria-labelledby="titre-commentaires">
+    <div class="berg-groupe-tete">
+        <h2 id="titre-commentaires">Commentaires</h2>
+        <span class="berg-etiquette">{{ comment_count|default:0 }}</span>
+    </div>
+
+    <form method="POST" autocomplete="off" class="berg-carte-form">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            {# Le formulaire masque l'etiquette du champ « content » : on en
+               remet une, pour que le champ ne soit pas muet au lecteur d'ecran. #}
+            <label class="berg-champ-titre" for="id_content">Votre commentaire</label>
+            {{ form|crispy }}
+        </fieldset>
+        <div class="berg-form-pied">
+            <button class="btn btn-primary" type="submit" name="{{ nom_bouton|default:'send' }}" {% if valeur_bouton %}value="{{ valeur_bouton }}"{% endif %}>Publier</button>
+        </div>
+    </form>
+
+    <hr class="berg-couture my-5" />
+
+    {% for comment in page_obj.object_list %}
+        <article class="berg-commentaire mb-5">
+            <div class="post-archive-meta">
+                <a href="{% url 'profile-view' comment.author.id %}" aria-label="Voir le profil de {{ comment.author.surname }} {{ comment.author.name }}">
+                    <img class="post-archive-meta-img" src="{{ comment.author.profile.image.url }}" alt="" />
+                </a>
+                <div class="post-archive-meta-details mr-auto">
+                    <a href="{% url 'profile-view' comment.author.id %}">
+                        <div class="post-archive-meta-details-name {% if comment.author.is_superuser or comment.author.is_staff %}text-purple{% endif %}">{{ comment.author.surname }} {{ comment.author.name }}</div>
+                    </a>
+                    <div class="post-archive-meta-details-date">{{ comment.date_posted }}</div>
+                </div>
+                {% if user == comment.author %}
+                    <a class="btn btn-outline-primary btn-sm" href="{% url url_update comment.id %}?next={{ request.path }}" name="{{ url_update }}">Modifier</a>
+                {% endif %}
+                {% if user == comment.author or user.is_superuser or user.is_staff %}
+                    <a class="btn btn-outline-danger btn-sm" href="{% url url_delete comment.id %}?next={{ request.path }}" name="{{ url_delete }}">Supprimer</a>
+                {% endif %}
+            </div>
+            <div class="post-archive-item mt-3">
+                {{ comment.content|linebreaks }}
+                {% if comment.image %}<img src="{{ comment.image.url }}" class="img-fluid" alt="" />{% endif %}
+            </div>
+        </article>
+    {% empty %}
+        <p class="berg-vide">Personne n'a encore réagi. À vous de commencer.</p>
+    {% endfor %}
+
+    {% if comment_count > 5 %}
+        {% include 'blocks/berg-pagination.html' %}
+    {% endif %}
+</section>

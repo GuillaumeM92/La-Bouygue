@@ -1,33 +1,35 @@
 {% extends "bouygue/base.html" %}
 {% load static %}
-{% load crispy_forms_tags %}
 {% block content %}
-<div hidden>{% block title %} - Opérations {% endblock %}</div>
+<div hidden>{% block title %} — Opérations {% endblock %}</div>
 
-<section class="bg-light py-10">
-    <div class="container" style="padding-right: 1.6rem; padding-left: 1.6rem;">
-        <a href="{% url "budget"%}" style="cursor: pointer"><i class="fas fa-arrow-left mr-1"></i> Retour</a>
+{% include 'blocks/berg-entete.html' with surtitre="L'indivision" titre="Les opérations" chapeau="Le détail de tout ce qui est entré et sorti du compte commun." image="bouygue/assets/img/backgrounds/montagne/ossau.jpg" %}
+
+<section class="berg-section berg-section--serree">
+    <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-10">
-                <div class="d-flex align-items-center justify-content-between">
-                    <h2 class="mb-0 mt-4">Opérations enregistrées</h2>
-                    <div class="badge badge-primary-soft text-primary badge-marketing">{{ budget_entries|length }} opération(s)</div>
+            <div class="col-lg-9">
+
+                <div class="berg-actions">
+                    <a class="berg-retour" href="{% url 'budget' %}">Budget</a>
+                    <span class="berg-etiquette ml-auto">{{ budget_entries|length }} opération{{ budget_entries|length|pluralize }}</span>
                 </div>
-                <hr class="mb-0" />
-                <ul class="list-group list-group-flush list-group-careers">
+
+                <ul class="list-group">
                     {% for entry in budget_detail %}
-                    <li class="list-group-item">
-                        <div><b>{{ entry.total }} €</b> - {{ entry.description }}</div>
-                        <div class="small ml-4">{{ entry.date_posted.date }}</div>
-                        
-                    </li>
+                        <li class="list-group-item">
+                            <div>
+                                <div class="font-weight-700">{{ entry.total }} €</div>
+                                <div class="small">{{ entry.description }}</div>
+                            </div>
+                            <span class="small ml-auto">{{ entry.date_posted.date }}</span>
+                        </li>
+                    {% empty %}
+                        <li class="berg-vide">Aucune opération enregistrée.</li>
                     {% endfor %}
                 </ul>
             </div>
         </div>
-    </div>
-    <div class="svg-border-rounded text-dark">
-        <!-- Rounded SVG Border--><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144.54 17.34" preserveAspectRatio="none" fill="#1e2c41"><path d="M144.54,17.34H0V0H144.54ZM0,0S32.36,17.34,72.27,17.34,144.54,0,144.54,0"></path></svg>
     </div>
 </section>
 {% endblock content %}

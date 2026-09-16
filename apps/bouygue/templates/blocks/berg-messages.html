@@ -1,0 +1,11 @@
+{% comment %}
+    Messages Django (succès, erreur, info). Les classes du thème sont
+    conservées — alert-{{ message.tags }} — et rhabillées par bergerie.css.
+{% endcomment %}
+{% if messages %}
+    <div class="berg-messages" role="status" aria-live="polite">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+{% endif %}

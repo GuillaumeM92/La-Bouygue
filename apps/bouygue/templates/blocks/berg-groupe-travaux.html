@@ -1,0 +1,18 @@
+{% comment %}
+    Un groupe de tâches (une catégorie de travaux).
+    Usage : {% include 'blocks/berg-groupe-travaux.html' with titre="Bricolage" glyphe="fa-hammer" taches=handiwork %}
+{% endcomment %}
+<div class="berg-groupe-tete">
+    <h2>{% if glyphe %}<i class="fas {{ glyphe }} fa-fw berg-groupe-glyphe"></i>{% endif %}{{ titre }}</h2>
+    <span class="berg-etiquette">{{ taches|length }} tâche{{ taches|length|pluralize }}</span>
+</div>
+<ul class="list-group">
+    {% for work in taches %}
+        <li class="list-group-item">
+            <a href="{% url 'work-detail' work.id %}" class="berg-tache-titre">{{ work.title }}</a>
+            <span class="small ml-auto">Le {{ work.date_posted }}</span>
+        </li>
+    {% empty %}
+        <li class="berg-vide">Rien à signaler dans cette catégorie.</li>
+    {% endfor %}
+</ul>

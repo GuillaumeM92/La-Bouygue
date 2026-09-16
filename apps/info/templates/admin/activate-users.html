@@ -1,47 +1,57 @@
 {% extends "bouygue/base.html" %}
 {% load static %}
-{% load crispy_forms_tags %}
 {% block content %}
-<div hidden>{% block title %} - Travaux {% endblock %}</div>
-<section class="bg-light py-10">
-    <div class="container" style="padding-right: 1.6rem; padding-left: 1.6rem;">
-        <a href="{% url "bouygue-home"%}" style="cursor: pointer"><i class="fas fa-arrow-left mr-1"></i> Accueil</a>
+<div hidden>{% block title %} — Activations {% endblock %}</div>
+
+{% include 'blocks/berg-entete.html' with surtitre="Administration" titre="Activations" chapeau="Les nouveaux venus attendent qu'un administrateur leur ouvre la porte." image="bouygue/assets/img/backgrounds/montagne/piejau.jpg" %}
+
+<section class="berg-section berg-section--serree">
+    <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-10">
-                {% if messages %}
-                    {% for message in messages %}
-                        <div class="alert alert-{{ message.tags }}">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                {% endif %}
-                <div class="d-flex align-items-center justify-content-between">
-                    <h2 class="mb-0 mt-4">Utilisateurs Inactifs</h2>
-                    <div class="badge badge-primary-soft text-primary badge-marketing">{{ inactive_users|length }} utilisateur(s)</div>
+
+                {% include 'blocks/berg-messages.html' %}
+
+                <div class="berg-actions">
+                    <a class="berg-retour" href="{% url 'bouygue-home' %}">Accueil</a>
                 </div>
-                <hr class="mb-0" />
-                <ul class="list-group list-group-flush list-group-careers">
-                    {% for user in inactive_users %}
-                    <li class="list-group-item">
-                        <div>{{ user.surname }} {{ user.name }} - {{ user.email }}</div><!-- Confirmation form-->
-                        <form method="POST">
-                            {% csrf_token %}
-                            <button class="btn btn-outline-primary font-weight-bold" id="confirm-done" type="submit" name="action" value="{{ user.id }}">Activer ?</button>
-                        </form>
-                    </li>
+
+                <div class="berg-groupe-tete">
+                    <h2><i class="fas fa-door-closed fa-fw berg-groupe-glyphe"></i>En attente</h2>
+                    <span class="berg-etiquette berg-etiquette--tomette">{{ inactive_users|length }} compte{{ inactive_users|length|pluralize }}</span>
+                </div>
+                <ul class="list-group">
+                    {% for membre in inactive_users %}
+                        <li class="list-group-item">
+                            <div>
+                                <div class="font-weight-700">{{ membre.surname }} {{ membre.name }}</div>
+                                <div class="small">{{ membre.email }}</div>
+                            </div>
+                            <form method="POST" class="ml-auto mb-0">
+                                {% csrf_token %}
+                                <button class="btn btn-primary btn-sm" id="confirm-done" type="submit" name="action" value="{{ membre.id }}">Activer ce compte</button>
+                            </form>
+                        </li>
+                    {% empty %}
+                        <li class="berg-vide">Personne n'attend. Tout le monde est entré.</li>
                     {% endfor %}
                 </ul>
-                <div class="d-flex align-items-center justify-content-between">
-                    <h2 class="mb-0">Utilisateurs Actifs</h2>
-                    <div class="badge badge-primary-soft text-primary badge-marketing">{{ active_users|length }} utilisateur(s)</div>
+
+                <div class="berg-groupe-tete">
+                    <h2><i class="fas fa-door-open fa-fw berg-groupe-glyphe"></i>Comptes actifs</h2>
+                    <span class="berg-etiquette">{{ active_users|length }} compte{{ active_users|length|pluralize }}</span>
                 </div>
-                <hr class="mb-0" />
-                <ul class="list-group list-group-flush list-group-careers">
-                    {% for user in active_users %}
-                    <li class="list-group-item">
-                        <div>{{ user.surname }} {{ user.name }} - {{ user.email }}</div>
-                        <div class="small ml-4">Le {{ user.date_joined }}</div>
-                    </li>
+                <ul class="list-group">
+                    {% for membre in active_users %}
+                        <li class="list-group-item">
+                            <div>
+                                <div class="font-weight-700">{{ membre.surname }} {{ membre.name }}</div>
+                                <div class="small">{{ membre.email }}</div>
+                            </div>
+                            <span class="small ml-auto">Inscrit le {{ membre.date_joined|date:"d/m/Y" }}</span>
+                        </li>
+                    {% empty %}
+                        <li class="berg-vide">Aucun compte actif.</li>
                     {% endfor %}
                 </ul>
             </div>

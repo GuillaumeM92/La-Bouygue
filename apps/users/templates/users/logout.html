@@ -1,23 +1,12 @@
-{% extends "bouygue/base.html" %}
+{% extends "bouygue/base-volet.html" %}
 {% load static %}
-{% block content %}
-<div id="layoutAuthentication_content" class="bg-img-cover bg-gray-900" style="padding-right: 0.5rem; padding-left: 0.5rem; background-image: url({% static 'bouygue/assets/img/backgrounds/montagne/bouygue1.JPG' %}); height: 62rem;">
-    <div class="container" style="padding-right: 1rem; padding-left: 1rem;">
-        <div class="row justify-content-center">
-            <div class="col-lg-9">
-                <!-- Logout-->
-                <div class="card shadow-lg border-0 rounded-lg mt-15 mb-10 animated--fade-in" style="opacity: 92% ">
-                    <div class="card-header justify-content-center" style="background-color: #19273c; opacity: 96%"><h3 class="font-weight-50 my-4" style="color: white">Vous avez bien été déconnecté</h3></div>
-                    <div class="card-body text-center  font-weight-500 mt-4 mb-2">
-                    <a href="{% url 'users-login' %}" style="font-size: 112%;">Se reconnecter ?</a>
-                    </div>
-                    <div class="card-footer">
-                        <div class="small">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-{% endblock content %}
+{% block title %} — Déconnexion {% endblock %}
+{% block volet_image %}{% static 'bouygue/assets/img/backgrounds/montagne/bouygue1.JPG' %}{% endblock %}
+{% block volet_largeur %}col-lg-6{% endblock %}
+{% block volet_retour %}{% endblock %}
+{% block volet_titre %}À bientôt{% endblock %}
+{% block volet_corps %}
+    <p class="berg-craie mb-3">la porte est fermée</p>
+    <p class="text-muted mb-4">Vous avez bien été déconnecté de La Bouygue.</p>
+    <a class="btn btn-primary" href="{% url 'users-login' %}">Se reconnecter</a>
+{% endblock %}
