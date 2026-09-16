@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- La marque du site (blocks/berg-marque.html), miel sur lauze.
+       Teintes pleines au lieu de l'opacite : pas de filet aux jointures. -->
+  <rect width="64" height="64" rx="14" fill="#2a2f2b"/>
+  <g transform="translate(5.75 7.5) scale(1.75)">
+    <path d="M1 20 L8.5 5.5 L13 12.5 L17 3 L29 20 Z" fill="#886a2d"/>
+    <path d="M9 25 V15.5 L15.5 10.5 L22 15.5 V25 Z" fill="#d59a2e"/>
+    <path d="M6.5 16.5 L15.5 9 L24.5 16.5" fill="none" stroke="#d59a2e" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="13.5" y="19" width="4" height="6" rx=".6" fill="#886a2d"/>
+  </g>
+</svg>

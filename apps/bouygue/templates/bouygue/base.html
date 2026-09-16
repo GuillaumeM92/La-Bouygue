@@ -33,7 +33,9 @@
         <link rel="preload" href="{% static 'vendor/fontawesome-5.15.1/webfonts/fa-solid-900.woff2' %}" as="font" type="font/woff2" crossorigin />
         <link href="{% static 'bouygue/css/bergerie.css' %}" rel="stylesheet" />
 
-        <link rel="icon" type="image/x-icon" href="{% static 'bouygue/assets/img/favicon.jpg' %}" />
+        <link rel="icon" href="{% static 'bouygue/assets/img/favicon.ico' %}" sizes="32x32" />
+        <link rel="icon" href="{% static 'bouygue/assets/img/favicon.svg' %}" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="{% static 'bouygue/assets/img/apple-touch-icon.png' %}" />
         <!-- Bibliothèques hébergées sur le site (voir static/vendor/README.md).
              jQuery est chargé ici, et non en bas de page : le widget de recadrage
              d'image s'en sert dès qu'il apparaît dans un formulaire. -->

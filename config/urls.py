@@ -1,10 +1,16 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.templatetags.static import static as static_url
 from django.urls import path, include
+from django.utils.functional import lazy
+from django.views.generic import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # Browsers and feed readers ask for /favicon.ico whatever the page says
+    path('favicon.ico', RedirectView.as_view(
+        url=lazy(static_url, str)('bouygue/assets/img/favicon.ico'))),
     path('', include('apps.bouygue.urls')),
     path('', include('apps.users.urls')),
     path('', include('apps.agenda.urls')),
