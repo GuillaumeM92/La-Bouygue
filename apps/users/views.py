@@ -1,4 +1,3 @@
-from django.core.mail import send_mail
 from django.db.models import Q
 from apps.users.models import MyUser
 from django.shortcuts import render, redirect
@@ -6,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from . import antispam
+from .emails import send_quietly
 from .forms import UserRegisterForm, ProfileUpdateForm, UserLoginForm
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -29,23 +29,24 @@ def register(request):
             user_email = form.cleaned_data['email']
             user_name = form.cleaned_data['name']
             user_surname = form.cleaned_data['surname']
-            send_mail("La Bouygue - Bienvenue",
-                      ("Bonjour {} {}, merci d'avoir créé un compte sur le site de La Bouygue. "
-                       "Vous pourrez vous connecter lorsqu'un administrateur aura vérifié votre "
-                       "identité et activé votre compte. Vous recevrez un nouvel email vous "
-                       "informant de l'activation.").format(user_surname, user_name),
-                      None, [user_email], fail_silently=True, )
+            send_quietly("La Bouygue - Bienvenue",
+                         ("Bonjour {} {}, merci d'avoir créé un compte sur le site de La Bouygue. "
+                          "Vous pourrez vous connecter lorsqu'un administrateur aura vérifié votre "
+                          "identité et activé votre compte. Vous recevrez un nouvel email vous "
+                          "informant de l'activation.").format(user_surname, user_name),
+                         user_email)
 
             # Whoever can activate accounts hears about the new one
             administrators = MyUser.objects.filter(
                 Q(is_staff=True) | Q(is_superuser=True), is_active=True
             ).values_list("email", flat=True)
             for administrator in administrators:
-                send_mail("La Bouygue - Nouvel Utilisateur",
-                          ("{} {} s'est créé un compte sur le site de la Bouygue. Merci de "
-                           "vérifier son identité avant d'activer son compte. Lien : "
-                           "https://labouygue.fr/info/admin/activate/").format(user_surname, user_name),
-                          None, [administrator], fail_silently=True, )
+                send_quietly("La Bouygue - Nouvel Utilisateur",
+                             ("{} {} ({}) s'est créé un compte sur le site de la Bouygue. Merci "
+                              "de vérifier son identité avant d'activer son compte. Lien : "
+                              "https://labouygue.fr/info/admin/activate/").format(
+                                 user_surname, user_name, user_email),
+                             administrator)
             messages.success(request, str(
                 "Votre compte a été créé avec succès ! Un email de confirmation vient de vous "
                 "être envoyé. Vous pourrez vous connecter dès qu'un administrateur aura "

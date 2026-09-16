@@ -165,6 +165,20 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+# Give up on a slow mail server well before Gunicorn gives up on the request
+EMAIL_TIMEOUT = 10
+
+# Server errors and failed e-mails go to stderr, which Supervisor keeps in
+# /var/log/supervisor/la_bouygue-gunicorn-stderr---*.log
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {"stderr": {"class": "logging.StreamHandler"}},
+    "loggers": {
+        "django.request": {"handlers": ["stderr"], "level": "ERROR", "propagate": False},
+        "apps": {"handlers": ["stderr"], "level": "WARNING"},
+    },
+}
 
 MESSAGE_TAGS = {
     messages.ERROR: 'danger',

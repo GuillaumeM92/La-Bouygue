@@ -10,33 +10,31 @@
 
         <div class="berg-actions">
             <a class="berg-retour" href="{% url 'bouygue-home' %}">Accueil</a>
-            <span class="berg-etiquette ml-auto">{{ all_users|length }} membre{{ all_users|length|pluralize }}</span>
+            <span class="berg-etiquette ml-auto">{{ paginator.count }} membre{{ paginator.count|pluralize }}</span>
         </div>
 
         <div class="berg-grille">
             {% for membre in users %}
-                {% if membre.is_active %}
-                    <article class="berg-carte-membre">
-                        <img class="berg-carte-membre-portrait" src="{{ membre.profile.image.url }}" alt="" loading="lazy" />
-                        <h2 class="berg-carte-membre-nom">
-                            <a href="{% url 'profile-view' membre.id %}">{{ membre.surname }} {{ membre.name }}</a>
-                        </h2>
-                        <dl class="berg-carte-membre-coord">
-                            {% if membre.email %}
-                                <dt><i class="fas fa-envelope fa-fw"></i><span class="sr-only">Email</span></dt>
-                                <dd><a href="mailto:{{ membre.email }}">{{ membre.email }}</a></dd>
-                            {% endif %}
-                            {% if membre.profile.phone %}
-                                <dt><i class="fas fa-phone fa-fw"></i><span class="sr-only">Téléphone</span></dt>
-                                <dd><a href="tel:{{ membre.profile.phone }}">{{ membre.profile.phone }}</a></dd>
-                            {% endif %}
-                            {% if membre.profile.address %}
-                                <dt><i class="fas fa-home fa-fw"></i><span class="sr-only">Adresse</span></dt>
-                                <dd>{{ membre.profile.address }}</dd>
-                            {% endif %}
-                        </dl>
-                    </article>
-                {% endif %}
+                <article class="berg-carte-membre">
+                    <img class="berg-carte-membre-portrait" src="{{ membre.profile.image.url }}" alt="" loading="lazy" />
+                    <h2 class="berg-carte-membre-nom">
+                        <a href="{% url 'profile-view' membre.id %}">{{ membre.surname }} {{ membre.name }}</a>
+                    </h2>
+                    <dl class="berg-carte-membre-coord">
+                        {% if membre.email %}
+                            <dt><i class="fas fa-envelope fa-fw"></i><span class="sr-only">Email</span></dt>
+                            <dd><a href="mailto:{{ membre.email }}">{{ membre.email }}</a></dd>
+                        {% endif %}
+                        {% if membre.profile.phone %}
+                            <dt><i class="fas fa-phone fa-fw"></i><span class="sr-only">Téléphone</span></dt>
+                            <dd><a href="tel:{{ membre.profile.phone }}">{{ membre.profile.phone }}</a></dd>
+                        {% endif %}
+                        {% if membre.profile.address %}
+                            <dt><i class="fas fa-home fa-fw"></i><span class="sr-only">Adresse</span></dt>
+                            <dd>{{ membre.profile.address }}</dd>
+                        {% endif %}
+                    </dl>
+                </article>
             {% empty %}
                 <p class="berg-vide">Le carnet est vide.</p>
             {% endfor %}

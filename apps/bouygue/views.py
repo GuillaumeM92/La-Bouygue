@@ -36,7 +36,7 @@ def home(request):
     activities_length = len(Activity.objects.all()) - user.activities_viewed
     infoposts_length = len(InfoPost.objects.all()) - user.informations_viewed
     works_length = len(Work.objects.all()) - user.works_viewed
-    users_length = len(MyUser.objects.all()) - user.users_viewed
+    users_length = MyUser.objects.filter(is_active=True).count() - user.users_viewed
     # get posts and comments that contain images
     posts_with_images = Post.objects.exclude(image='')
     comments_with_images = Comment.objects.exclude(image='')

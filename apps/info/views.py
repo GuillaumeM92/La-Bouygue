@@ -8,7 +8,7 @@ from apps.users.models import MyUser
 from .models import InfoPost, InfoComment
 from .forms import InfoCommentForm
 from django.core.paginator import Paginator
-from django.core.mail import send_mail
+from apps.users.emails import send_quietly
 from client_side_image_cropping import ClientsideCroppingWidget
 
 
@@ -197,30 +197,26 @@ class ActivateUsersListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
         user = get_object_or_404(MyUser, id=request.POST.get('action'), is_active=False)
         user.is_active = True
         user.save()
-        send_mail("La Bouygue - Compte Activé",
-                  ("Votre compte La Bouygue vient d'être activé. "
-                   "Vous pouvez désormais vous connecter en cliquant "
-                   "sur le lien suivant : https://labouygue.fr/login/"),
-                  None, [user.email], fail_silently=True, )
+        send_quietly("La Bouygue - Compte Activé",
+                     ("Votre compte La Bouygue vient d'être activé. "
+                      "Vous pouvez désormais vous connecter en cliquant "
+                      "sur le lien suivant : https://labouygue.fr/login/"),
+                     user.email)
         messages.success(self.request, str("Utilisateur activé !"))
         return super().get(request, *args, **kwargs)
 
 
 class AllUsersListView(LoginRequiredMixin, ListView):
-    model = MyUser
+    # Accounts waiting for activation are not members yet
+    queryset = MyUser.objects.filter(is_active=True)
     template_name = 'info/all-users.html'
     context_object_name = 'users'
     ordering = ['surname']
     paginate_by = 10
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["all_users"] = MyUser.objects.all()
-        return context
-
     def dispatch(self, request, *args, **kwargs):
         user = request.user
-        user.users_viewed = len(MyUser.objects.all())
+        user.users_viewed = MyUser.objects.filter(is_active=True).count()
         if user.is_authenticated and user.is_active:
             user.save()
         return super().dispatch(request, *args, **kwargs)
