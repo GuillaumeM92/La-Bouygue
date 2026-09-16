@@ -10,7 +10,15 @@
 
         <div class="berg-actions">
             <a class="berg-retour" href="{% url 'bouygue-home' %}">Accueil</a>
-            <span class="berg-etiquette ml-auto">{{ paginator.count }} membre{{ paginator.count|pluralize }}</span>
+            <form class="berg-recherche" method="get" action="" role="search">
+                <label class="sr-only" for="recherche-membre">Chercher un membre</label>
+                <input class="form-control" id="recherche-membre" type="search" name="q" value="{{ query }}" placeholder="Prénom ou nom" autocomplete="off" />
+                <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i><span class="sr-only">Chercher</span></button>
+                {% if query %}<a class="berg-recherche-effacer" href="{% url 'all-users' %}">Tout afficher</a>{% endif %}
+            </form>
+            <span class="berg-etiquette ml-auto">
+                {{ paginator.count }} {% if query %}résultat{% else %}membre{% endif %}{% if paginator.count > 1 %}s{% endif %}
+            </span>
         </div>
 
         <div class="berg-grille">
@@ -36,7 +44,7 @@
                     </dl>
                 </article>
             {% empty %}
-                <p class="berg-vide">Le carnet est vide.</p>
+                <p class="berg-vide">{% if query %}Personne ne correspond à « {{ query }} ».{% else %}Le carnet est vide.{% endif %}</p>
             {% endfor %}
         </div>
 

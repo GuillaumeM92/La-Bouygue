@@ -2,25 +2,26 @@
     Pagination partagée. Reprend telle quelle la logique du thème d'origine
     (page_obj / paginator, fenêtre de ±2 pages), pour ne rien changer côté vues.
     La page courante est marquée .page-item.disabled, comme avant.
+    pagination_query (facultatif, « &q=… ») garde une recherche d'une page à l'autre.
 {% endcomment %}
 <nav aria-label="Pages de résultats">
     <ul class="pagination justify-content-center">
         {% if page_obj.has_previous %}
-            <li class="page-item"><a class="page-link" href="?page=1">Début</a></li>
-            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Préc.</a></li>
+            <li class="page-item"><a class="page-link" href="?page=1{{ pagination_query }}">Début</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{{ pagination_query }}">Préc.</a></li>
         {% endif %}
 
         {% for num in page_obj.paginator.page_range %}
             {% if page_obj.number == num %}
-                <li class="page-item disabled"><a class="page-link" href="?page={{ num }}" aria-current="page">{{ num }}</a></li>
+                <li class="page-item disabled"><a class="page-link" href="?page={{ num }}{{ pagination_query }}" aria-current="page">{{ num }}</a></li>
             {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ num }}{{ pagination_query }}">{{ num }}</a></li>
             {% endif %}
         {% endfor %}
 
         {% if page_obj.has_next %}
-            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Suiv.</a></li>
-            <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Fin</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{{ pagination_query }}">Suiv.</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{{ pagination_query }}">Fin</a></li>
         {% endif %}
     </ul>
 </nav>

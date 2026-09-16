@@ -1,3 +1,6 @@
+import unicodedata
+from urllib.parse import urlencode
+
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -206,6 +209,12 @@ class ActivateUsersListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
         return super().get(request, *args, **kwargs)
 
 
+def _folded(text):
+    """Lower case, without accents: "Élodie" -> "elodie"."""
+    decomposed = unicodedata.normalize("NFKD", text or "")
+    return "".join(c for c in decomposed if not unicodedata.combining(c)).casefold()
+
+
 class AllUsersListView(LoginRequiredMixin, ListView):
     # Accounts waiting for activation are not members yet
     queryset = MyUser.objects.filter(is_active=True)
@@ -213,6 +222,23 @@ class AllUsersListView(LoginRequiredMixin, ListView):
     context_object_name = 'users'
     ordering = ['surname']
     paginate_by = 10
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        words = _folded(self.request.GET.get("q", "")).split()
+        if not words:
+            return queryset
+        # "helene dup" finds Hélène Dupont: every word, accents and case aside,
+        # must be in the first or last name. A few dozen members: filtered here.
+        return [member for member in queryset
+                if all(word in _folded(f"{member.surname} {member.name}") for word in words)]
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["query"] = self.request.GET.get("q", "").strip()
+        if context["query"]:
+            context["pagination_query"] = "&" + urlencode({"q": context["query"]})
+        return context
 
     def dispatch(self, request, *args, **kwargs):
         user = request.user

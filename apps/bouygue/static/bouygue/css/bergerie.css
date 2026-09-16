@@ -649,6 +649,18 @@ small, .small   { font-size: .875rem; }
     margin-bottom: 1.75rem;
 }
 
+/* Recherche dans une liste (carnet d'adresses) : champ et loupe accoles. */
+.berg-recherche {
+    display: flex;
+    align-items: center;
+    flex: 1 1 16rem;
+    max-width: 26rem;
+    margin: 0 .5rem;
+}
+.berg-recherche .form-control { border-top-right-radius: 0; border-bottom-right-radius: 0; }
+.berg-recherche .btn { flex: 0 0 auto; border-top-left-radius: 0; border-bottom-left-radius: 0; align-self: stretch; }
+.berg-recherche-effacer { margin-left: .75rem; white-space: nowrap; font-size: .9rem; }
+
 
 /* =============================================================================
    6. EN-TETES DE PAGE — la photo, chauffee, et une crete de montagne
