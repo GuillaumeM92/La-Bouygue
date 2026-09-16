@@ -4,6 +4,7 @@ __pycache__/
 
 # Virtual environments and local settings
 venv/
+.venv/
 env/
 .env
 .env.*
@@ -13,9 +14,6 @@ db.sqlite3
 staticfiles/
 staticfiles-*/
 db_backups/
-
-# Migrations are generated on each machine (see readme.md)
-migrations/
 
 # Uploaded images (the default images in media/ are versioned)
 media/profile_pics/

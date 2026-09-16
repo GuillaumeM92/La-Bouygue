@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'apps.work',
     'apps.budget',
     'crispy_forms',
+    'crispy_bootstrap4',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -75,7 +76,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
-# https://docs.djangoproject.com/en/3.1/ref/settings/#databases
+# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 # Database
 if not DEBUG:
@@ -100,7 +101,7 @@ else:
 }
 
 # Password validation
-# https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
+# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -119,27 +120,29 @@ AUTH_PASSWORD_VALIDATORS = [
 AUTH_USER_MODEL = "users.MyUser"
 
 # Internationalization
-# https://docs.djangoproject.com/en/3.1/topics/i18n/
+# https://docs.djangoproject.com/en/5.2/topics/i18n/
 LANGUAGE_CODE = 'fr'
 
 TIME_ZONE = 'Europe/Paris'
 
 USE_I18N = True
 
-USE_L10N = True
-
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.1/howto/static-files/
+# https://docs.djangoproject.com/en/5.2/howto/static-files/
 # STATIC_ROOT can be pointed elsewhere to collect into a fresh folder, then swap
 STATIC_ROOT = os.getenv("STATIC_ROOT", os.path.join(BASE_DIR, "staticfiles"))
 STATIC_URL = "/static/"
-STATICFILES_STORAGE = "config.storage.StaticStorage"
+STORAGES = {
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "staticfiles": {"BACKEND": "config.storage.StaticStorage"},
+}
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
 
+CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap4'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_REDIRECT_URL = 'bouygue-home'
@@ -157,4 +160,5 @@ MESSAGE_TAGS = {
     messages.ERROR: 'danger',
 }
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# The production tables have integer ids
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

@@ -13,25 +13,27 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='InfoComment',
+            name='Budget',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('content', models.TextField(verbose_name='')),
                 ('date_posted', models.DateTimeField(default=django.utils.timezone.now)),
-                ('image', models.ImageField(blank=True, upload_to='comments')),
+                ('total', models.SmallIntegerField(default=0, verbose_name='Nouveau Total')),
+                ('description', models.CharField(max_length=64, verbose_name='Brève Description')),
             ],
             options={
-                'ordering': ['-date_posted'],
+                'verbose_name_plural': 'Budget',
             },
         ),
         migrations.CreateModel(
-            name='InfoPost',
+            name='Funding',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=100, verbose_name='Titre')),
-                ('content', models.TextField(verbose_name='Contenu')),
                 ('date_posted', models.DateTimeField(default=django.utils.timezone.now)),
-                ('image', models.ImageField(blank=True, upload_to='info')),
+                ('progress', models.SmallIntegerField(default=0, verbose_name='Progression')),
+                ('goal', models.SmallIntegerField(default=0, verbose_name='Objectif')),
             ],
+            options={
+                'verbose_name_plural': 'Funding',
+            },
         ),
     ]

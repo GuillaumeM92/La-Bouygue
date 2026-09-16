@@ -17,7 +17,7 @@ budget of the house. New accounts must be validated by an administrator.
 * Administration: account activation, budget and funding updates, Django admin
 
 ## Stack
-* Python 3, Django 3.1, PostgreSQL in production (SQLite locally)
+* Python 3.12, Django 5.2, PostgreSQL in production (SQLite locally)
 * Gunicorn under Supervisor, behind Nginx, on an Ubuntu VPS
 * Front end: Bootstrap 4 and the "Bergerie" design (`apps/bouygue/static/bouygue/css/bergerie.css`),
   FullCalendar, Chart.js, django-client-side-image-cropping
@@ -43,20 +43,19 @@ media/          default images (uploads are not versioned)
 ```
 
 ## Local development
-Django 3.1 officially supports Python 3.6 to 3.9 (the server runs it on 3.12).
+Django 5.2 needs Python 3.10 or later (the server runs 3.12).
 ```
-python3 -m venv venv
-venv/bin/pip install -r requirements/requirements-dev.txt
+python3.12 -m venv .venv
+.venv/bin/pip install -r requirements/requirements-dev.txt
 ```
 Create `config/.env` (or `.env` at the root):
 ```
 ENV=dev
 SECRET_KEY=any-long-random-string
 ```
-`ENV=dev` switches to SQLite and `DEBUG`. Migration files are not versioned
-(`migrations/` is in `.gitignore`), so on a fresh clone run
-`venv/bin/python manage.py makemigrations` then `migrate`, create an account
-with `createsuperuser`, and start `venv/bin/python manage.py runserver`.
+`ENV=dev` switches to SQLite and `DEBUG`. Run `.venv/bin/python manage.py
+migrate`, create an account with `createsuperuser`, and start
+`.venv/bin/python manage.py runserver`.
 
 ## Configuration (production)
 `config/.env` on the server holds:
